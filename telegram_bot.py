@@ -173,7 +173,7 @@ def run_bot():
             keyboard = [
                 [InlineKeyboardButton("📊 مشاهده پروفایل و نمره ATS من", callback_data="status")],
                 [InlineKeyboardButton("🎯 موقعیت‌های شغلی پیشنهادی من", callback_data="jobs")],
-                [InlineKeyboardButton("🌐 ورود به داشبورد وب", url="http://127.0.0.1:8088")]
+                [InlineKeyboardButton("🌐 ورود به داشبورد وب و شبیه‌ساز مصاحبه", url=os.getenv("PUBLIC_URL", "https://acm-kyle-aware-colon.trycloudflare.com"))]
             ]
             await update.message.reply_text(welcome_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 

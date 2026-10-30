@@ -11,7 +11,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "Job Career Co-Pilot & Automation"
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-3.5-flash"
     TELEGRAM_BOT_TOKEN: str = ""
     
     # Database
