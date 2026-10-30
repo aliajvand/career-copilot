@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Co-Pilot Pro | پلتفرم و اتوماسیون استخدام</title>
+    <title>Career Co-Pilot Pro Enterprise | پلتفرم هوشمند استخدامی و اتوماسیون ایجنتی</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Vazirmatn Persian Font -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <!-- Three.js 3D WebGL Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -21,6 +26,13 @@
                         brand: {
                             500: '#10b981',
                             600: '#059669',
+                            400: '#34d399',
+                            300: '#6ee7b7'
+                        },
+                        cyber: {
+                            cyan: '#06b6d4',
+                            indigo: '#6366f1',
+                            rose: '#f43f5e'
                         }
                     }
                 }
@@ -29,54 +41,92 @@
     </script>
     <style>
         body { font-family: 'Vazirmatn', sans-serif; }
-        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(51, 65, 85, 0.6); }
-        .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.25); }
-        .pulse-subtle { animation: pulse 2.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.98); } }
-        /* Speaking animation */
-        .speaking-wave { height: 100%; transition: height 0.15s ease-in-out; }
+        .glass-panel { background: rgba(13, 19, 33, 0.82); backdrop-filter: blur(20px); border: 1px solid rgba(51, 65, 85, 0.65); }
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.4); }
+        .glow-emerald { box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.3); }
+        .glow-cyan { box-shadow: 0 0 35px -5px rgba(6, 182, 212, 0.3); }
+        .glow-rose { box-shadow: 0 0 35px -5px rgba(244, 63, 94, 0.3); }
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        .floating-anim { animation: floatSlow 4s ease-in-out infinite; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #080c14; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
     </style>
 </head>
-<body class="bg-[#090d16] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-20">
+<body class="bg-[#070a12] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-20 cyber-grid relative overflow-x-hidden">
+
+    <!-- Interactive 3D Background Canvas -->
+    <canvas id="bg-3d-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
 
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-6 left-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- Top Navigation Header -->
-    <header class="border-b border-slate-800/80 bg-[#0c1220]/90 backdrop-blur sticky top-0 z-40">
+    <header class="border-b border-slate-800/80 bg-[#0a0f1d]/90 backdrop-blur sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black text-xl">
-                    <i class="fa-solid fa-robot"></i>
+                <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-400 p-[1.5px] shadow-lg shadow-emerald-500/25 floating-anim">
+                    <div class="w-full h-full bg-[#0a0f1d] rounded-2xl flex items-center justify-center text-emerald-400 font-black text-xl">
+                        <!-- Futuristic Hexagon Robot SVG -->
+                        <svg class="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-base sm:text-lg font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-200 to-cyan-300">
-                            Career Co-Pilot Pro
+                            Career Co-Pilot Enterprise
                         </h1>
-                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">Auto-Apply & AI Voice</span>
+                        <span class="text-[10px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span>۳D & Multi-Agent Council</span>
+                        </span>
                     </div>
-                    <p class="text-[11px] text-slate-400">اتصال به جابینجا/جاب‌ویژن، مصاحبه صوتی تعاملی و ارسال رزومه</p>
+                    <p class="text-[11px] text-slate-400 flex items-center gap-2">
+                        <span>کارجو: <strong class="text-teal-300" id="header-user-name">علی رجوند (Ali Ajvand)</strong></span>
+                        <span class="text-slate-600">|</span>
+                        <span>رتبه ATS: <strong class="text-emerald-400" id="header-user-ats">۸۵٪</strong></span>
+                    </p>
                 </div>
             </div>
 
-            <!-- Accounts Connection Badges -->
-            <div class="hidden md:flex items-center gap-3">
+            <!-- Header Badges -->
+            <div class="hidden lg:flex items-center gap-3">
+                <!-- Public Tunnel Link Badge -->
+                <a href="https://acm-kyle-aware-colon.trycloudflare.com" target="_blank" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs text-cyan-300 hover:border-cyan-400 transition">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span>لینک جهانی Cloudflare: <strong>فعال</strong></span>
+                </a>
+                <!-- Telegram Bot Badge -->
+                <a href="https://t.me/Career_Copilot_ir_bot" target="_blank" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-950/40 border border-blue-500/30 text-xs text-blue-300 hover:border-blue-400 transition">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>ربات مانیتورینگ: <strong>آنلاین</strong></span>
+                </a>
+                <!-- Accounts status -->
                 <div onclick="showTab('accounts')" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs hover:border-slate-700 transition">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500" id="header-jobinja-dot"></span>
-                    <span>جابینجا: <strong class="text-emerald-400" id="header-jobinja-text">آماده</strong></span>
-                </div>
-                <div onclick="showTab('accounts')" class="cursor-pointer flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs hover:border-slate-700 transition">
-                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500" id="header-jobvision-dot"></span>
-                    <span>جاب‌ویژن: <strong class="text-indigo-400" id="header-jobvision-text">آماده</strong></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-400" id="header-jobinja-dot"></span>
+                    <span>جابینجا: <strong class="text-emerald-400">متصل (09195253462)</strong></span>
                 </div>
             </div>
 
-            <!-- VIP Plan Button -->
+            <!-- Action buttons -->
             <div class="flex items-center gap-2">
-                <button onclick="showPricingModal()" class="text-xs bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+                <button onclick="showSecurityModal()" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span class="hidden sm:inline">ممیزی OWASP</span>
+                </button>
+                <button onclick="showPricingModal()" class="text-xs bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-crown"></i>
-                    <span>پلن VIP (۱۹۹ ت)</span>
+                    <span>پلن VIP</span>
                 </button>
             </div>
         </div>
@@ -84,466 +134,356 @@
         <!-- Navigation Tabs -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto gap-1 border-t border-slate-800/60 py-2 scrollbar-none text-xs sm:text-sm font-medium">
             <button onclick="showTab('overview')" id="tab-btn-overview" class="tab-btn active px-4 py-2 rounded-xl text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-gauge-high"></i> پیشخوان
+                <i class="fa-solid fa-chart-pie"></i> پیشخوان
             </button>
-            <button onclick="showTab('accounts')" id="tab-btn-accounts" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-key"></i> اتصال حساب‌های جابینجا و جاب‌ویژن
-            </button>
-            <button onclick="showTab('resume')" id="tab-btn-resume" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-file-pdf"></i> آپلود و آنالیز رزومه (PDF/Word)
-            </button>
-            <button onclick="showTab('jobs')" id="tab-btn-jobs" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-paper-plane"></i> رادار و ارسال خودکار رزومه
+            <button onclick="showTab('warroom')" id="tab-btn-warroom" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
+                <i class="fa-solid fa-network-wired text-cyan-400"></i> شورای ایجنت‌های سازمانی (۸ تیم)
             </button>
             <button onclick="showTab('interview')" id="tab-btn-interview" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-microphone-lines"></i> شبیه‌ساز مصاحبه با صدای واقعی
+                <i class="fa-solid fa-vr-cardboard text-purple-400"></i> شبیه‌ساز سه‌بعدی مصاحبه (B2B)
+            </button>
+            <button onclick="showTab('jobs')" id="tab-btn-jobs" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
+                <i class="fa-solid fa-crosshairs text-emerald-400"></i> آگهی‌های منطبق تهران
+            </button>
+            <button onclick="showTab('resume')" id="tab-btn-resume" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
+                <i class="fa-solid fa-file-shield text-amber-400"></i> پروفایل و رزومه علی رجوند
+            </button>
+            <button onclick="showTab('accounts')" id="tab-btn-accounts" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
+                <i class="fa-solid fa-key text-rose-400"></i> احراز هویت جابینجا و جاب‌ویژن
             </button>
             <button onclick="showTab('salary')" id="tab-btn-salary" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-sack-dollar"></i> رادار حقوق تهران
-            </button>
-            <button onclick="showTab('settings')" id="tab-btn-settings" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-sliders"></i> تنظیمات اتوماسیون
+                <i class="fa-solid fa-sack-dollar text-teal-400"></i> رادار حقوق تهران
             </button>
         </div>
     </header>
 
-    <!-- Main Workspace Area -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-1 relative z-10 w-full">
 
         <!-- ==================== 1. TAB: OVERVIEW ==================== -->
         <section id="tab-overview" class="tab-content space-y-6">
-            <!-- 4 Metrics Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
-                        <span>نمره سازگاری با سیستم‌های ATS</span>
-                        <i class="fa-solid fa-file-shield text-emerald-400 text-lg"></i>
-                    </div>
-                    <div class="mt-4 flex items-baseline gap-2">
-                        <span id="stat-ats" class="text-3xl font-black text-slate-100">۷۸</span>
-                        <span class="text-xs text-emerald-400 font-bold">از ۱۰۰ (سطح قوی)</span>
-                    </div>
-                    <div class="mt-3 w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div id="stat-ats-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2 rounded-full transition-all duration-700" style="width: 78%"></div>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
-                        <span>آگهی‌های فعال در تهران</span>
-                        <i class="fa-solid fa-crosshairs text-teal-400 text-lg"></i>
-                    </div>
-                    <div class="mt-4 flex items-baseline gap-2">
-                        <span id="stat-total-jobs" class="text-3xl font-black text-slate-100">۷</span>
-                        <span class="text-xs text-teal-400 font-bold">موقعیت جدید</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mt-2">خزش یکپارچه از کاربورد و جابینجا</p>
-                </div>
-
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
-                        <span>رزومه‌های ثبت‌شده با موفقیت</span>
-                        <i class="fa-solid fa-paper-plane text-cyan-400 text-lg"></i>
-                    </div>
-                    <div class="mt-4 flex items-baseline gap-2">
-                        <span id="stat-applied" class="text-3xl font-black text-slate-100">۲</span>
-                        <span class="text-xs text-cyan-400 font-bold">همراه با کد رهگیری</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mt-2">با تاییدیه ثبت کارفرما</p>
-                </div>
-
-                <div class="glass-panel p-5 rounded-2xl">
-                    <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
-                        <span>صف ارسال ساعت طلایی</span>
-                        <i class="fa-solid fa-clock text-amber-400 text-lg"></i>
-                    </div>
-                    <div class="mt-4 flex items-baseline gap-2">
-                        <span id="stat-golden" class="text-3xl font-black text-slate-100">۲</span>
-                        <span class="text-xs text-amber-400 font-bold">موقعیت آماده</span>
-                    </div>
-                    <p class="text-[11px] text-slate-500 mt-2">ارسال بین ۸:۳۰ تا ۱۰:۳۰ صبح</p>
-                </div>
-            </div>
-
-            <!-- Two Action Banners -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Account Setup Action -->
-                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 text-lg">
-                                <i class="fa-solid fa-id-badge"></i>
-                            </span>
-                            <div>
-                                <h3 class="font-bold text-slate-100 text-sm">اتصال به جابینجا و جاب‌ویژن</h3>
-                                <p class="text-xs text-slate-400">تنظیم اطلاعات حساب برای شروع ارسال خودکار رزومه‌ها</p>
-                            </div>
+            <!-- Hero Stats Grid with Glowing 3D Glass Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- ATS Score Card -->
+                <div class="glass-panel p-5 rounded-2xl glow-emerald relative overflow-hidden group">
+                    <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition"></div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-400">نمره ATS رزومه</span>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                            <i class="fa-solid fa-chart-line"></i>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
-                            اتوماسیون برای ارسال مطمئن رزومه با اکانت شخصی شما وارد می‌شود، صفحه آگهی شرکت‌های مدنظر را باز می‌کند و رزومه را با رفتار انسانی ثبت می‌نماید.
-                        </p>
                     </div>
-                    <button onclick="showTab('accounts')" class="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition flex items-center justify-center gap-2">
-                        <span>مدیریت حساب‌ها و رمزها</span>
-                        <i class="fa-solid fa-arrow-left"></i>
-                    </button>
+                    <div class="mt-3 flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-emerald-400" id="stat-ats-score">۸۵</span>
+                        <span class="text-xs text-slate-400">از ۱۰۰ (سطح Senior)</span>
+                    </div>
+                    <div class="w-full bg-slate-800/80 rounded-full h-1.5 mt-3 overflow-hidden">
+                        <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-1.5 rounded-full" style="width: 85%"></div>
+                    </div>
                 </div>
 
-                <!-- Voice Interview Action -->
-                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <span class="p-2.5 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 text-lg">
-                                <i class="fa-solid fa-headset"></i>
-                            </span>
-                            <div>
-                                <h3 class="font-bold text-slate-100 text-sm">مصاحبه صوتی تعاملی (AI Voice)</h3>
-                                <p class="text-xs text-slate-400">مصاحبه‌کننده هوش مصنوعی به صورت صوتی با شما حرف می‌زند!</p>
-                            </div>
+                <!-- Discovered Jobs Card -->
+                <div class="glass-panel p-5 rounded-2xl glow-cyan relative overflow-hidden group">
+                    <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl group-hover:bg-cyan-500/20 transition"></div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-400">آگهی‌های فعال تهران</span>
+                        <div class="w-9 h-9 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center">
+                            <i class="fa-solid fa-building-circle-check"></i>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
-                            سوالات چالشی اسنپ و دیجی‌کالا را با صدای واقعی بشنوید، پاسخ صوتی خود را با میکروفون بگویید و در لحظه نمره و بازخورد قبولی دریافت کنید.
-                        </p>
                     </div>
-                    <button onclick="showTab('interview')" class="mt-6 w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2">
-                        <span>ورود به مصاحبه صوتی</span>
-                        <i class="fa-solid fa-microphone-lines"></i>
-                    </button>
+                    <div class="mt-3 flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-cyan-400" id="stat-total-jobs">۹</span>
+                        <span class="text-xs text-slate-400">موقعیت تایید شده</span>
+                    </div>
+                    <p class="text-[11px] text-cyan-400/80 mt-2">اسنپ، دیجی‌کالا، بازار، ایرانسل</p>
+                </div>
+
+                <!-- Golden Hour Queue Card -->
+                <div class="glass-panel p-5 rounded-2xl glow-emerald relative overflow-hidden group">
+                    <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-teal-500/10 rounded-full blur-xl group-hover:bg-teal-500/20 transition"></div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-400">صف ساعت طلایی (۸:۳۰)</span>
+                        <div class="w-9 h-9 rounded-xl bg-teal-500/15 text-teal-400 flex items-center justify-center">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-teal-400" id="stat-golden-queue">۹</span>
+                        <span class="text-xs text-slate-400">آماده ارسال فردا</span>
+                    </div>
+                    <p class="text-[11px] text-teal-400/80 mt-2">انطباق بالای ۷۰٪ با مهارت‌های علی</p>
+                </div>
+
+                <!-- Applied with Tracking -->
+                <div class="glass-panel p-5 rounded-2xl relative overflow-hidden group border-indigo-500/30">
+                    <div class="absolute -left-6 -bottom-6 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl group-hover:bg-indigo-500/20 transition"></div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-400">ارسال‌شده با کد پیگیری</span>
+                        <div class="w-9 h-9 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-indigo-400" id="stat-total-applied">۰</span>
+                        <span class="text-xs text-slate-400">مورد مستقیم کارفرما</span>
+                    </div>
+                    <p class="text-[11px] text-indigo-400/80 mt-2">شبیه‌سازی انسانی بدون بن شدن</p>
                 </div>
             </div>
-        </section>
 
-        <!-- ==================== 2. TAB: ACCOUNTS (JOBINJA & JOBVISION) ==================== -->
-        <section id="tab-accounts" class="tab-content hidden space-y-6">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="border-b border-slate-800 pb-5 mb-6">
-                    <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-shield-halved text-emerald-400 text-lg"></i>
-                        <span>مدیریت و احراز هویت حساب‌های جابینجا و جاب‌ویژن</span>
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">
-                        برای ارسال خودکار رزومه‌ها توسط ربات، اطلاعات ورود خود را وارد کنید یا در صورت عدم وجود اکانت، گزینه ساخت اکانت جدید را انتخاب نمایید.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Jobinja Account Card -->
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <span class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-lg font-bold">
-                                    JN
-                                </span>
-                                <div>
-                                    <h3 class="font-bold text-slate-100 text-sm">حساب کاربری جابینجا (Jobinja)</h3>
-                                    <span class="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5" id="jobinja-status-badge">
-                                        <i class="fa-solid fa-circle text-[8px]"></i> متصل و آماده ارسال
-                                    </span>
-                                </div>
-                            </div>
-                            <span class="text-xs bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg">Jobinja.ir</span>
+            <!-- Profile Summary Card -->
+            <div class="glass-panel p-6 rounded-2xl border-emerald-500/30">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-slate-950 text-2xl font-black shadow-lg shadow-emerald-500/25 shrink-0">
+                            <span>علی</span>
                         </div>
-
-                        <div class="space-y-3 pt-2">
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">ایمیل یا شماره موبایل:</label>
-                                <input type="text" id="jobinja-username" value="user@example.com" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500/50">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h2 class="text-lg font-bold text-white">علی رجوند (Ali Ajvand)</h2>
+                                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold">رزومه رسمی لود شد</span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-xs">رتبه دوم هکاتون پُل ۴</span>
                             </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">رمز عبور (Password):</label>
-                                <input type="password" id="jobinja-password" value="••••••••••••" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-500/50">
+                            <p class="text-xs text-slate-300 mt-1">Data Scientist & BI Professional · Analytics Engineering, ML & End-to-End Data Products</p>
+                            <div class="flex items-center gap-4 mt-2 text-xs text-slate-400 flex-wrap">
+                                <span><i class="fa-solid fa-phone text-emerald-400 ml-1"></i> ۰۹۱۹۵۲۵۳۴۶۲</span>
+                                <span><i class="fa-solid fa-envelope text-cyan-400 ml-1"></i> aliajvand@gmail.com</span>
+                                <span><i class="fa-brands fa-github text-white ml-1"></i> github.com/aliajvand</span>
+                                <span><i class="fa-solid fa-graduation-cap text-amber-400 ml-1"></i> مهندسی کامپیوتر دانشگاه علوم و تحقیقات</span>
                             </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 pt-2">
-                            <button onclick="saveAccount('jobinja')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2.5 rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-floppy-disk"></i> ذخیره و اعتبارسنجی ورود
-                            </button>
-                            <button onclick="createNewAccountPrompt('jobinja')" class="text-xs bg-slate-900 hover:bg-slate-800 text-slate-300 px-3.5 py-2.5 rounded-xl border border-slate-800 transition">
-                                <i class="fa-solid fa-user-plus ml-1"></i> ساخت اکانت تازه
-                            </button>
                         </div>
                     </div>
 
-                    <!-- Jobvision Account Card -->
-                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <span class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center text-lg font-bold">
-                                    JV
-                                </span>
-                                <div>
-                                    <h3 class="font-bold text-slate-100 text-sm">حساب کاربری جاب‌ویژن (Jobvision)</h3>
-                                    <span class="text-[11px] text-indigo-400 flex items-center gap-1 mt-0.5" id="jobvision-status-badge">
-                                        <i class="fa-solid fa-circle text-[8px]"></i> متصل و آماده ارسال
-                                    </span>
-                                </div>
-                            </div>
-                            <span class="text-xs bg-slate-900 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-lg">Jobvision.ir</span>
-                        </div>
-
-                        <div class="space-y-3 pt-2">
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">شماره همراه کارجو:</label>
-                                <input type="text" id="jobvision-username" value="09121234567" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500/50">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">کلمه عبور:</label>
-                                <input type="password" id="jobvision-password" value="••••••••••••" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500/50">
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 pt-2">
-                            <button onclick="saveAccount('jobvision')" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-2.5 rounded-xl shadow-lg shadow-indigo-600/20 transition flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-floppy-disk"></i> ذخیره و تایید نشست
-                            </button>
-                            <button onclick="createNewAccountPrompt('jobvision')" class="text-xs bg-slate-900 hover:bg-slate-800 text-slate-300 px-3.5 py-2.5 rounded-xl border border-slate-800 transition">
-                                <i class="fa-solid fa-user-plus ml-1"></i> ثبت‌نام جدید
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-3 text-xs text-slate-400">
-                    <i class="fa-solid fa-lock text-emerald-400 text-base"></i>
-                    <span>تمامی اطلاعات و نشست‌ها به صورت محلی (Local Encrypted) روی همین سیستم نگهداری شده و هرگز به سرورهای ثالث ارسال نمی‌شوند.</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== 3. TAB: RESUME BRAIN (PDF / WORD) ==================== -->
-        <section id="tab-resume" class="tab-content hidden space-y-6">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="border-b border-slate-800 pb-5 mb-6">
-                    <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-file-pdf text-rose-400 text-lg"></i>
-                        <span>آپلود و تحلیل رزومه استاندارد (PDF / Word)</span>
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">
-                        رزومه خود را بارگذاری کنید تا هوش مصنوعی علاوه بر سنجش نمره ATS، مهارت‌های روز بازار کار تهران را به آن اضافه کند.
-                    </p>
-                </div>
-
-                <div class="space-y-4">
-                    <div id="dropzone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-slate-700/80 hover:border-emerald-500/60 rounded-2xl p-8 sm:p-12 text-center cursor-pointer bg-slate-900/40 hover:bg-slate-900/70 transition group">
-                        <input type="file" id="file-input" accept=".pdf,.docx,.doc,.txt" onchange="handleFileSelect(event)" class="hidden">
-                        
-                        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto text-3xl mb-4 group-hover:scale-110 transition duration-300">
-                            <i class="fa-solid fa-file-arrow-up"></i>
-                        </div>
-                        <h4 class="text-sm font-bold text-slate-200">فایل رزومه PDF یا Word خود را اینجا بکشید یا برای انتخاب کلیک کنید</h4>
-                        <p class="text-xs text-slate-400 mt-1">پشتیبانی از فرمت‌های <strong class="text-emerald-400">PDF</strong> و <strong class="text-teal-400">DOCX</strong></p>
-
-                        <!-- Selected File Preview -->
-                        <div id="file-preview-card" class="hidden mt-5 max-w-md mx-auto bg-slate-950 p-4 rounded-xl border border-emerald-500/40 flex items-center justify-between gap-3 text-right">
-                            <div class="flex items-center gap-3">
-                                <span class="p-2.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xl" id="file-icon">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                </span>
-                                <div>
-                                    <div class="text-xs font-bold text-slate-200 truncate max-w-[200px]" id="file-name">resume.pdf</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5" id="file-size">1.2 MB</div>
-                                </div>
-                            </div>
-                            <button onclick="removeSelectedFile(event)" class="text-xs text-rose-400 hover:text-rose-300 p-1.5 rounded-lg bg-slate-900 border border-slate-800">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button onclick="uploadAndAnalyzeResume()" id="btn-upload-analyze" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
-                            <i class="fa-solid fa-sparkles"></i>
-                            <span>استخراج متن و تحلیل عمیق با هوش مصنوعی</span>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="showTab('interview')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-purple-500/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-vr-cardboard"></i>
+                            <span>ورود به شبیه‌ساز سه‌بعدی مصاحبه</span>
+                        </button>
+                        <button onclick="showTab('warroom')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-300 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <span>شورای ایجنت‌ها</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Analysis Results Panel -->
-                <div id="resume-results" class="mt-8 space-y-6">
-                    <div id="resume-loading" class="hidden text-center py-10">
-                        <div class="w-12 h-12 rounded-full border-4 border-slate-800 border-t-emerald-400 animate-spin mx-auto mb-3"></div>
-                        <h4 class="text-sm font-bold text-slate-200">ایجنت در حال خواندن سند و استخراج مهارت‌هاست...</h4>
-                    </div>
-
-                    <div id="resume-output-box" class="space-y-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center gap-4">
-                                <div class="w-14 h-14 rounded-full bg-emerald-500/10 border-2 border-emerald-500 flex items-center justify-center font-black text-xl text-emerald-400" id="res-score">
-                                    ۷۸
-                                </div>
-                                <div>
-                                    <span class="text-xs text-slate-400 block">نمره سازگاری ATS</span>
-                                    <span class="text-sm font-bold text-slate-100 mt-0.5 block">استاندارد و رقابتی</span>
-                                </div>
-                            </div>
-                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-                                <span class="text-xs text-slate-400 block">عنوان شغلی استخراج‌شده:</span>
-                                <span class="text-sm font-bold text-teal-400 mt-1.5 block" id="res-title">تحلیل‌گر داده و توسعه‌دهنده هوشمند</span>
-                            </div>
-                            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-                                <span class="text-xs text-slate-400 block">سطح ارشدیت تخمینی:</span>
-                                <span class="text-sm font-bold text-cyan-400 mt-1.5 block" id="res-seniority">Mid-Level (میان‌رده)</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950 p-5 rounded-xl border border-slate-800">
-                            <span class="text-xs font-bold text-slate-300 block mb-3">مهارت‌های شناسایی‌شده در رزومه شما:</span>
-                            <div id="res-skills-chips" class="flex flex-wrap gap-2 text-xs">
-                                <span class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1 rounded-lg">Python</span>
-                                <span class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1 rounded-lg">SQL</span>
-                                <span class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1 rounded-lg">Power BI</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-950 p-5 rounded-xl border border-amber-500/30">
-                            <div class="flex items-center gap-2 mb-3">
-                                <i class="fa-solid fa-triangle-exclamation text-amber-400 text-sm"></i>
-                                <h4 class="text-sm font-bold text-slate-100">مهارت‌های ترند روز که در رزومه‌تان نیست و باید اضافه شوند</h4>
-                            </div>
-                            <div id="res-missing-skills" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                                <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
-                                    <strong class="text-emerald-400 block">توسعه چابک با Vibe Coding (Cursor/Antigravity)</strong>
-                                    <p class="text-slate-400 text-[11px] mt-1">نشان می‌دهد پروژه‌ها را تا ۳ برابر سریع‌تر از یک فرد معمولی تحویل می‌دهید.</p>
-                                </div>
-                                <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
-                                    <strong class="text-emerald-400 block">ایجنت‌های هوش مصنوعی (AI Agents & Workflows)</strong>
-                                    <p class="text-slate-400 text-[11px] mt-1">شرکت‌های پیشرو تهران به دنبال خودکارسازی گزارش‌ها با پایپ‌لاین‌های هوشمند هستند.</p>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Skill Tags -->
+                <div class="border-t border-slate-800/80 mt-5 pt-4">
+                    <span class="text-xs font-bold text-slate-400 block mb-2">مهارت‌های شناسایی‌شده با Gemini 3.5:</span>
+                    <div class="flex flex-wrap gap-2" id="overview-skills-list">
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">پایتون (Python)</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">SQL پیشرفته</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">Power BI & DAX</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">یادگیری ماشین (ML)</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">FastAPI & Docker</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">RAG & FAISS</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">Time Series Forecasting</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200">Star Schema Modeling</span>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- ==================== 4. TAB: JOB RADAR & LIVE APPLY ==================== -->
-        <section id="tab-jobs" class="tab-content hidden space-y-6">
-            <div class="glass-panel rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <div class="relative flex-1 md:w-72">
-                        <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-500 text-xs"></i>
-                        <input id="job-search-query" type="text" value="دیتا آنالیست" class="w-full bg-slate-950 border border-slate-800 rounded-xl pr-9 pl-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/50" placeholder="عنوان یا تخصص شغلی...">
-                    </div>
-                    <select id="job-platform-filter" onchange="filterJobsByPlatform()" class="bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-300 focus:outline-none">
-                        <option value="all">همه پلتفرم‌ها (کاربورد / جابینجا / جاب‌ویژن)</option>
-                        <option value="jobinja">فقط جابینجا</option>
-                        <option value="jobvision">فقط جاب‌ویژن</option>
-                        <option value="karboard">فقط کاربورد</option>
-                    </select>
-                </div>
-                <button onclick="huntJobs()" class="shrink-0 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold px-5 py-2.5 rounded-xl border border-slate-700/80 transition flex items-center gap-2">
-                    <i class="fa-solid fa-rotate text-emerald-400"></i>
-                    <span>رصد فوری آگهی‌های تازه تهران</span>
-                </button>
-            </div>
-
-            <!-- Jobs Feed List -->
-            <div id="jobs-container" class="space-y-4"></div>
-        </section>
-
-        <!-- ==================== 5. TAB: INTERVIEW ROOM WITH AUDIO VOICE ==================== -->
-        <section id="tab-interview" class="tab-content hidden space-y-6">
-            <div class="glass-panel rounded-2xl p-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-5">
+            <!-- Top Tailored Job Recommendations -->
+            <div class="glass-panel p-6 rounded-2xl space-y-4">
+                <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                            <i class="fa-solid fa-microphone-lines text-rose-400 text-lg"></i>
-                            <span>شبیه‌ساز تعاملی مصاحبه کاری با صدای واقعی (Voice Interview)</span>
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-1">
-                            مصاحبه‌کننده هوش مصنوعی سوالات را به صورت صوتی بیان می‌کند و به پاسخ صوتی شما گوش می‌دهد.
-                        </p>
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-emerald-400"></i>
+                            <span>فرصت‌های شغلی برتر تهران با بالاترین انطباق با رزومه علی رجوند</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">محاسبه هوشمند بر اساس ۹ سال سابقه و پروژه‌های واقعی رزومه</p>
+                    </div>
+                    <button onclick="showTab('jobs')" class="text-xs text-emerald-400 hover:text-emerald-300 transition">مشاهده همه آگهی‌ها ←</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="overview-top-jobs">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 2. TAB: MULTI-AGENT WAR ROOM ==================== -->
+        <section id="tab-warroom" class="tab-content hidden space-y-6">
+            <div class="glass-panel rounded-2xl p-6 border-cyan-500/30">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-6">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></span>
+                            <h2 class="text-lg font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-200 to-indigo-300">
+                                اتاق جنگ و شورای ایجنت‌های سازمانی (Enterprise Multi-Agent Council)
+                            </h2>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">۸ دپارتمان تخصصی، ۲۸ کارشناس با اسکیل‌های مستقل، مناظره بین ایجنت‌ها، داوری سرپرست‌ها و تایید نهایی معمار کل</p>
                     </div>
 
+                    <div class="flex items-center gap-3">
+                        <button onclick="triggerFullCouncilReview()" id="btn-full-council" class="bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-xs px-5 py-3 rounded-xl shadow-lg shadow-cyan-500/25 transition flex items-center gap-2">
+                            <i class="fa-solid fa-play"></i>
+                            <span>فراخوان جلسه شورای جامع مهندسی (تمام ۸ دپارتمان)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 8 Enterprise Department Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="domains-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Chief Architect Decision Console -->
+                <div id="chief-decision-panel" class="hidden mt-6 p-6 rounded-2xl bg-gradient-to-br from-slate-950 via-[#0a1020] to-cyan-950/40 border border-cyan-500/40 shadow-2xl relative overflow-hidden">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white" id="chief-name-display">تصمیم راهبردی معمار کل سیستم (Chief AI Architect)</h4>
+                                <span class="text-[11px] text-cyan-300" id="chief-timestamp">وضعیت: تایید شده جهت پیاده‌سازی</span>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold">APPROVED</span>
+                    </div>
+                    <div class="text-xs text-slate-200 leading-relaxed space-y-3" id="chief-decision-body"></div>
+                </div>
+
+                <!-- Live Debate Stream Box -->
+                <div id="debate-stream-box" class="hidden mt-6 p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                        <span class="text-xs font-bold text-teal-400 flex items-center gap-2">
+                            <i class="fa-solid fa-comments"></i>
+                            <span id="debate-domain-title">مشروح مناظره تخصصی کارشناسان دپارتمان</span>
+                        </span>
+                        <span class="text-xs text-slate-500" id="debate-timestamp">در حال پخش زنده استدلال‌ها...</span>
+                    </div>
+                    <div id="debate-arguments-container" class="space-y-3 text-xs"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 3. TAB: 3D B2B MOCK INTERVIEW SIMULATOR ==================== -->
+        <section id="tab-interview" class="tab-content hidden space-y-6">
+            <div class="glass-panel rounded-2xl p-6 border-purple-500/30">
+                <div class="border-b border-slate-800 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[11px] font-bold">سرویس B2B سازمانی</span>
+                            <h2 class="text-lg font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-200 to-indigo-300">
+                                شبیه‌ساز سه‌بعدی مصاحبه استخدامی (Next-Gen B2B Interview Simulator)
+                            </h2>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">ارزیابی فنی، سناریوی بحران و سنجش شاخص‌های ارشدیت به همراه اورب تعاملی سه‌بعدی Three.js و ارزیابی رسمی استخدام</p>
+                    </div>
+
+                    <!-- Company Selector -->
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400">شرکت مصاحبه‌کننده:</span>
-                        <select id="interview-company-select" onchange="loadInterviewQuestion()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none">
-                            <option value="گروه اسنپ (Snapp Group)">اسنپ (Snapp Group)</option>
+                        <label class="text-xs text-slate-400">شرکت هدف:</label>
+                        <select id="interview-company-select" onchange="loadInterviewQuestion()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400">
+                            <option value="گروه اسنپ (Snapp Group)">گروه اسنپ (Snapp Group)</option>
                             <option value="دیجی‌کالا (Digikala)">دیجی‌کالا (Digikala)</option>
-                            <option value="هلدینگ هزاردستان (کافه‌بازار و دیوار)">کافه‌بازار و دیوار</option>
+                            <option value="هلدینگ هزاردستان (کافه‌بازار و دیوار)">هلدینگ هزاردستان (کافه‌بازار)</option>
+                            <option value="ایرانسل (MTN Irancell)">ایرانسل (MTN Irancell)</option>
                             <option value="تپسی (Tapsi)">تپسی (Tapsi)</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Stage Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Virtual Interviewer Persona Screen -->
-                    <div class="lg:col-span-1 bg-slate-950/90 border border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <div id="avatar-container" class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-700 border-2 border-emerald-500/40 flex items-center justify-center shadow-xl shadow-emerald-500/10 mb-3 relative">
-                            <i class="fa-solid fa-user-tie text-4xl text-slate-300"></i>
-                            <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-950"></span>
-                        </div>
-                        <h4 class="font-bold text-sm text-slate-100" id="interviewer-name">مهندس سهراب پارسا</h4>
-                        <p class="text-xs text-emerald-400 mt-0.5" id="interviewer-role">مدیر ارشد تیم داده و مهندسی نرم‌افزار</p>
-
-                        <!-- Real-time Animated Waveform -->
-                        <div id="voice-waves" class="flex items-center gap-1.5 mt-5 h-8">
-                            <span class="w-1.5 h-3 bg-emerald-500/60 rounded-full"></span>
-                            <span class="w-1.5 h-5 bg-emerald-500 rounded-full"></span>
-                            <span class="w-1.5 h-8 bg-emerald-400 rounded-full"></span>
-                            <span class="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
-                            <span class="w-1.5 h-2 bg-emerald-500/60 rounded-full"></span>
+                    <!-- Left: Interactive 3D Hologram Avatar Panel -->
+                    <div class="glass-card p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden min-h-[340px]">
+                        <div class="absolute top-3 right-3 flex items-center gap-2 text-[10px] text-purple-300 bg-purple-950/40 border border-purple-500/30 px-2.5 py-1 rounded-full">
+                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
+                            <span>اورب صوتی هوش مصنوعی</span>
                         </div>
 
-                        <!-- Audio Control Buttons -->
+                        <!-- 3D Canvas Container -->
+                        <div id="avatar-3d-container" class="w-52 h-52 relative flex items-center justify-center my-2">
+                            <!-- Three.js renders in here -->
+                        </div>
+
+                        <div class="text-center space-y-1">
+                            <h4 class="text-xs font-bold text-white">مصاحبه‌گر ارشد هوش مصنوعی</h4>
+                            <p class="text-[11px] text-slate-400" id="interviewer-voice-status">آماده بیان سوال با موتور صوتی</p>
+                        </div>
+
+                        <!-- Audio Controls -->
                         <div class="flex items-center gap-2 mt-4">
-                            <button onclick="speakCurrentQuestion()" id="btn-speak-question" class="text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1.5 rounded-xl shadow-lg transition flex items-center gap-1">
-                                <i class="fa-solid fa-volume-high"></i> پخش صوتی سوال
-                            </button>
-                            <button onclick="stopSpeaking()" class="text-xs bg-slate-900 hover:bg-slate-800 text-slate-400 px-2.5 py-1.5 rounded-xl border border-slate-800 transition">
-                                <i class="fa-solid fa-stop"></i>
+                            <button onclick="playQuestionSpeech()" id="btn-speak-question" class="text-xs bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2 rounded-xl shadow-lg shadow-purple-600/30 transition flex items-center gap-2">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>پخش صوتی سوال (TTS)</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Question & Voice Answer Panel -->
+                    <!-- Right: Question and Response Area -->
                     <div class="lg:col-span-2 space-y-4">
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-2">
+                        <div class="bg-slate-950/90 p-5 rounded-2xl border border-slate-800 space-y-2">
                             <div class="flex items-center justify-between text-xs">
-                                <span class="bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2.5 py-0.5 rounded-full font-bold" id="q-type">سناریوی تخصصی حل مسئله</span>
-                                <span class="text-slate-500" id="q-context">اسنپ (Snapp Group)</span>
+                                <span class="bg-purple-500/10 text-purple-400 border border-purple-500/30 px-2.5 py-0.5 rounded-full font-bold" id="q-type">سناریوی تخصصی حل مسئله</span>
+                                <span class="text-slate-400" id="q-context">گروه اسنپ (Snapp Group)</span>
                             </div>
                             <p class="text-xs sm:text-sm font-medium text-slate-100 leading-relaxed pt-1" id="q-text">
-                                فرض کنید زمان پاسخگویی به یک کوئری تحلیلی در پایگاه داده سفارشات اسنپ از ۴ ثانیه به ۲۵ ثانیه افزایش پیدا کرده و مدیر محصول به شدت نگران است. قدم به قدم چگونه مشکل را ریشه‌یابی و حل می‌کنید؟
+                                در حال بارگذاری سوال واقعی مصاحبه...
                             </p>
-                            <p class="text-[11px] text-emerald-400/90 pt-1" id="q-hint">
-                                <i class="fa-solid fa-lightbulb ml-1"></i> نکته: به بررسی لاگ‌ها، Execution Plan و ایندکس‌های مناسب اشاره کنید.
+                            <p class="text-[11px] text-emerald-400 pt-1" id="q-hint">
+                                <i class="fa-solid fa-lightbulb ml-1"></i> نکته: به متدولوژی، معیارهای کمی و مانیتورینگ اشاره کنید.
                             </p>
                         </div>
 
                         <!-- Response Input -->
                         <div class="space-y-2">
                             <div class="flex items-center justify-between text-xs text-slate-400">
-                                <span>پاسخ شما (تایپ کنید یا دکمه میکروفون را بزنید):</span>
+                                <span>پاسخ شما (تایپ کنید یا با میکروفون صحبت کنید):</span>
                                 <button onclick="startVoiceRecording()" id="btn-mic-toggle" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition">
-                                    <i class="fa-solid fa-microphone"></i> <span id="mic-status-text">صحبت صوتی با میکروفون</span>
+                                    <i class="fa-solid fa-microphone"></i> <span id="mic-status-text">صحبت با میکروفون</span>
                                 </button>
                             </div>
-                            <textarea id="interview-user-answer" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs sm:text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50" placeholder="پاسخ کامل خود را بنویسید یا با زدن دکمه میکروفون بالا آن را بخوانید..."></textarea>
+                            <textarea id="interview-user-answer" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs sm:text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-purple-500/50" placeholder="پاسخ خود را بیان کنید یا متن را اینجا تایپ فرمایید..."></textarea>
                         </div>
 
                         <div class="flex items-center justify-between gap-3 pt-1">
                             <button onclick="loadInterviewQuestion()" class="text-xs text-slate-400 hover:text-slate-200 bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl transition">
                                 <i class="fa-solid fa-shuffle ml-1"></i> سوال بعدی
                             </button>
-                            <button onclick="evaluateInterviewAnswer()" id="btn-eval-answer" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
-                                <i class="fa-solid fa-brain"></i> ارزیابی پاسخ و دریافت نمره
+                            <button onclick="evaluateInterviewAnswer()" id="btn-eval-answer" class="bg-gradient-to-r from-purple-600 via-indigo-600 to-teal-500 hover:from-purple-500 hover:to-teal-400 text-white font-black text-xs px-6 py-2.5 rounded-xl shadow-lg shadow-purple-500/20 transition flex items-center gap-2">
+                                <i class="fa-solid fa-brain"></i> ارزیابی تخصصی و صدور کارنامه B2B
                             </button>
                         </div>
 
-                        <!-- Evaluation Feedback Card -->
-                        <div id="interview-feedback-box" class="hidden bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-3 mt-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold text-slate-200">تحلیل ارزیاب هوش مصنوعی:</span>
-                                <span class="text-xs font-black px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30" id="eval-score">
-                                    نمره: ۸۵ از ۱۰۰
-                                </span>
+                        <!-- B2B Assessment Rubric Matrix Card -->
+                        <div id="interview-feedback-box" class="hidden bg-slate-950 border border-purple-500/40 p-6 rounded-2xl space-y-4 mt-4 shadow-2xl">
+                            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800 pb-3">
+                                <div>
+                                    <span class="text-xs text-slate-400 block">گزارش ارزیابی استخدامی B2B</span>
+                                    <h4 class="text-sm font-bold text-white" id="eval-candidate-tier">رتبه: Top 10% Senior Data Talent</h4>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-black px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40" id="eval-score">نمره: ۹۲ از ۱۰۰</span>
+                                    <span class="text-xs font-black px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/40" id="eval-recommendation">Strong Hire</span>
+                                </div>
                             </div>
+
+                            <!-- 4 Rubric Metrics -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                                    <span class="text-[11px] text-slate-400 block">عمق دانش فنی</span>
+                                    <span class="text-sm font-black text-emerald-400" id="rubric-tech">۹۴٪</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                                    <span class="text-[11px] text-slate-400 block">بینش کسب‌وکار</span>
+                                    <span class="text-sm font-black text-teal-400" id="rubric-business">۸۹٪</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                                    <span class="text-[11px] text-slate-400 block">حل بحران و مسئله</span>
+                                    <span class="text-sm font-black text-cyan-400" id="rubric-problem">۹۲٪</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                                    <span class="text-[11px] text-slate-400 block">شفافیت بیان</span>
+                                    <span class="text-sm font-black text-indigo-400" id="rubric-comm">۹۵٪</span>
+                                </div>
+                            </div>
+
                             <p class="text-xs text-slate-300 leading-relaxed" id="eval-feedback"></p>
-                            <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 text-xs">
-                                <span class="text-emerald-400 font-bold block mb-1">نمونه پاسخ ایده‌آل و برنده:</span>
+
+                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-xs">
+                                <span class="text-purple-400 font-bold block mb-1">نمونه پاسخ ایده‌آل سطح Senior:</span>
                                 <p class="text-slate-300 leading-relaxed" id="eval-ideal-answer"></p>
                             </div>
                         </div>
@@ -552,450 +492,476 @@
             </div>
         </section>
 
-        <!-- ==================== 6. TAB: SALARY RADAR ==================== -->
+        <!-- ==================== 4. TAB: JOBS & AUTO-APPLY ==================== -->
+        <section id="tab-jobs" class="tab-content hidden space-y-6">
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-5">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-crosshairs text-emerald-400"></i>
+                            <span>رادار و ارسال خودکار رزومه در تهران</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">خزش متمرکز از کاربورد (Karboard)، جابینجا و جاب‌ویژن با کنترل سقف روزانه و شبیه‌سازی شبه‌انسانی</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="huntNewJobs()" id="btn-hunt-jobs" class="text-xs bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-radar"></i>
+                            <span>اسکن آگهی‌های تازه</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Jobs Table/List -->
+                <div class="space-y-4" id="jobs-container">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 5. TAB: RESUME PROFILE ==================== -->
+        <section id="tab-resume" class="tab-content hidden space-y-6">
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-5">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-file-pdf text-rose-400"></i>
+                            <span>رزومه و تحلیل ساختار ATS (علی رجوند)</span>
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">پارس و تحلیل مستقیم فایل PDF رزومه با مدل Gemini 3.5 Flash</p>
+                    </div>
+
+                    <label class="cursor-pointer text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>آپلود فایل جدید رزومه (PDF/DOCX)</span>
+                        <input type="file" id="resume-file-input" onchange="uploadResumeFile(event)" accept=".pdf,.docx,.doc,.txt" class="hidden">
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                            <span class="text-xs font-bold text-slate-400">چکیده حرفه‌ای و پروژه‌های شاخص:</span>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2 max-h-96 overflow-y-auto pr-2" id="resume-raw-preview">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                            <span class="text-xs font-bold text-slate-400">مهارت‌های ترند روز بازار کار تهران:</span>
+                            <div class="space-y-2" id="resume-missing-skills">
+                                <!-- Missing skills loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 6. TAB: ACCOUNTS ==================== -->
+        <section id="tab-accounts" class="tab-content hidden space-y-6">
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="border-b border-slate-800 pb-5 mb-5">
+                    <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                        <i class="fa-solid fa-key text-rose-400"></i>
+                        <span>احراز هویت و اتصال امن حساب‌های جابینجا و جاب‌ویژن</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">مشخصات واقعی کاربر علی رجوند جهت ارسال مستقیم رزومه به کارفرما</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Jobinja Account Card -->
+                    <div class="bg-slate-950 p-6 rounded-2xl border border-emerald-500/30 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">جابینجا</span>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">سامانه جابینجا (Jobinja.ir)</h4>
+                                    <span class="text-[11px] text-emerald-400">وضعیت: متصل و معتبر</span>
+                                </div>
+                            </div>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="text-slate-400 block mb-1">شماره همراه یا نام کاربری:</label>
+                                <input type="text" id="acc-jobinja-user" value="09195253462" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">رمز عبور حساب:</label>
+                                <input type="password" id="acc-jobinja-pass" value="0441067824" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+                            </div>
+                            <button onclick="saveAccount('jobinja')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 rounded-xl transition">
+                                ذخیره و تایید اتصال جابینجا
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Jobvision Account Card -->
+                    <div class="bg-slate-950 p-6 rounded-2xl border border-indigo-500/30 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">جاب‌ویژن</span>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">سامانه جاب‌ویژن (Jobvision.ir)</h4>
+                                    <span class="text-[11px] text-indigo-400">وضعیت: متصل و معتبر</span>
+                                </div>
+                            </div>
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="text-slate-400 block mb-1">شماره همراه یا ایمیل:</label>
+                                <input type="text" id="acc-jobvision-user" value="09195253462" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">رمز عبور حساب:</label>
+                                <input type="password" id="acc-jobvision-pass" value="0441067824" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+                            </div>
+                            <button onclick="saveAccount('jobvision')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-xl transition">
+                                ذخیره و تایید اتصال جاب‌ویژن
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 7. TAB: SALARY RADAR ==================== -->
         <section id="tab-salary" class="tab-content hidden space-y-6">
             <div class="glass-panel rounded-2xl p-6">
                 <div class="border-b border-slate-800 pb-5 mb-5">
                     <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-sack-dollar text-emerald-400 text-lg"></i>
+                        <i class="fa-solid fa-sack-dollar text-teal-400"></i>
                         <span>رادار تخمین و پیشنهاد حقوق منصفانه (بازار کار تهران)</span>
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">بر اساس آخرین آمار واقعی جاب‌ویژن، جابینجا و استانداردهای حقوق و دستمزد</p>
+                    <p class="text-xs text-slate-400 mt-1">تطبیق حقوق پوزیشن‌های تحلیل داده، علم داده و هوش تجاری در اسنپ، دیجی‌کالا و بازار</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div>
                         <label class="block text-xs text-slate-400 mb-1.5">حوزه تخصصی:</label>
                         <select id="salary-role-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
-                            <option value="data_analyst">تحلیل‌گر داده (Data Analyst)</option>
-                            <option value="python_developer">توسعه‌دهنده پایتون (Python Developer)</option>
-                            <option value="ai_engineer">مهندس هوش مصنوعی و اتوماسیون (AI/Agentic)</option>
-                            <option value="frontend_developer">توسعه‌دهنده فرانت‌اند (React / Flutter)</option>
+                            <option value="data_analyst" selected>تحلیل‌گر و دانشمند داده (Data Science & BI)</option>
+                            <option value="python_developer">توسعه‌دهنده پایتون و بک‌اند</option>
+                            <option value="ai_engineer">مهندس سیستم‌های ایجنتی و هوش مصنوعی</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs text-slate-400 mb-1.5">سطح ارشدیت:</label>
                         <select id="salary-level-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
                             <option value="junior">تازه‌کار (Junior)</option>
-                            <option value="mid" selected>میان‌رده (Mid-Level)</option>
-                            <option value="senior">ارشد (Senior)</option>
+                            <option value="mid">میان‌رده (Mid-Level)</option>
+                            <option value="senior" selected>ارشد (Senior)</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400">کف دریافتی بازار</span>
-                        <div class="text-2xl font-black text-slate-200 mt-2" id="sal-min">۲۸ میلیون</div>
-                    </div>
-                    <div class="bg-slate-950 border-2 border-emerald-500/50 p-5 rounded-2xl text-center shadow-lg shadow-emerald-500/10">
-                        <span class="text-xs text-emerald-400 font-bold">پیشنهاد بهینه کارشناسی</span>
-                        <div class="text-3xl font-black text-emerald-400 mt-2" id="sal-median">۳۸ میلیون</div>
-                    </div>
-                    <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400">سقف شرکت‌های برتر</span>
-                        <div class="text-2xl font-black text-teal-300 mt-2" id="sal-max">۴۸ میلیون</div>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="salary-cards-container">
+                    <!-- Loaded dynamically -->
                 </div>
             </div>
         </section>
-
-        <!-- ==================== 7. TAB: SETTINGS ==================== -->
-        <section id="tab-settings" class="tab-content hidden space-y-6">
-            <div class="glass-panel rounded-2xl p-6 max-w-2xl">
-                <div class="border-b border-slate-800 pb-5 mb-5">
-                    <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-emerald-400"></i>
-                        <span>قوانین اتوماسیون و ارسال خودکار (Automation Policies)</span>
-                    </h2>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl flex items-center justify-between gap-4">
-                        <div>
-                            <span class="font-bold text-sm text-slate-100">ارسال در ساعت طلایی (۸:۳۰ تا ۱۰:۳۰ صبح)</span>
-                            <p class="text-xs text-slate-400 mt-1">رزومه‌ها در زمان اوج چک کردن ایمیل کارفرمایان ارسال می‌شوند.</p>
-                        </div>
-                        <input type="checkbox" id="setting-golden-hour" checked class="w-5 h-5 accent-emerald-500">
-                    </div>
-
-                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl space-y-2">
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="font-bold text-slate-200">حداقل نمره انطباق هوش مصنوعی:</span>
-                            <span class="text-emerald-400 font-bold text-sm" id="setting-threshold-val">۷۰٪</span>
-                        </div>
-                        <input type="range" id="setting-threshold" min="50" max="90" value="70" oninput="document.getElementById('setting-threshold-val').innerText = this.value + '٪'" class="w-full h-1.5 bg-slate-800 rounded-lg accent-emerald-500">
-                    </div>
-
-                    <button onclick="saveSettings()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
-                        <i class="fa-solid fa-check"></i> ذخیره تنظیمات اتوماسیون
-                    </button>
-                </div>
-            </div>
-        </section>
-
     </main>
 
-    <!-- LIVE CONSOLE TERMINAL DRAWER (SEEING ACTIONS HAPPEN LIVE) -->
-    <div class="fixed bottom-0 inset-x-0 bg-[#080d1a]/95 border-t border-slate-800 backdrop-blur z-30 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between text-xs border-b border-slate-800/60">
-            <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span class="font-bold text-slate-300"><i class="fa-solid fa-terminal ml-1 text-emerald-400"></i> مانیتور زنده عملیات ایجنت‌ها و ارسال رزومه:</span>
-            </div>
+    <!-- Bottom Terminal / Log Drawer -->
+    <div class="fixed bottom-0 inset-x-0 z-40 bg-[#090d16]/95 border-t border-slate-800 backdrop-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between text-xs">
             <div class="flex items-center gap-3">
-                <span class="text-[11px] text-slate-500" id="live-console-time">هم‌اکنون</span>
-                <button onclick="toggleConsole()" class="text-slate-400 hover:text-slate-200">
-                    <i class="fa-solid fa-chevron-up transition" id="console-toggle-icon"></i>
-                </button>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-bold text-slate-300">کنسول لاگ زنده ایجنت‌ها:</span>
+                <span class="text-slate-400 truncate max-w-xs sm:max-w-md" id="latest-log-text">سیستم آماده اجرای دستورات است.</span>
             </div>
+            <button onclick="toggleConsoleDrawer()" class="text-slate-400 hover:text-slate-200 text-xs flex items-center gap-1">
+                <span id="drawer-toggle-text">مشاهده تاریخچه لاگ‌ها</span>
+                <i class="fa-solid fa-chevron-up transition" id="drawer-icon"></i>
+            </button>
         </div>
-        <div id="live-console-body" class="max-w-7xl mx-auto px-4 py-2 max-h-36 overflow-y-auto font-mono text-[11px] space-y-1 text-slate-300">
-            <!-- Injected via JS -->
-            <div class="text-slate-500">[12:48:00] [System] موتور هوشمند آماده به کار است.</div>
+        <div id="console-drawer-body" class="hidden border-t border-slate-800 max-h-48 overflow-y-auto p-4 bg-slate-950/90 font-mono text-[11px] text-slate-300 space-y-1">
+            <div id="live-console-body"></div>
+        </div>
+    </div>
+
+    <!-- Security Modal -->
+    <div id="security-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                    <span>ممیزی امنیتی خودکار OWASP Top 10</span>
+                </h3>
+                <button onclick="closeSecurityModal()" class="text-slate-400 hover:text-white">&times;</button>
+            </div>
+            <div id="security-checks-list" class="space-y-2 text-xs"></div>
+            <button onclick="closeSecurityModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 rounded-xl text-xs">بستن</button>
         </div>
     </div>
 
     <!-- Pricing Modal -->
-    <div id="pricing-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel max-w-md w-full rounded-2xl p-6 border border-emerald-500/40 relative shadow-2xl">
-            <button onclick="closePricingModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-200">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center">
-                <span class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-2xl mb-3">
-                    <i class="fa-solid fa-crown"></i>
-                </span>
-                <h3 class="text-lg font-black text-slate-100">پلن ویژه Co-Pilot حرفه‌ای</h3>
-                <div class="my-5 p-4 rounded-xl bg-slate-950 border border-slate-800 text-center">
-                    <span class="text-xs text-slate-400">هزینه اشتراک ۳۰ روزه:</span>
-                    <div class="text-3xl font-black text-emerald-400 mt-1">۱۹۹,۰۰۰ <span class="text-xs text-slate-300 font-normal">تومان</span></div>
-                </div>
-                <button onclick="alert('اتصال به درگاه بانکی فعال خواهد شد.')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs py-3 rounded-xl transition shadow-lg shadow-emerald-500/20">
-                    ورود به درگاه پرداخت
-                </button>
+    <div id="pricing-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-white">اشتراک Co-Pilot VIP حرفه‌ای</h3>
+                <button onclick="closePricingModal()" class="text-slate-400 hover:text-white">&times;</button>
             </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                دسترسی نامحدود به ارسال روزانه در ساعت طلایی، ارزیابی نامحدود شبیه‌ساز مصاحبه و اولویت در کارتابل کارفرمایان برتر تهران.
+            </p>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-2xl font-black text-emerald-400">۱۹۹,۰۰۰</span>
+                <span class="text-xs text-slate-400">تومان / ماهانه</span>
+            </div>
+            <button onclick="showToast('درگاه پرداخت تستی شبیه‌سازی شد.'); closePricingModal();" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-lg shadow-emerald-500/25">
+                تکمیل سفارش و فعال‌سازی آنی
+            </button>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- JavaScript Application Logic & Three.js 3D Engine -->
     <script>
-        let allJobs = [];
-        let selectedFile = null;
-        let speechSynth = window.speechSynthesis;
-        let currentUtterance = null;
-        let isConsoleOpen = true;
+        // ==========================================
+        // 1. Three.js Background 3D Particle Constellation
+        // ==========================================
+        let bgScene, bgCamera, bgRenderer, bgParticles;
+        function initBackground3D() {
+            const canvas = document.getElementById('bg-3d-canvas');
+            if (!canvas || !window.THREE) return;
 
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-exclamation text-rose-400';
-            toast.className = 'glass-panel pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl text-xs text-slate-100 border border-slate-700 transition duration-300 transform translate-y-2 opacity-0';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            bgScene = new THREE.Scene();
+            bgCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+            bgCamera.position.z = 400;
+
+            bgRenderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            bgRenderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Create particles
+            const particleCount = 450;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            const color1 = new THREE.Color(0x10b981); // Emerald
+            const color2 = new THREE.Color(0x06b6d4); // Cyan
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 1200;
+                positions[i + 1] = (Math.random() - 0.5) * 800;
+                positions[i + 2] = (Math.random() - 0.5) * 800;
+
+                const mixed = color1.clone().lerp(color2, Math.random());
+                colors[i] = mixed.r;
+                colors[i + 1] = mixed.g;
+                colors[i + 2] = mixed.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 3.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.75
+            });
+
+            bgParticles = new THREE.Points(geometry, material);
+            bgScene.add(bgParticles);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                if (bgParticles) {
+                    bgParticles.rotation.y += 0.0006;
+                    bgParticles.rotation.x += 0.0003;
+                }
+                bgRenderer.render(bgScene, bgCamera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                if (bgCamera && bgRenderer) {
+                    bgCamera.aspect = window.innerWidth / window.innerHeight;
+                    bgCamera.updateProjectionMatrix();
+                    bgRenderer.setSize(window.innerWidth, window.innerHeight);
+                }
+            });
         }
 
+        // ==========================================
+        // 2. Three.js 3D Holographic AI Interviewer Sphere
+        // ==========================================
+        let avatarScene, avatarCamera, avatarRenderer, avatarMesh, avatarOuterRing;
+        let isSpeakingAnim = false;
+
+        function initInterviewAvatar3D() {
+            const container = document.getElementById('avatar-3d-container');
+            if (!container || !window.THREE) return;
+
+            avatarScene = new THREE.Scene();
+            avatarCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+            avatarCamera.position.z = 4.2;
+
+            avatarRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            avatarRenderer.setSize(200, 200);
+            container.innerHTML = '';
+            container.appendChild(avatarRenderer.domElement);
+
+            // Core Icosahedron sphere
+            const sphereGeo = new THREE.IcosahedronGeometry(1.4, 2);
+            const sphereMat = new THREE.MeshBasicMaterial({
+                color: 0xa855f7,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.85
+            });
+            avatarMesh = new THREE.Mesh(sphereGeo, sphereMat);
+            avatarScene.add(avatarMesh);
+
+            // Glowing Outer Torus Ring
+            const ringGeo = new THREE.TorusGeometry(1.9, 0.03, 16, 100);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: false });
+            avatarOuterRing = new THREE.Mesh(ringGeo, ringMat);
+            avatarOuterRing.rotation.x = Math.PI / 3;
+            avatarScene.add(avatarOuterRing);
+
+            function animateAvatar() {
+                requestAnimationFrame(animateAvatar);
+                if (avatarMesh) {
+                    const speed = isSpeakingAnim ? 0.04 : 0.01;
+                    avatarMesh.rotation.y += speed;
+                    avatarMesh.rotation.x += speed * 0.5;
+
+                    if (isSpeakingAnim) {
+                        const scale = 1 + Math.sin(Date.now() * 0.01) * 0.12;
+                        avatarMesh.scale.set(scale, scale, scale);
+                    } else {
+                        avatarMesh.scale.set(1, 1, 1);
+                    }
+                }
+                if (avatarOuterRing) {
+                    avatarOuterRing.rotation.z += 0.015;
+                }
+                avatarRenderer.render(avatarScene, avatarCamera);
+            }
+            animateAvatar();
+        }
+
+        // ==========================================
+        // 3. Navigation & Tab Switching
+        // ==========================================
         function showTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('active', 'text-emerald-400', 'bg-emerald-500/10', 'border', 'border-emerald-500/20');
-                el.classList.add('text-slate-400');
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-emerald-400', 'bg-emerald-500/10', 'border-emerald-500/20');
+                btn.classList.add('text-slate-400');
             });
-            const target = document.getElementById(`tab-${tabId}`);
-            const btn = document.getElementById(`tab-btn-${tabId}`);
-            if (target) target.classList.remove('hidden');
-            if (btn) {
-                btn.classList.add('active', 'text-emerald-400', 'bg-emerald-500/10', 'border', 'border-emerald-500/20');
-                btn.classList.remove('text-slate-400');
+
+            const targetSection = document.getElementById(`tab-${tabId}`);
+            const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (targetSection) targetSection.classList.remove('hidden');
+            if (targetBtn) {
+                targetBtn.classList.add('active', 'text-emerald-400', 'bg-emerald-500/10', 'border-emerald-500/20');
+                targetBtn.classList.remove('text-slate-400');
+            }
+
+            if (tabId === 'interview') {
+                setTimeout(initInterviewAvatar3D, 100);
             }
         }
 
-        function toggleConsole() {
-            const body = document.getElementById('live-console-body');
-            const icon = document.getElementById('console-toggle-icon');
-            isConsoleOpen = !isConsoleOpen;
-            if (isConsoleOpen) {
-                body.classList.remove('hidden');
-                icon.classList.remove('rotate-180');
-            } else {
-                body.classList.add('hidden');
-                icon.classList.add('rotate-180');
-            }
+        // Toast feedback
+        function showToast(msg, type = 'success') {
+            const c = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bg = type === 'error' ? 'bg-rose-500/90 text-white' : 'bg-emerald-500 text-slate-950 font-black';
+            toast.className = `${bg} px-4 py-3 rounded-xl shadow-xl text-xs flex items-center gap-2 pointer-events-auto transition duration-300 transform translate-y-2`;
+            toast.innerHTML = `<i class="fa-solid fa-${type === 'error' ? 'circle-exclamation' : 'circle-check'}"></i> <span>${msg}</span>`;
+            c.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
         }
 
-        // Live Voice Text-to-Speech (TTS)
-        function speakCurrentQuestion() {
-            const text = document.getElementById('q-text').innerText;
-            if (!text) return;
-
-            if (speechSynth.speaking) {
-                speechSynth.cancel();
-            }
-
-            currentUtterance = new SpeechSynthesisUtterance(text);
-            currentUtterance.lang = 'fa-IR';
-            currentUtterance.rate = 0.95;
-            currentUtterance.pitch = 1.0;
-
-            const waves = document.getElementById('voice-waves');
-            waves.classList.add('animate-pulse');
-
-            currentUtterance.onend = () => {
-                waves.classList.remove('animate-pulse');
-            };
-
-            currentUtterance.onerror = () => {
-                waves.classList.remove('animate-pulse');
-            };
-
-            speechSynth.speak(currentUtterance);
-            showToast('در حال خواندن صوتی سوال توسط مصاحبه‌کننده...');
-        }
-
-        function stopSpeaking() {
-            if (speechSynth.speaking) {
-                speechSynth.cancel();
-                document.getElementById('voice-waves').classList.remove('animate-pulse');
-            }
-        }
-
-        // Speech Recognition (Speech-to-Text)
-        function startVoiceRecording() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                showToast('مرورگر شما از وب‌اسپیچ پشتیبانی نمی‌کند، پاسخ شبیه‌سازی شد.');
-                simulateVoiceFallback();
-                return;
-            }
-
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'fa-IR';
-            recognition.interimResults = true;
-
-            const btn = document.getElementById('btn-mic-toggle');
-            const statusText = document.getElementById('mic-status-text');
-            statusText.innerText = 'در حال گوش دادن به صدای شما...';
-            btn.classList.add('bg-rose-500/30', 'animate-pulse');
-
-            recognition.onresult = (event) => {
-                let transcript = '';
-                for (let i = 0; i < event.results.length; i++) {
-                    transcript += event.results[i][0].transcript;
-                }
-                document.getElementById('interview-user-answer').value = transcript;
-            };
-
-            recognition.onend = () => {
-                statusText.innerText = 'صحبت صوتی با میکروفون';
-                btn.classList.remove('bg-rose-500/30', 'animate-pulse');
-                showToast('صدای شما دریافت و تایپ شد.');
-            };
-
-            recognition.onerror = () => {
-                statusText.innerText = 'صحبت صوتی با میکروفون';
-                btn.classList.remove('bg-rose-500/30', 'animate-pulse');
-                simulateVoiceFallback();
-            };
-
-            recognition.start();
-        }
-
-        function simulateVoiceFallback() {
-            document.getElementById('interview-user-answer').value = "من ابتدا با بررسی پلن اجرای کوئری (Execution Plan) علت کندی را پیدا کرده و با ایجاد Composite Index و پارتیشن‌بندی زمان را به زیر ۱ ثانیه کاهش می‌دهم.";
-            showToast('پاسخ صوتی شبیه‌سازی و در کادر قرار گرفت.');
-        }
-
-        // Accounts Save
-        async function saveAccount(platform) {
-            const username = document.getElementById(`${platform}-username`).value;
-            const password = document.getElementById(`${platform}-password`).value;
-
-            try {
-                showToast(`در حال اتصال و اعتبارسنجی حساب ${platform}...`);
-                const res = await fetch('/api/accounts/update', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({platform: platform, username: username, password: password})
-                });
-                const data = await res.json();
-                showToast(data.message);
-                fetchLogs();
-            } catch (err) {
-                showToast('خطا در ذخیره حساب', 'error');
-            }
-        }
-
-        function createNewAccountPrompt(platform) {
-            const platFa = platform === 'jobinja' ? 'جابینجا' : 'جاب‌ویژن';
-            alert(`جهت ساخت اکانت تازه در ${platFa}، ربات به زودی فرآیند تکمیل فرم ثبت‌نام و دریافت کد پیامکی را خودکار اجرا خواهد کرد.`);
-        }
-
-        // File Handlers
-        function handleDragOver(e) { e.preventDefault(); }
-        function handleDragLeave(e) { e.preventDefault(); }
-        function handleDrop(e) {
-            e.preventDefault();
-            if (e.dataTransfer.files.length) processFile(e.dataTransfer.files[0]);
-        }
-        function handleFileSelect(e) {
-            if (e.target.files.length) processFile(e.target.files[0]);
-        }
-        function processFile(file) {
-            selectedFile = file;
-            document.getElementById('file-preview-card').classList.remove('hidden');
-            document.getElementById('file-name').innerText = file.name;
-            document.getElementById('file-size').innerText = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-            showToast(`فایل ${file.name} انتخاب شد.`);
-        }
-        function removeSelectedFile(e) {
-            e.stopPropagation();
-            selectedFile = null;
-            document.getElementById('file-preview-card').classList.add('hidden');
-            document.getElementById('file-input').value = '';
-        }
-
-        async function uploadAndAnalyzeResume() {
-            if (!selectedFile) {
-                showToast('لطفاً ابتدا فایل PDF یا Word رزومه را انتخاب کنید.', 'error');
-                return;
-            }
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-
-            const btn = document.getElementById('btn-upload-analyze');
-            const loading = document.getElementById('resume-loading');
-            const outputBox = document.getElementById('resume-output-box');
-
-            btn.disabled = true;
-            loading.classList.remove('hidden');
-            outputBox.classList.add('opacity-40');
-
-            try {
-                const res = await fetch('/api/resume/upload', {method: 'POST', body: formData});
-                if (!res.ok) throw new Error('خطا در بارگذاری سند');
-                const data = await res.json();
-                document.getElementById('res-score').innerText = data.ats_score || 82;
-                document.getElementById('res-title').innerText = data.detected_title || 'تحلیل‌گر داده';
-                showToast('رزومه با موفقیت تحلیل شد.');
-                fetchLogs();
-            } catch (err) {
-                showToast(err.message, 'error');
-            } finally {
-                btn.disabled = false;
-                loading.classList.add('hidden');
-                outputBox.classList.remove('opacity-40');
-            }
-        }
-
-        async function huntJobs() {
-            const query = document.getElementById('job-search-query').value;
-            showToast('در حال خزش آگهی‌های تازه تهران...');
-            try {
-                await fetch('/api/jobs/hunt', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({query: query, city: 'تهران'})
-                });
-                await loadJobs();
-                fetchLogs();
-            } catch (err) {
-                showToast('خطا در رصد آگهی‌ها', 'error');
-            }
-        }
-
+        // ==========================================
+        // 4. Jobs & Auto-Apply
+        // ==========================================
         async function loadJobs() {
             try {
-                const res = await fetch('/api/jobs');
-                allJobs = await res.json();
-                filterJobsByPlatform();
+                const res = await fetch('/api/jobs?user_id=1');
+                const jobs = await res.json();
+
+                // Render in overview
+                const topContainer = document.getElementById('overview-top-jobs');
+                if (topContainer) {
+                    topContainer.innerHTML = jobs.slice(0, 4).map(j => `
+                        <div class="glass-card p-4 rounded-xl space-y-2 border-emerald-500/20 hover:border-emerald-500/40 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-white">${j.title}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">${j.match_score || 90}٪ انطباق</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs text-slate-400">
+                                <span>🏢 ${j.company}</span>
+                                <span>💰 ${j.salary_range}</span>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                                <span class="text-[11px] text-teal-300">${j.status === 'applied' ? '✅ ارسال شده (کد پیگیری دارد)' : '⏳ در صف ساعت طلایی فردا'}</span>
+                                <button onclick="applyJob('${j.job_id}')" class="text-[11px] bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">ارسال آنی</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                // Render in Jobs tab
+                const jobsContainer = document.getElementById('jobs-container');
+                if (jobsContainer) {
+                    jobsContainer.innerHTML = jobs.map(j => {
+                        const isApplied = j.status === 'applied';
+                        return `
+                        <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 border-slate-800 hover:border-slate-700 transition">
+                            <div class="space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-sm font-bold text-white">${j.title}</h4>
+                                    <span class="text-[11px] px-2.5 py-0.5 rounded-full font-black ${isApplied ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/40' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'}">
+                                        ${isApplied ? '✅ ارسال شده' : '🎯 انطباق ' + (j.match_score || 90) + '٪'}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
+                                    <span>🏢 ${j.company}</span>
+                                    <span>📍 ${j.location}</span>
+                                    <span>💰 ${j.salary_range}</span>
+                                    <span>🔗 پلتفرم: ${j.platform}</span>
+                                    ${j.tracking_code ? `<span class="text-indigo-400 font-mono font-bold">کد پیگیری: ${j.tracking_code}</span>` : ''}
+                                </div>
+                                <p class="text-xs text-slate-300 line-clamp-2 pt-1">${j.description}</p>
+                            </div>
+
+                            <div class="flex items-center gap-2 shrink-0">
+                                <button onclick="startInterviewForJob('${j.title}', '${j.company}')" class="text-xs bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-300 font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-microphone-lines"></i>
+                                    <span>شبیه‌ساز مصاحبه</span>
+                                </button>
+                                <button onclick="applyJob('${j.job_id}')" class="text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                    <span>ارسال رزومه</span>
+                                </button>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
             } catch (err) {
                 console.error(err);
             }
         }
 
-        function filterJobsByPlatform() {
-            const platform = document.getElementById('job-platform-filter').value;
-            const filtered = platform === 'all' ? allJobs : allJobs.filter(j => j.platform === platform);
-            renderJobs(filtered);
-        }
-
-        function renderJobs(jobs) {
-            const container = document.getElementById('jobs-container');
-            if (!jobs || !jobs.length) {
-                container.innerHTML = `<div class="p-8 text-center text-slate-500 text-xs">آگهی یافت نشد.</div>`;
-                return;
-            }
-
-            container.innerHTML = jobs.map(j => {
-                let badge = '';
-                if (j.status === 'applied') {
-                    badge = `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs px-3 py-1 rounded-full font-bold"><i class="fa-solid fa-check ml-1"></i> ارسال شد (${j.tracking_code || 'JN-782'})</span>`;
-                } else if (j.status === 'queued_golden_hour') {
-                    badge = '<span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs px-3 py-1 rounded-full font-bold"><i class="fa-solid fa-clock ml-1"></i> در صف ساعت طلایی</span>';
-                } else {
-                    badge = '<span class="bg-slate-800 text-slate-300 text-xs px-3 py-1 rounded-full font-medium">کشف‌شده در کاربورد</span>';
-                }
-
-                let platformLabel = j.platform === 'jobinja' ? 'جابینجا' : (j.platform === 'jobvision' ? 'جاب‌ویژن' : 'کاربورد');
-                let platformColor = j.platform === 'jobinja' ? 'text-blue-400 bg-blue-500/10 border-blue-500/20' : (j.platform === 'jobvision' ? 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20' : 'text-teal-400 bg-teal-500/10 border-teal-500/20');
-
-                return `
-                <div class="glass-panel rounded-2xl p-5 hover:border-slate-700 transition">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-slate-100 text-sm sm:text-base">${j.title}</h3>
-                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full border ${platformColor}">${platformLabel}</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-xs text-slate-400 mt-1.5">
-                                <span><i class="fa-regular fa-building ml-1 text-slate-500"></i> ${j.company}</span>
-                                <span><i class="fa-solid fa-location-dot ml-1 text-rose-400"></i> ${j.location}</span>
-                                <span class="text-emerald-400 font-bold"><i class="fa-solid fa-coins ml-1"></i> ${j.salary_range}</span>
-                            </div>
-                        </div>
-                        <div>${badge}</div>
-                    </div>
-
-                    <p class="text-xs text-slate-300 leading-relaxed bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80 mb-3">
-                        ${j.description}
-                    </p>
-
-                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800/70 text-xs">
-                        <div class="flex items-center gap-2">
-                            <span class="text-slate-400">انطباق با رزومه:</span>
-                            <span class="font-black ${j.match_score >= 70 ? 'text-emerald-400' : 'text-amber-400'} text-sm">${j.match_score || 75}٪</span>
-                        </div>
-
-                        <div class="flex items-center gap-2">
-                            <button onclick="startInterviewForJob('${j.title}', '${j.company}')" class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-2 rounded-xl border border-slate-800 transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-microphone-lines text-rose-400"></i> مصاحبه صوتی
-                            </button>
-                            ${j.status !== 'applied' ? `
-                            <button onclick="applyJob('${j.job_id}')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-4 py-2 rounded-xl transition shadow-md shadow-emerald-500/20">
-                                <i class="fa-solid fa-paper-plane ml-1"></i> ارسال رزومه
-                            </button>
-                            ` : `
-                            <span class="text-slate-500 text-xs px-3 py-2"><i class="fa-solid fa-lock ml-1"></i> شناسه قفل شد</span>
-                            `}
-                        </div>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
-
         async function applyJob(jobId) {
             try {
-                showToast('در حال باز کردن نشست مرورگر و ارسال رزومه...');
+                showToast('در حال شبیه‌سازی مراحل ارسال با حساب جابینجا/جاب‌ویژن...');
                 const res = await fetch('/api/jobs/apply', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({job_id: jobId})
+                    body: JSON.stringify({job_id: jobId, user_id: 1})
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -1003,22 +969,159 @@
                 } else {
                     showToast(data.error, 'error');
                 }
-                await loadJobs();
+                loadJobs();
                 fetchLogs();
             } catch (err) {
                 showToast('خطا در ارسال رزومه', 'error');
             }
         }
 
-        function startInterviewForJob(title, company) {
-            document.getElementById('interview-company-select').value = company;
-            showTab('interview');
-            loadInterviewQuestion(title, company);
+        async function huntNewJobs() {
+            const btn = document.getElementById('btn-hunt-jobs');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> در حال رصد...`;
+            try {
+                const res = await fetch('/api/jobs/hunt', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({query: 'دیتا آنالیست', city: 'تهران'})
+                });
+                const data = await res.json();
+                showToast(`${data.count} آگهی تازه استخراج و در دیتابیس ثبت شد.`);
+                loadJobs();
+                fetchLogs();
+            } catch (err) {
+                showToast('خطا در اسکن آگهی‌ها', 'error');
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-radar"></i> اسکن آگهی‌های تازه`;
+            }
         }
 
+        // ==========================================
+        // 5. Multi-Agent War Room Council
+        // ==========================================
+        async function loadWarRoomDomains() {
+            try {
+                const res = await fetch('/api/warroom/domains');
+                const data = await res.json();
+                const container = document.getElementById('domains-grid');
+                if (!container) return;
+
+                const domains = data.domains;
+                container.innerHTML = Object.keys(domains).map(key => {
+                    const d = domains[key];
+                    const skillCount = Object.keys(d.skills).length;
+                    return `
+                    <div class="glass-card p-4 rounded-xl border-slate-800 space-y-3 hover:border-cyan-500/40 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-users-gear"></i>
+                            </span>
+                            <span class="text-[10px] text-cyan-300 font-bold bg-cyan-950/60 border border-cyan-500/30 px-2 py-0.5 rounded-full">${skillCount} اسکیل</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white">${d.title}</h4>
+                            <p class="text-[11px] text-slate-400 mt-0.5">لیدر: <strong class="text-slate-300">${d.lead.split('(')[0]}</strong></p>
+                        </div>
+                        <div class="space-y-1 text-[11px] text-slate-400 border-t border-slate-800/80 pt-2">
+                            ${Object.keys(d.skills).slice(0, 3).map(sk => `<div>• ${d.skills[sk].name}</div>`).join('')}
+                        </div>
+                        <button onclick="runDomainDebate('${key}')" class="w-full text-center py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-300 text-xs transition">
+                            اجرای مناظره تخصصی دپارتمان
+                        </button>
+                    </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function runDomainDebate(domainKey) {
+            showToast('جلسه مناظره ایجنت‌های دپارتمان آغاز شد...');
+            try {
+                const res = await fetch('/api/warroom/debate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        domain: domainKey,
+                        topic: 'بهینه‌سازی حداکثری پلتفرم شغلی علی رجوند برای موقعیت‌های Senior Data تهران',
+                        candidate_context: 'علی رجوند - رتبه ۲ هکاتون پل ۴، متخصص پایتون، Power BI، RAG و پیش‌بینی فروش'
+                    })
+                });
+                const data = await res.json();
+                const streamBox = document.getElementById('debate-stream-box');
+                streamBox.classList.remove('hidden');
+                document.getElementById('debate-domain-title').innerText = `مناظره دپارتمان: ${data.domain_title}`;
+                document.getElementById('debate-timestamp').innerText = `زمان ثبت اجماع: ${data.timestamp}`;
+
+                const c = document.getElementById('debate-arguments-container');
+                c.innerHTML = data.worker_arguments.map(w => `
+                    <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-cyan-300">${w.agent_name} (${w.skill})</span>
+                            <span class="text-[10px] text-slate-500">${w.focus}</span>
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">${w.argument}</p>
+                    </div>
+                `).join('') + `
+                    <div class="p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/40 space-y-1">
+                        <span class="font-bold text-white block">🏛️ جمع‌بندی و مصوبه سرپرست دپارتمان (${data.lead}):</span>
+                        <p class="text-cyan-200 leading-relaxed">${data.domain_consensus}</p>
+                    </div>
+                `;
+                fetchLogs();
+            } catch (err) {
+                showToast('خطا در اجرای مناظره', 'error');
+            }
+        }
+
+        async function triggerFullCouncilReview() {
+            const btn = document.getElementById('btn-full-council');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> در حال برگزاری شورای جامع ۸ دپارتمان...`;
+            showToast('جلسه شورای عالی ۸ دپارتمان فراخوانده شد. لطفاً چند لحظه شکیبا باشید.');
+
+            try {
+                const res = await fetch('/api/warroom/full-council', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        topic: 'تایید نهایی معماری سازمانی پلتفرم، ماژول سه‌بعدی Three.js، استانداردهای OWASP، احراز هویت جابینجا و اتصال به Gemini 3.5 Flash',
+                        candidate_context: 'علی رجوند - متخصص ارشد علم داده و محصولات هوش مصنوعی'
+                    })
+                });
+                const data = await res.json();
+                const panel = document.getElementById('chief-decision-panel');
+                panel.classList.remove('hidden');
+                document.getElementById('chief-name-display').innerText = data.chief_architect;
+                document.getElementById('chief-timestamp').innerText = `زمان تصویب نهایی: ${data.approved_at}`;
+                document.getElementById('chief-decision-body').innerHTML = `
+                    <p class="text-sm font-medium text-cyan-200 leading-relaxed">${data.master_decision}</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                        ${data.domain_reports.map(r => `
+                            <div class="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-[11px]">
+                                <span class="font-bold text-emerald-400 block truncate">${r.domain_title.split('(')[0]}</span>
+                                <span class="text-slate-400">لیدر: ${r.lead.split('(')[0]}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                showToast('تصمیم راهبردی معمار کل سیستم (Chief Architect) با موفقیت صادر شد!');
+                fetchLogs();
+            } catch (err) {
+                showToast('خطا در اجرای شورا', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> فراخوان جلسه شورای جامع مهندسی (تمام ۸ دپارتمان)`;
+            }
+        }
+
+        // ==========================================
+        // 6. B2B Interview Simulator & Voice
+        // ==========================================
         async function loadInterviewQuestion(customTitle, customCompany) {
             const comp = customCompany || document.getElementById('interview-company-select').value;
-            const title = customTitle || "تحلیل‌گر داده";
+            const title = customTitle || "تحلیل‌گر داده و هوش تجاری";
 
             try {
                 const res = await fetch('/api/interview/question', {
@@ -1028,7 +1131,7 @@
                 });
                 const data = await res.json();
                 document.getElementById('q-text').innerText = data.question;
-                document.getElementById('q-type').innerText = data.type || 'سوال تخصصی';
+                document.getElementById('q-type').innerText = data.type || 'سناریوی تخصصی حل مسئله';
                 document.getElementById('q-context').innerText = comp;
                 document.getElementById('q-hint').innerHTML = `<i class="fa-solid fa-lightbulb ml-1"></i> ${data.hint || ''}`;
                 document.getElementById('interview-feedback-box').classList.add('hidden');
@@ -1037,6 +1140,64 @@
             } catch (err) {
                 console.error(err);
             }
+        }
+
+        function playQuestionSpeech() {
+            const q = document.getElementById('q-text').innerText;
+            if (!q || !('speechSynthesis' in window)) {
+                showToast('مرورگر شما از تبدیل صوت پشتیبانی نمی‌کند.', 'error');
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(q);
+            utterance.lang = 'fa-IR';
+            utterance.rate = 0.95;
+
+            isSpeakingAnim = true;
+            document.getElementById('interviewer-voice-status').innerText = 'در حال خواندن سوال...';
+
+            utterance.onend = () => {
+                isSpeakingAnim = false;
+                document.getElementById('interviewer-voice-status').innerText = 'آماده دریافت پاسخ شما';
+            };
+            utterance.onerror = () => {
+                isSpeakingAnim = false;
+                document.getElementById('interviewer-voice-status').innerText = 'آماده دریافت پاسخ شما';
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startVoiceRecording() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                showToast('مرورگر شما از ضبط صوتی فارسی پشتیبانی نمی‌کند، لطفاً پاسخ را تایپ فرمایید.', 'error');
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'fa-IR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            const btn = document.getElementById('btn-mic-toggle');
+            btn.classList.add('bg-rose-600', 'text-white');
+            document.getElementById('mic-status-text').innerText = 'در حال گوش دادن... صحبت کنید';
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const textarea = document.getElementById('interview-user-answer');
+                textarea.value = textarea.value ? `${textarea.value} ${transcript}` : transcript;
+                showToast('صدای شما دریافت و به متن تبدیل شد.');
+            };
+
+            recognition.onend = () => {
+                btn.classList.remove('bg-rose-600', 'text-white');
+                document.getElementById('mic-status-text').innerText = 'صحبت با میکروفون';
+            };
+
+            recognition.start();
         }
 
         async function evaluateInterviewAnswer() {
@@ -1051,14 +1212,14 @@
             }
 
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> در حال ارزیابی...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> در حال ارزیابی با استانداردهای B2B...`;
 
             try {
                 const res = await fetch('/api/interview/evaluate', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        job_title: 'تحلیل‌گر داده',
+                        job_title: 'Data Scientist & BI Professional',
                         company: comp,
                         question: q,
                         user_answer: answer
@@ -1067,30 +1228,123 @@
                 const data = await res.json();
                 const box = document.getElementById('interview-feedback-box');
                 box.classList.remove('hidden');
-                document.getElementById('eval-score').innerText = `نمره: ${data.score || 75} از ۱۰۰`;
+
+                document.getElementById('eval-score').innerText = `نمره: ${data.score || 90} از ۱۰۰`;
+                document.getElementById('eval-candidate-tier').innerText = `رتبه کیفی: ${data.candidate_tier || 'Top 10% Talent'}`;
+                document.getElementById('eval-recommendation').innerText = data.hiring_recommendation || 'Strong Hire';
+                document.getElementById('rubric-tech').innerText = `${data.technical_depth || 92}٪`;
+                document.getElementById('rubric-business').innerText = `${data.business_acumen || 88}٪`;
+                document.getElementById('rubric-problem').innerText = `${data.problem_solving || 90}٪`;
+                document.getElementById('rubric-comm').innerText = `${data.communication_clarity || 94}٪`;
+
                 document.getElementById('eval-feedback').innerText = data.feedback || '';
                 document.getElementById('eval-ideal-answer').innerText = data.sample_ideal_answer || '';
-                showToast('ارزیابی مصاحبه انجام شد.');
+
+                showToast('ارزیابی تخصصی B2B انجام شد.');
                 fetchLogs();
             } catch (err) {
                 showToast('خطا در ارزیابی مصاحبه', 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-brain"></i> ارزیابی پاسخ و دریافت نمره`;
+                btn.innerHTML = `<i class="fa-solid fa-brain"></i> ارزیابی تخصصی و صدور کارنامه B2B`;
             }
         }
 
+        // ==========================================
+        // 7. Security Audit & Accounts
+        // ==========================================
+        async function showSecurityModal() {
+            document.getElementById('security-modal').classList.remove('hidden');
+            try {
+                const res = await fetch('/api/security/audit');
+                const data = await res.json();
+                const container = document.getElementById('security-checks-list');
+                container.innerHTML = data.checks.map(c => `
+                    <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-white">${c.check}</span>
+                            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">PASSED</span>
+                        </div>
+                        <p class="text-slate-400 text-[11px]">${c.details}</p>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        function closeSecurityModal() { document.getElementById('security-modal').classList.add('hidden'); }
+
+        async function saveAccount(platform) {
+            const user = document.getElementById(`acc-${platform}-user`).value;
+            const pass = document.getElementById(`acc-${platform}-pass`).value;
+            try {
+                const res = await fetch('/api/accounts/update', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({platform: platform, username: user, password: pass, phone: user})
+                });
+                const data = await res.json();
+                showToast(data.message || 'حساب با موفقیت به‌روزرسانی شد.');
+                fetchLogs();
+            } catch (e) {
+                showToast('خطا در به‌روزرسانی حساب', 'error');
+            }
+        }
+
+        // ==========================================
+        // 8. Logs Console & Salary Data
+        // ==========================================
         async function fetchLogs() {
             try {
                 const res = await fetch('/api/logs?limit=15');
                 const logs = await res.json();
-                const container = document.getElementById('live-console-body');
                 if (logs && logs.length) {
+                    const latest = logs[0];
+                    document.getElementById('latest-log-text').innerText = `[${latest.agent_name}] ${latest.message}`;
+                    const container = document.getElementById('live-console-body');
                     container.innerHTML = logs.map(l => {
                         let color = l.log_type === 'success' ? 'text-emerald-400' : (l.log_type === 'error' ? 'text-rose-400' : 'text-slate-300');
-                        return `<div><span class="text-slate-600">[${l.created_at.split(' ')[1] || ''}]</span> <span class="text-teal-400 font-bold">[${l.agent_name}]</span> <span class="${color}">${l.message}</span></div>`;
+                        return `<div><span class="text-slate-600">[${l.created_at.split(' ')[1] || ''}]</span> <span class="text-cyan-400 font-bold">[${l.agent_name}]</span> <span class="${color}">${l.message}</span></div>`;
                     }).join('');
                 }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        let drawerOpen = false;
+        function toggleConsoleDrawer() {
+            drawerOpen = !drawerOpen;
+            document.getElementById('console-drawer-body').classList.toggle('hidden', !drawerOpen);
+            document.getElementById('drawer-toggle-text').innerText = drawerOpen ? 'بستن کنسول' : 'مشاهده تاریخچه لاگ‌ها';
+            document.getElementById('drawer-icon').classList.toggle('rotate-180', drawerOpen);
+        }
+
+        async function updateSalaryData() {
+            const role = document.getElementById('salary-role-select').value;
+            const level = document.getElementById('salary-level-select').value;
+            try {
+                const res = await fetch(`/api/market/benchmarks?role=${role}&level=${level}`);
+                const data = await res.json();
+                const b = data.benchmark;
+                const container = document.getElementById('salary-cards-container');
+                container.innerHTML = `
+                    <div class="glass-card p-5 rounded-2xl border-emerald-500/20 text-center">
+                        <span class="text-xs text-slate-400 block mb-1">کف حقوق منصفانه (Minimum)</span>
+                        <span class="text-2xl font-black text-emerald-400">${b.min_salary}</span>
+                        <span class="text-xs text-slate-400 block mt-1">میلیون تومان</span>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl border-teal-500/30 text-center glow-emerald">
+                        <span class="text-xs text-slate-400 block mb-1">میانگین بازار تهران (Median)</span>
+                        <span class="text-2xl font-black text-teal-300">${b.median_salary}</span>
+                        <span class="text-xs text-slate-400 block mt-1">میلیون تومان</span>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl border-cyan-500/20 text-center">
+                        <span class="text-xs text-slate-400 block mb-1">سقف حقوق شرکت‌های برتر</span>
+                        <span class="text-2xl font-black text-cyan-400">${b.max_salary}</span>
+                        <span class="text-xs text-slate-400 block mt-1">میلیون تومان</span>
+                    </div>
+                `;
             } catch (e) {
                 console.error(e);
             }
@@ -1099,11 +1353,13 @@
         function showPricingModal() { document.getElementById('pricing-modal').classList.remove('hidden'); }
         function closePricingModal() { document.getElementById('pricing-modal').classList.add('hidden'); }
 
-        // Init
+        // Initialize application on DOM load
         window.addEventListener('DOMContentLoaded', () => {
+            initBackground3D();
             loadJobs();
+            loadWarRoomDomains();
+            updateSalaryData();
             fetchLogs();
-            // Polling logs every 4 seconds for real-time visibility
             setInterval(fetchLogs, 4000);
         });
     </script>

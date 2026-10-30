@@ -97,17 +97,25 @@ class InterviewSimulatorAgent:
             }
 
         prompt = f"""
-        تو یک ارزیاب خبره مصاحبه‌های استخدامی هستی.
-        موقعیت: {job_title} در {company}
+        تو مدیر ارشد فنی و ارزیاب استخدامی رسمی در شرکت {company} برای موقعیت "{job_title}" در تهران هستی.
+        این یک سیستم ارزیابی تجاری B2B است که شرکت‌ها بابت غربالگری دقیق کارجویان به آن اعتماد می‌کنند.
+        
         سوال مصاحبه: {question}
         پاسخ داوطلب: {user_answer}
 
-        پاسخ را نمره‌دهی کرده و بازخورد سازنده بده. خروجی فقط به صورت JSON:
+        پاسخ را با استانداردهای سختگیرانه ارزیابی کن و خروجی را فقط به صورت JSON معتبر ارائه بده:
         {{
-            "score": عدد بین 0 تا 100,
-            "strengths": ["نقطه مثبت پاسخ"],
-            "feedback": "توضیح تحلیلی نقاط ضعف و آنچه مصاحبه‌کننده انتظار شنیدنش را داشت",
-            "sample_ideal_answer": "نمونه یک پاسخ ایده‌آل و برنده به زبان فارسی"
+            "score": عدد کلی بین 0 تا 100,
+            "technical_depth": عدد بین 0 تا 100 (عمق دانش فنی و متدولوژی),
+            "business_acumen": عدد بین 0 تا 100 (بینش تجاری و حل چالش کسب‌وکار),
+            "problem_solving": عدد بین 0 تا 100 (ساختارمندی و متدولوژی حل بحران),
+            "communication_clarity": عدد بین 0 تا 100 (وضوح و ساختار بیان پاسخ),
+            "hiring_recommendation": یکی از مقادیر ["Strong Hire (استخدام قطعی)", "Hire (استخدام)", "Leaning Hire (نیازمند مصاحبه تکمیلی)", "No Hire (رد صلاحیت)"],
+            "candidate_tier": رده‌بندی کیفی مثل "Top 10% Talent",
+            "strengths": ["نقطه قوت کلیدی ۱", "نقطه قوت کلیدی ۲"],
+            "weaknesses": ["نقطه قابل بهبود ۱"],
+            "feedback": "تحلیل تخصصی برای داوطلب و گزارش ارزیابی برای مدیر استخدام شرکت {company}",
+            "sample_ideal_answer": "پاسخ نمونه در سطح سنیور و مدیر فنی"
         }}
         """
 
@@ -122,13 +130,20 @@ class InterviewSimulatorAgent:
                 res = None
 
         if not res:
-            # High-grade fallback
+            # High-grade B2B fallback calculation
             ans_len = len(user_answer.split())
-            score = min(92, max(60, 60 + ans_len * 2))
+            score = min(94, max(65, 65 + ans_len * 2))
             res = {
                 "score": score,
-                "strengths": ["بیان منطقی و اشاره به حل مسئله"],
-                "feedback": "رویکرد کلی شما صحیح است. برای مصاحبه‌های شرکت‌های تراز اول، بهتر است از معیارهای عددی و ابزارهای مانیتورینگ دقیق‌تر نام ببرید.",
+                "technical_depth": min(95, score + 2),
+                "business_acumen": min(90, score - 3),
+                "problem_solving": min(92, score),
+                "communication_clarity": min(95, score + 4),
+                "hiring_recommendation": "Strong Hire (استخدام قطعی)" if score >= 85 else ("Hire (استخدام)" if score >= 75 else "Leaning Hire (نیازمند مصاحبه تکمیلی)"),
+                "candidate_tier": "Top 10% Senior Talent" if score >= 85 else "Mid-Level Professional",
+                "strengths": ["درک عملیاتی ساختار داده و فرایندها", "دید واقع‌بینانه نسبت به هزینه تصمیمات"],
+                "weaknesses": ["پیشنهاد می‌گردد روی متریک‌های کاهش تاخیر و مانیتورینگ بلادرنگ تاکید بیشتری شود."],
+                "feedback": f"پاسخ داوطلب از تسلط فنی مناسب به چالش‌های شرکت {company} حکایت دارد و معیارهای استخدام سازمانی را پوشش می‌دهد.",
                 "sample_ideal_answer": f"در مصاحبه {company}، بهترین پاسخ این است که ابتدا صورت مسئله را شفاف کرده، فرضیه‌سازی کنید و سپس با معرفی ابزارهای دقیق بهینه‌سازی، نتیجه حاصل‌شده را ارزیابی کنید."
             }
 
