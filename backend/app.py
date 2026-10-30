@@ -364,16 +364,18 @@ def batch_apply_all(payload: dict = Body(default={})):
     }
 
 @app.get("/api/market/benchmarks")
-def get_benchmarks(role: str = "data_analyst", level: str = "mid", city: str = "تهران"):
-    data = market_salary_agent.get_benchmark(role, level, city=city)
+def get_benchmarks(role: str = "data_analyst", level: str = "mid", city: str = "تهران", year: str = "1405"):
+    data = market_salary_agent.get_benchmark(role, level, city=city, year=year)
     roles = market_salary_agent.get_all_roles()
     return {"benchmark": data, "roles": roles}
 
 @app.get("/api/jobs")
-def get_jobs(user_id: int = 1):
-    jobs = get_user_jobs_list(user_id=user_id, limit=30)
+def get_jobs(user_id: int = 1, limit: int = 200):
+    jobs = get_user_jobs_list(user_id=user_id, limit=limit, min_score=60)
     if not jobs:
         jobs = job_hunter_agent.get_all_jobs()
+    # Sort: unapplied opportunities first, then highest match score
+    jobs.sort(key=lambda j: (1 if j.get("status") == "applied" else 0, -(j.get("match_score") or 0)))
     return jobs
 
 @app.post("/api/jobs/hunt")

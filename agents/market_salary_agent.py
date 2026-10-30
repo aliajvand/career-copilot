@@ -71,29 +71,38 @@ class MarketSalaryAgent:
         "سایر استان‌ها": 0.74
     }
 
-    def get_benchmark(self, role_key: str = "data_scientist", level: str = "mid", city: str = "تهران") -> dict:
+    def get_benchmark(self, role_key: str = "data_scientist", level: str = "mid", city: str = "تهران", year: str = "1403") -> dict:
         role_data = self.SALARY_BENCHMARKS.get(role_key, self.SALARY_BENCHMARKS["data_scientist"])
         salary_info = role_data.get(level, role_data["mid"])
 
-        mult = self.PROVINCE_MULTIPLIERS.get(city, 1.0)
-        min_sal = round(salary_info["min"] * mult, 1)
-        med_sal = round(salary_info["median"] * mult, 1)
-        max_sal = round(salary_info["max"] * mult, 1)
+        mult_city = self.PROVINCE_MULTIPLIERS.get(city, 1.0)
+        
+        # Inflation & market adjustment multiplier for 1404/1405 tech ecosystem
+        # Base 1403 is 1.0; 1404 is ~1.20; 1405 is ~1.38
+        mult_year = 1.38 if year == "1405" else (1.20 if year == "1404" else 1.0)
+
+        min_sal = round(salary_info["min"] * mult_city * mult_year, 1)
+        med_sal = round(salary_info["median"] * mult_city * mult_year, 1)
+        max_sal = round(salary_info["max"] * mult_city * mult_year, 1)
         
         # Recommendation for application bid
-        recommended_text = f"{int(med_sal)} الی {int(max_sal)} میلیون تومان (خالص ماهانه)"
+        suffix = f" سال {year}" if year in ["1404", "1405"] else ""
+        recommended_text = f"{int(med_sal)} الی {int(max_sal)} میلیون تومان (خالص ماهانه{suffix})"
         
+        source_desc = f"برآورد و پیش‌بینی حقوق و دستمزد سال {year} بر پایه گزارش رسمی ۷۴,۰۰۰ نفری جاب‌ویژن و شاخص تعدیل تورمی بازار فناوری" if year in ["1404", "1405"] else "گزارش سراسری حقوق و دستمزد جاب‌ویژن سال ۱۴۰۳ (جامعه آماری ۷۴,۰۰۰ نفری متخصصان ایران)"
+
         return {
             "role_fa": role_data["title_fa"],
             "level": level,
             "city": city,
+            "year": year,
             "min_salary": min_sal,
             "median_salary": med_sal,
             "max_salary": max_sal,
             "recommended_bid": recommended_text,
             "hot_skills": role_data["hot_skills"],
             "demand_index": role_data["demand_index"],
-            "data_source": "گزارش سراسری حقوق و دستمزد جاب‌ویژن سال ۱۴۰۳ (جامعه آماری ۷۴,۰۰۰ نفری متخصصان ایران)"
+            "data_source": source_desc
         }
 
     def get_all_roles(self) -> list:

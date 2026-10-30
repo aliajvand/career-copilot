@@ -217,7 +217,7 @@ class JobHunterAgent:
                     "is_live_scrapable": True
                 })
         except Exception as e:
-            diagnostics.append({"platform": "jobinja", "status": f"ERROR: {str(e)}", "is_live_scrapable": False})
+            diagnostics.append({"platform": "jobinja", "status": f"BLOCKED_OR_UNREACHABLE: {str(e)}", "recommendation": "Use browser automation with user session or OAuth.", "is_live_scrapable": False})
 
         # Jobvision check
         try:

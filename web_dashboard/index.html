@@ -155,7 +155,7 @@
             <button onclick="showTab('overview')" id="tab-btn-overview" class="tab-btn active px-4 py-2 rounded-xl text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2 transition shrink-0">
                 <i class="fa-solid fa-chart-pie"></i> پیشخوان
             </button>
-            <button onclick="showTab('warroom')" id="tab-btn-warroom" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
+            <button onclick="showTab('warroom')" id="tab-btn-warroom" class="tab-btn hidden px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
                 <i class="fa-solid fa-network-wired text-cyan-400"></i> شورای ایجنت‌های سازمانی (۸ تیم)
             </button>
             <button onclick="showTab('interview')" id="tab-btn-interview" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
@@ -171,7 +171,7 @@
                 <i class="fa-solid fa-key text-rose-400"></i> احراز هویت جابینجا و جاب‌ویژن
             </button>
             <button onclick="showTab('salary')" id="tab-btn-salary" class="tab-btn px-4 py-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-900 flex items-center gap-2 transition shrink-0">
-                <i class="fa-solid fa-sack-dollar text-teal-400"></i> رادار حقوق تهران
+                <i class="fa-solid fa-sack-dollar text-teal-400"></i> رادار حقوق ۱۴۰۵ (سراسر کشور)
             </button>
         </div>
     </header>
@@ -475,9 +475,16 @@
                             <span>اورب تعاملی سه‌بعدی</span>
                         </div>
 
-                        <!-- 3D Canvas Container -->
+                        <!-- 3D Canvas Container & Pulsating Holographic Orb -->
                         <div id="avatar-3d-container" class="w-52 h-52 relative flex items-center justify-center my-2">
-                            <!-- Three.js renders in here -->
+                            <div id="hologram-orb-fallback" class="relative w-40 h-40 flex items-center justify-center pointer-events-none">
+                                <div class="absolute inset-0 rounded-full border border-purple-500/40 animate-ping opacity-25"></div>
+                                <div class="absolute inset-2 rounded-full border-2 border-dashed border-cyan-400/60 animate-spin" style="animation-duration: 12s;"></div>
+                                <div class="absolute inset-4 rounded-full border border-purple-400/50 animate-pulse"></div>
+                                <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 via-indigo-500 to-cyan-400 shadow-lg shadow-purple-500/50 flex items-center justify-center text-white text-3xl font-black">
+                                    <i class="fa-solid fa-brain text-white animate-bounce" style="animation-duration: 3s;"></i>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="text-center space-y-1">
@@ -913,7 +920,7 @@
                         <div>
                             <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
                                 <i class="fa-solid fa-sack-dollar text-teal-400"></i>
-                                <span>رادار تخمین و پیشنهاد حقوق منصفانه (پیمایش رسمی سال ۱۴۰۳ جاب‌ویژن)</span>
+                                <span>رادار تخمین و پیشنهاد حقوق منصفانه (پیمایش رسمی جاب‌ویژن و برآورد سال ۱۴۰۵ سراسر کشور)</span>
                             </h2>
                             <p class="text-xs text-slate-400 mt-1">تطبیق حقوق پوزیشن‌های تحلیل داده، علم داده و هوش تجاری در اسنپ، دیجی‌کالا، بازار و کل کشور</p>
                         </div>
@@ -923,12 +930,12 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
                     <div>
                         <label class="block text-xs text-slate-400 mb-1.5">حوزه تخصصی:</label>
                         <select id="salary-role-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
-                            <option value="data_analyst" selected>تحلیل‌گر داده و هوش تجاری (Data & BI)</option>
-                            <option value="data_scientist">دانشمند داده و یادگیری ماشین (Data Science)</option>
+                            <option value="data_scientist" selected>دانشمند داده و یادگیری ماشین (Data Science)</option>
+                            <option value="data_analyst">تحلیل‌گر داده و هوش تجاری (Data & BI)</option>
                             <option value="data_engineer">مهندس کلان‌داده و پایپ‌لاین (Data Engineer)</option>
                             <option value="python_developer">توسعه‌دهنده پایتون و بک‌اند</option>
                             <option value="ai_engineer">مهندس هوش مصنوعی و مدل‌های زبانی (AI / LLM)</option>
@@ -944,7 +951,7 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1.5">استان / شهر (ضرایب گزارش حقوق جاب‌ویژن):</label>
+                        <label class="block text-xs text-slate-400 mb-1.5">استان / شهر (ضرایب جاب‌ویژن):</label>
                         <select id="salary-city-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
                             <option value="تهران" selected>تهران (ضریب ۱۰۰٪)</option>
                             <option value="کرج">البرز و کرج (ضریب ۸۸٪)</option>
@@ -954,6 +961,14 @@
                             <option value="تبریز">آذربایجان شرقی / تبریز (ضریب ۸۲٪)</option>
                             <option value="اهواز">خوزستان / اهواز (ضریب ۸۵٪)</option>
                             <option value="سایر استان‌ها">سایر استان‌ها و شهرستان‌ها (ضریب ۷۴٪)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5">سال برآورد و تعدیل تورم:</label>
+                        <select id="salary-year-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
+                            <option value="1405" selected>سال ۱۴۰۵ (برآورد پیش‌رو با تورم ۳۸٪)</option>
+                            <option value="1404">سال ۱۴۰۴ (تعدیل‌شده ۲۰٪)</option>
+                            <option value="1403">سال ۱۴۰۳ (پایه پیمایش جاب‌ویژن)</option>
                         </select>
                     </div>
                 </div>
@@ -1108,15 +1123,17 @@
         function initInterviewAvatar3D() {
             const container = document.getElementById('avatar-3d-container');
             if (!container || !window.THREE) return;
+            if (avatarRenderer) return; // already initialized
 
-            avatarScene = new THREE.Scene();
-            avatarCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-            avatarCamera.position.z = 4.2;
+            try {
+                avatarScene = new THREE.Scene();
+                avatarCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+                avatarCamera.position.z = 4.2;
 
-            avatarRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            avatarRenderer.setSize(200, 200);
-            container.innerHTML = '';
-            container.appendChild(avatarRenderer.domElement);
+                avatarRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                avatarRenderer.setSize(200, 200);
+                container.innerHTML = '';
+                container.appendChild(avatarRenderer.domElement);
 
             // Core Icosahedron sphere
             const sphereGeo = new THREE.IcosahedronGeometry(1.4, 2);
@@ -1156,6 +1173,9 @@
                 avatarRenderer.render(avatarScene, avatarCamera);
             }
             animateAvatar();
+            } catch (err) {
+                console.warn('WebGL init error, using CSS hologram fallback:', err);
+            }
         }
 
         // ==========================================
@@ -1178,6 +1198,8 @@
 
             if (tabId === 'interview') {
                 setTimeout(initInterviewAvatar3D, 100);
+                loadInterviewIntro();
+                loadInterviewQuestion();
             }
         }
 
@@ -1197,7 +1219,7 @@
         // ==========================================
         async function loadJobs() {
             try {
-                const res = await fetch('/api/jobs?user_id=1');
+                const res = await fetch('/api/jobs?user_id=1&limit=200');
                 const jobs = await res.json();
 
                 // Render in overview
@@ -1221,11 +1243,17 @@
                     `).join('');
                 }
 
-                // Render in Jobs tab
+                // Render in Jobs tab (continuous radar of qualified past 30 days)
                 const jobsContainer = document.getElementById('jobs-container');
                 if (jobsContainer) {
                     jobsContainer.innerHTML = jobs.map(j => {
                         const isApplied = j.status === 'applied';
+                        let reasons = [];
+                        try {
+                            reasons = typeof j.match_reasons === 'string' ? JSON.parse(j.match_reasons) : (j.match_reasons || []);
+                        } catch(e) { reasons = []; }
+                        const reasonsHtml = reasons.length ? `<div class="flex items-center gap-1.5 flex-wrap pt-1"><span class="text-[10px] text-amber-300/90 font-bold bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full"><i class="fa-solid fa-sparkles ml-1 text-amber-400"></i> اشتراک مهارت: ${reasons.slice(0, 4).join('، ')}</span></div>` : '';
+
                         return `
                         <div class="glass-card p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 border-slate-800 hover:border-slate-700 transition">
                             <div class="space-y-1.5">
@@ -1243,16 +1271,18 @@
                                     ${j.tracking_code ? `<span class="text-indigo-400 font-mono font-bold">کد پیگیری: ${j.tracking_code}</span>` : ''}
                                 </div>
                                 <p class="text-xs text-slate-300 line-clamp-2 pt-1">${j.description}</p>
+                                ${reasonsHtml}
                             </div>
 
-                            <div class="flex items-center gap-2 shrink-0">
+                            <div class="flex items-center gap-2 shrink-0 flex-wrap">
+                                ${j.url ? `<a href="${j.url}" target="_blank" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i><span>مشاهده آگهی</span></a>` : ''}
                                 <button onclick="startInterviewForJob('${j.title}', '${j.company}')" class="text-xs bg-purple-950/60 hover:bg-purple-900 border border-purple-500/40 text-purple-300 font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
                                     <i class="fa-solid fa-microphone-lines"></i>
                                     <span>شبیه‌ساز مصاحبه</span>
                                 </button>
-                                <button onclick="applyJob('${j.job_id}')" class="text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+                                <button onclick="applyJob('${j.job_id}')" class="text-xs ${isApplied ? 'bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/20'} px-4 py-2 rounded-xl transition flex items-center gap-1.5" ${isApplied ? 'disabled' : ''}>
                                     <i class="fa-solid fa-paper-plane"></i>
-                                    <span>ارسال رزومه</span>
+                                    <span>${isApplied ? 'ارسال شده' : 'ارسال رزومه'}</span>
                                 </button>
                             </div>
                         </div>
@@ -1884,12 +1914,13 @@
         }
 
         async function updateSalaryData() {
-            const role = document.getElementById('salary-role-select')?.value || 'data_analyst';
+            const role = document.getElementById('salary-role-select')?.value || 'data_scientist';
             const level = document.getElementById('salary-level-select')?.value || 'senior';
             const city = document.getElementById('salary-city-select')?.value || 'تهران';
+            const year = document.getElementById('salary-year-select')?.value || '1405';
 
             try {
-                const res = await fetch(`/api/market/benchmarks?role=${role}&level=${level}&city=${encodeURIComponent(city)}`);
+                const res = await fetch(`/api/market/benchmarks?role=${role}&level=${level}&city=${encodeURIComponent(city)}&year=${year}`);
                 const data = await res.json();
                 const b = data.benchmark;
 
@@ -1903,12 +1934,12 @@
                 if (container) {
                     container.innerHTML = `
                         <div class="glass-card p-5 rounded-2xl border-emerald-500/20 text-center">
-                            <span class="text-xs text-slate-400 block mb-1">کف حقوق منصفانه (${b.city})</span>
+                            <span class="text-xs text-slate-400 block mb-1">کف حقوق منصفانه (${b.city} - سال ${b.year || '۱۴۰۵'})</span>
                             <span class="text-2xl font-black text-emerald-400">${b.min_salary}</span>
                             <span class="text-xs text-slate-400 block mt-1">میلیون تومان ماهانه</span>
                         </div>
                         <div class="glass-card p-5 rounded-2xl border-teal-500/30 text-center glow-emerald">
-                            <span class="text-xs text-slate-400 block mb-1">میانگین بازار (${b.city})</span>
+                            <span class="text-xs text-slate-400 block mb-1">میانگین بازار (${b.city} - سال ${b.year || '۱۴۰۵'})</span>
                             <span class="text-2xl font-black text-teal-300">${b.median_salary}</span>
                             <span class="text-xs text-slate-400 block mt-1">میلیون تومان ماهانه</span>
                         </div>
@@ -1982,6 +2013,31 @@
                         const headAts = document.getElementById('header-user-ats');
                         if (headAts) headAts.innerText = `${p.ats_score}٪`;
                     }
+
+                    // Auto-align salary radar based on profile target_title and target_city
+                    const salaryRole = document.getElementById('salary-role-select');
+                    const salaryCity = document.getElementById('salary-city-select');
+                    const salaryLevel = document.getElementById('salary-level-select');
+                    const salaryYear = document.getElementById('salary-year-select');
+
+                    if (salaryRole) {
+                        const titleLower = (p.target_title || '').toLowerCase();
+                        if (titleLower.includes('دانشمند') || titleLower.includes('علم داده') || titleLower.includes('scientist')) {
+                            salaryRole.value = 'data_scientist';
+                        } else if (titleLower.includes('مهندس داده') || titleLower.includes('پایپ‌لاین') || titleLower.includes('engineer')) {
+                            salaryRole.value = 'data_engineer';
+                        } else if (titleLower.includes('پایتون') || titleLower.includes('python')) {
+                            salaryRole.value = 'python_developer';
+                        } else if (titleLower.includes('هوش مصنوعی') || titleLower.includes('ai')) {
+                            salaryRole.value = 'ai_engineer';
+                        } else {
+                            salaryRole.value = 'data_scientist';
+                        }
+                    }
+                    if (salaryCity && p.target_city) salaryCity.value = p.target_city;
+                    if (salaryLevel) salaryLevel.value = 'senior';
+                    if (salaryYear) salaryYear.value = '1405';
+                    updateSalaryData();
                 }
             } catch (e) {
                 console.error("Error loading profile data:", e);
@@ -2325,6 +2381,7 @@
             loadProfileData();
             updateSalaryData();
             loadInterviewIntro();
+            loadInterviewQuestion();
             fetchLogs();
             setInterval(fetchLogs, 4000);
         });
