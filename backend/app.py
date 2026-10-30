@@ -17,6 +17,7 @@ from agents.matcher_agent import job_matcher_agent
 from agents.interview_agent import interview_simulator_agent
 from agents.auto_applier import auto_applier_agent
 from agents.hierarchical_engine import hierarchical_engine, ENTERPRISE_DOMAINS
+from agents.autonomous_agent import autonomous_agent
 from automation.platform_auth import platform_auth_manager, add_log
 from automation.auto_applier import auto_applier_queue
 
@@ -228,14 +229,58 @@ def ai_enhance_resume(payload: dict = Body(...)):
     experience = payload.get("experience", "")
     skills = payload.get("skills", [])
     target_title = payload.get("target_title", "Data Scientist & BI Professional")
+    additional_notes = payload.get("additional_notes", "")
     
     if isinstance(skills, str):
         skills = [s.strip() for s in skills.split(",") if s.strip()]
 
     add_log("ResumeEnhancer", f"آغاز بازنویسی و ارتقای هوشمند رزومه با مدل Gemini 3.8 Flash برای کاربر {user_id}...", "info")
-    enhanced = resume_analyzer_agent.enhance_with_ai(user_id, summary, experience, skills, target_title)
+    enhanced = resume_analyzer_agent.enhance_with_ai(user_id, summary, experience, skills, target_title, additional_notes=additional_notes)
     add_log("ResumeEnhancer", f"بهینه‌سازی رزومه انجام شد. نمره ATS جدید: {enhanced.get('ats_score')}", "success")
     return enhanced
+
+@app.get("/api/resume/demo")
+def get_resume_demo(user_id: int = 1):
+    """Returns structured resume data for live interactive preview rendering."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM profiles WHERE id = ?", (user_id,))
+    prof = cursor.fetchone()
+    conn.close()
+
+    if not prof:
+        raise HTTPException(status_code=404, detail="پروفایل یافت نشد.")
+
+    prof = dict(prof)
+    skills = []
+    try:
+        skills = json.loads(prof.get("parsed_skills", "[]"))
+    except Exception:
+        skills = []
+
+    return {
+        "full_name": prof.get("full_name", "علی رجوند"),
+        "target_title": prof.get("target_title", "دانشمند داده و هوش تجاری"),
+        "city": prof.get("target_city", "تهران"),
+        "phone": prof.get("phone", "+98 919 525 3462"),
+        "email": prof.get("email", "aliajvand@gmail.com"),
+        "github": "github.com/aliajvand",
+        "portfolio": "aliajvand.github.io/portfolio",
+        "linkedin": "linkedin.com/in/aliajvand",
+        "ats_score": prof.get("ats_score", 96),
+        "summary": prof.get("summary", ""),
+        "experience": prof.get("experience", ""),
+        "skills": skills,
+        "education": prof.get("education", ""),
+        "projects": prof.get("projects", "")
+    }
+
+@app.post("/api/resume/sync-platforms")
+def sync_resume_platforms(payload: dict = Body(default={})):
+    """Deploys candidate CV to Jobinja & Jobvision online resume builders."""
+    user_id = payload.get("user_id", 1)
+    res = platform_auth_manager.sync_resume_to_platforms(user_id=user_id)
+    return res
 
 @app.post("/api/resume/tailor")
 def tailor_resume(payload: dict = Body(...)):
@@ -319,8 +364,8 @@ def batch_apply_all(payload: dict = Body(default={})):
     }
 
 @app.get("/api/market/benchmarks")
-def get_benchmarks(role: str = "data_analyst", level: str = "mid"):
-    data = market_salary_agent.get_benchmark(role, level)
+def get_benchmarks(role: str = "data_analyst", level: str = "mid", city: str = "تهران"):
+    data = market_salary_agent.get_benchmark(role, level, city=city)
     roles = market_salary_agent.get_all_roles()
     return {"benchmark": data, "roles": roles}
 
@@ -356,21 +401,58 @@ def apply_job(payload: dict = Body(...)):
     user_id = payload.get("user_id", 1)
     if not job_id:
         raise HTTPException(status_code=400, detail="Job ID required")
-    res = platform_auth_manager.execute_live_apply(job_id, user_id=user_id)
+    # Immediate user execution on explicit click
+    res = platform_auth_manager.execute_live_apply(
+        job_id, 
+        user_id=user_id, 
+        requires_confirmation=False, 
+        user_confirmed=True
+    )
+    return res
+
+@app.post("/api/jobs/autonomous-scan")
+def run_autonomous_scan(payload: dict = Body(default={})):
+    """Runs 30-day retroactive scan across Karbord/Jobinja/Jobvision/Divar and auto-applies."""
+    user_id = payload.get("user_id", 1)
+    threshold = payload.get("threshold", 70)
+    res = autonomous_agent.scan_and_auto_apply_past_30_days(user_id=user_id, match_threshold=threshold)
+    return res
+
+@app.post("/api/jobs/autonomous-toggle")
+def toggle_autonomous(payload: dict = Body(...)):
+    """Enables or disables 24/7 continuous autonomous job monitoring."""
+    user_id = payload.get("user_id", 1)
+    enabled = payload.get("enabled", True)
+    res = autonomous_agent.set_24h_monitoring(user_id=user_id, enabled=enabled)
+    return res
+
+@app.get("/api/jobs/autonomous-status")
+def get_autonomous_status(user_id: int = 1):
+    return autonomous_agent.get_status(user_id=user_id)
+
+@app.post("/api/interview/intro")
+def get_interview_intro(payload: dict = Body(...)):
+    title = payload.get("job_title", "دانشمند داده و هوش تجاری")
+    company = payload.get("company", "دیجی‌کالا")
+    candidate_name = payload.get("candidate_name", "علی")
+    res = interview_simulator_agent.get_interview_intro(title, company, candidate_name)
+    add_log("InterviewRoom", f"جلسه معارفه و پرزنت شرکت {company} آغاز شد.", "info")
     return res
 
 @app.post("/api/interview/question")
 def get_interview_question(payload: dict = Body(...)):
-    title = payload.get("job_title", "تحلیل‌گر داده")
-    company = payload.get("company", "گروه اسنپ")
-    res = interview_simulator_agent.get_question_for_job(title, company)
-    add_log("InterviewRoom", f"سوال جدید مصاحبه برای شرکت {company} طراحی شد.", "info")
+    title = payload.get("job_title", "دانشمند داده و هوش تجاری")
+    company = payload.get("company", "دیجی‌کالا")
+    stage = payload.get("stage", "level1_easy")
+    topic = payload.get("topic", "")
+    res = interview_simulator_agent.get_question_for_job(title, company, stage=stage, topic=topic)
+    add_log("InterviewRoom", f"طرح سوال مرحله {stage} برای شرکت {company}.", "info")
     return res
 
 @app.post("/api/interview/evaluate")
 def evaluate_interview(payload: dict = Body(...)):
-    title = payload.get("job_title", "تحلیل‌گر داده")
-    company = payload.get("company", "گروه اسنپ")
+    title = payload.get("job_title", "دانشمند داده و هوش تجاری")
+    company = payload.get("company", "دیجی‌کالا")
     question = payload.get("question", "")
     answer = payload.get("user_answer", "")
     res = interview_simulator_agent.evaluate_answer(title, company, question, answer)

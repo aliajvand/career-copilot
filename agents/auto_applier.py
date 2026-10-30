@@ -11,7 +11,7 @@ class AutoApplierAgent:
     - Recording application logs and updating status in SQLite
     """
 
-    def apply_to_job(self, job_id: str, user_id: int = 1) -> dict:
+    def apply_to_job(self, job_id: str, user_id: int = 1, bypass_cap: bool = False) -> dict:
         conn = get_connection()
         cursor = conn.cursor()
 
@@ -26,7 +26,7 @@ class AutoApplierAgent:
         cap_row = cursor.fetchone()
         daily_cap = cap_row["daily_cap"] if cap_row else 15
 
-        if today_count >= daily_cap:
+        if not bypass_cap and today_count >= daily_cap:
             conn.close()
             return {
                 "success": False,

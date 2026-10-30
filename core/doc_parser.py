@@ -74,9 +74,8 @@ class PersianNLPOptimizer:
         for ar_d, fa_d in cls.DIGIT_MAP.items():
             text = text.replace(ar_d, fa_d)
 
-        # 3. Normalize ZWNJ (half-space)
-        # Standardize multiple spaces and weird newlines
-        text = re.sub(r'[\u200c\s]+', lambda m: '\u200c' if '\u200c' in m.group(0) and ' ' not in m.group(0) else ' ', text)
+        # 3. Normalize ZWNJ (half-space) and horizontal whitespace (preserve newlines)
+        text = re.sub(r'[\u200c \t]+', lambda m: '\u200c' if '\u200c' in m.group(0) and ' ' not in m.group(0) and '\t' not in m.group(0) else ' ', text)
         
         # 4. Common Persian affixes normalization with ZWNJ (e.g. "می شود" -> "می‌شود")
         text = re.sub(r'\b(می|نمی)\s+', lambda m: m.group(1) + '\u200c', text)
@@ -249,10 +248,11 @@ class DocumentParser:
     def extract_sections(cls, text: str) -> Dict[str, str]:
         """
         Segments resume text into logical sections:
-        - experience: سوابق کاری / سوابق شغلی / Work Experience
-        - skills: مهارت‌ها / توانمندی‌ها / Skills
-        - education: تحصیلات / مدارک تحصیلی / Education
-        - projects: پروژه‌ها / دستاوردها / Projects
+        - summary: Professional summary & bio
+        - experience: Employment history / Work experience
+        - projects: Portfolio & End-to-End Data Products
+        - skills: Technical skills & tools
+        - education: Academic education, bootcamps & languages
         """
         sections = {
             "summary": "",
@@ -263,14 +263,15 @@ class DocumentParser:
         }
 
         headings = {
-            "experience": r"(?:سوابق\s+شغلی|سوابق\s+کاری|تجربیات\s+کاری|work\s+experience|experience)",
-            "skills": r"(?:مهارت\s*ها|مهارت‌های\s+فنی|توانمندی\s*ها|skills|technical\s+skills)",
-            "education": r"(?:تحصیلات|سوابق\s+تحصیلی|آموزش|education|academic)",
-            "projects": r"(?:پروژه\s*ها|دستاوردها|پروژه‌های\s+برجسته|projects|achievements)"
+            "summary": r"(?:خلاصه\s+رزومه|درباره\s+من|خلاصه\s+حرفه‌ای|summary|about\s+me|professional\s+summary)",
+            "experience": r"(?:سوابق\s+شغلی|سوابق\s+کاری|تجربیات\s+کاری|work\s+experience|experience|employment\s+history)",
+            "projects": r"(?:پروژه\s*ها|دستاوردها|پروژه‌های\s+برجسته|end-to-end\s+data\s+products|projects|portfolio|forecasting,\s+analytics\s+&\s+bi|key\s+projects)",
+            "skills": r"(?:مهارت\s*ها|مهارت‌های\s+فنی|توانمندی\s*ها|technical\s+skills|skills\s+&\s+tools|skills)",
+            "education": r"(?:تحصیلات|سوابق\s+تحصیلی|آموزش|education,\s+training\s+&\s+languages|education\s+&\s+training|education|academic\s+background)"
         }
 
         combined = "|".join(f"(?P<{k}>{v})" for k, v in headings.items())
-        pattern = re.compile(rf"(?:\n|\A)\s*(?:{combined})\s*[:\-\n]", re.IGNORECASE)
+        pattern = re.compile(rf"(?:\n|\A)\s*(?:{combined})\b[^\n]*\n", re.IGNORECASE)
         matches = list(pattern.finditer(text))
 
         if not matches:
@@ -283,10 +284,13 @@ class DocumentParser:
         for i, m in enumerate(matches):
             start = m.end()
             end = matches[i+1].start() if i+1 < len(matches) else len(text)
-            matched_keys = [k for k, v in m.groupdict().items() if v]
-            if matched_keys:
-                sec_key = matched_keys[0]
-                sections[sec_key] = text[start:end].strip()
+            for k, v in m.groupdict().items():
+                if v:
+                    curr_content = text[start:end].strip()
+                    if sections[k]:
+                        sections[k] = sections[k] + "\n\n" + curr_content
+                    else:
+                        sections[k] = curr_content
 
         return sections
 

@@ -310,10 +310,11 @@ def get_user_job_stats(user_id: int) -> dict:
         "golden_hour_queue": golden_hour_queue
     }
 
-def get_user_jobs_list(user_id: int, limit: int = 10, include_deleted: bool = False) -> list:
+def get_user_jobs_list(user_id: int, limit: int = 10, include_deleted: bool = False, min_score: int = 0) -> list:
     conn = get_connection()
     cursor = conn.cursor()
     del_clause = "" if include_deleted else "AND (j.is_deleted = 0 OR j.is_deleted IS NULL) AND (uj.is_deleted = 0 OR uj.is_deleted IS NULL)"
+    score_clause = f"AND (COALESCE(uj.match_score, j.match_score, 0) >= {min_score} AND COALESCE(uj.status, j.status) != 'skipped')" if min_score > 0 else ""
     cursor.execute(f"""
     SELECT 
         j.id, j.job_id, j.platform, j.title, j.company, j.location, j.salary_range, j.url, j.description, j.skills_required,
@@ -327,7 +328,7 @@ def get_user_jobs_list(user_id: int, limit: int = 10, include_deleted: bool = Fa
         uj.applied_at
     FROM jobs j
     LEFT JOIN user_jobs uj ON j.job_id = uj.job_id AND uj.user_id = ?
-    WHERE 1=1 {del_clause}
+    WHERE 1=1 {del_clause} {score_clause}
     ORDER BY uj.match_score DESC, j.id DESC
     LIMIT ?
     """, (user_id, limit))

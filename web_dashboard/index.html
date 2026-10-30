@@ -383,25 +383,88 @@
                 <div class="border-b border-slate-800 pb-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[11px] font-bold">سرویس B2B سازمانی</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[11px] font-bold">مصاحبه‌گر انسان‌نما دکتر کیان رادمنش</span>
                             <h2 class="text-lg font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-200 to-indigo-300">
-                                شبیه‌ساز سه‌بعدی مصاحبه استخدامی (Next-Gen B2B Interview Simulator)
+                                شبیه‌ساز سه‌بعدی و صوتی مصاحبه استخدامی (3D Human-like AI Simulator)
                             </h2>
                         </div>
-                        <p class="text-xs text-slate-400 mt-1">ارزیابی فنی، سناریوی بحران و سنجش شاخص‌های ارشدیت به همراه اورب تعاملی سه‌بعدی Three.js و ارزیابی رسمی استخدام</p>
+                        <p class="text-xs text-slate-400 mt-1">
+                            راهبر ارشد هوش تجاری و مهندسی داده · معرفی اختصاصی چالش‌های شرکت، گفتگوی صوتی انسانی و حالت تمرین تخصصی لول‌بندی شده
+                        </p>
                     </div>
 
-                    <!-- Company Selector -->
-                    <div class="flex items-center gap-2">
-                        <label class="text-xs text-slate-400">شرکت هدف:</label>
-                        <select id="interview-company-select" onchange="loadInterviewQuestion()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400">
-                            <option value="گروه اسنپ (Snapp Group)">گروه اسنپ (Snapp Group)</option>
-                            <option value="دیجی‌کالا (Digikala)">دیجی‌کالا (Digikala)</option>
-                            <option value="هلدینگ هزاردستان (کافه‌بازار و دیوار)">هلدینگ هزاردستان (کافه‌بازار)</option>
-                            <option value="ایرانسل (MTN Irancell)">ایرانسل (MTN Irancell)</option>
-                            <option value="تپسی (Tapsi)">تپسی (Tapsi)</option>
+                    <!-- Interview Controls & Mode Selection -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <div class="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                            <button onclick="setInterviewMode('full')" id="mode-btn-full" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-purple-600 text-white">
+                                🏢 مصاحبه شرکتی
+                            </button>
+                            <button onclick="setInterviewMode('drill')" id="mode-btn-drill" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                                🎯 تمرین تخصصی موضوعی
+                            </button>
+                        </div>
+
+                        <!-- Company Selector -->
+                        <div id="company-select-wrapper" class="flex items-center gap-2">
+                            <select id="interview-company-select" onchange="onCompanyChange()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400">
+                                <option value="گروه اسنپ (Snapp Group)">گروه اسنپ (Snapp Group)</option>
+                                <option value="دیجی‌کالا (Digikala)">دیجی‌کالا (Digikala)</option>
+                                <option value="هلدینگ هزاردستان (کافه‌بازار و دیوار)">هلدینگ هزاردستان (کافه‌بازار)</option>
+                                <option value="ایرانسل (MTN Irancell)">ایرانسل (MTN Irancell)</option>
+                                <option value="تپسی (Tapsi)">تپسی (Tapsi)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Drill Mode Controls (Visible when mode == 'drill') -->
+                <div id="drill-controls-panel" class="hidden mb-6 p-4 rounded-xl bg-purple-950/30 border border-purple-500/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <label class="text-xs font-bold text-purple-300 shrink-0">موضوع تمرین:</label>
+                        <select id="drill-topic-select" onchange="loadInterviewQuestion()" class="w-full sm:w-auto bg-slate-900 border border-purple-500/40 text-xs text-slate-200 rounded-xl px-3 py-1.5 focus:outline-none">
+                            <option value="python">پایتون پیشرفته و بهینه‌سازی (Python)</option>
+                            <option value="ml">یادگیری ماشین و مدل‌سازی (Machine Learning)</option>
+                            <option value="sql">SQL پیشرفته و معماری پایگاه‌داده (SQL & Data Modeling)</option>
+                            <option value="rag">سامانه‌های RAG و پایگاه‌های وکتوری (FAISS / Embeddings)</option>
+                            <option value="docker">داکر و استقرار میکروسرویس (Docker & FastAPI)</option>
                         </select>
                     </div>
+
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        <label class="text-xs font-bold text-teal-300 shrink-0">سطح دشواری:</label>
+                        <select id="drill-stage-select" onchange="loadInterviewQuestion()" class="bg-slate-900 border border-teal-500/40 text-xs text-slate-200 rounded-xl px-3 py-1.5 focus:outline-none">
+                            <option value="level1_easy">سطح ۱: مفاهیم پایه و تکنیکال آسان</option>
+                            <option value="level2_scenario" selected>سطح ۲: سناریوی عملی و حل مسئله</option>
+                            <option value="level3_architecture">سطح ۳: معماری سیستم و System Design</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Company Presentation & Dr. Kian Greeting Card -->
+                <div id="interview-intro-card" class="mb-6 p-5 rounded-2xl bg-gradient-to-r from-purple-950/40 via-slate-950 to-indigo-950/40 border border-purple-500/30 space-y-3 relative overflow-hidden">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 text-purple-300 flex items-center justify-center font-bold text-sm">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                                    <span>دکتر کیان رادمنش</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">مصاحبه‌گر ارشد</span>
+                                </h4>
+                                <span class="text-[11px] text-slate-400" id="intro-company-title">معرفی چالش‌های گروه اسنپ (Snapp Group)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="playIntroSpeech()" id="btn-play-intro" class="text-xs bg-purple-600 hover:bg-purple-500 text-white font-bold px-3.5 py-1.5 rounded-xl shadow-lg shadow-purple-600/30 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>شنیدن صدای دکتر رادمنش (TTS)</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-purple-200/90 leading-relaxed pt-1" id="intro-speech-text">
+                        سلام علی جان، وقتت بخیر و خیلی خوش اومدی به جلسه مصاحبه فنی ما. من کیان رادمنش هستم. قبل از اینکه وارد سوالات فنی و تخصصی بشیم، بذار یه تصویر شفاف از ابعاد و چالش‌های کلان دیتای مجموعه‌مون بهت بدم تا با دید باز گفتگو کنیم...
+                    </p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -409,7 +472,7 @@
                     <div class="glass-card p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden min-h-[340px]">
                         <div class="absolute top-3 right-3 flex items-center gap-2 text-[10px] text-purple-300 bg-purple-950/40 border border-purple-500/30 px-2.5 py-1 rounded-full">
                             <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-ping"></span>
-                            <span>اورب صوتی هوش مصنوعی</span>
+                            <span>اورب تعاملی سه‌بعدی</span>
                         </div>
 
                         <!-- 3D Canvas Container -->
@@ -418,8 +481,8 @@
                         </div>
 
                         <div class="text-center space-y-1">
-                            <h4 class="text-xs font-bold text-white">مصاحبه‌گر ارشد هوش مصنوعی</h4>
-                            <p class="text-[11px] text-slate-400" id="interviewer-voice-status">آماده بیان سوال با موتور صوتی</p>
+                            <h4 class="text-xs font-bold text-white">دکتر کیان رادمنش</h4>
+                            <p class="text-[11px] text-slate-400" id="interviewer-voice-status">آماده بیان سوال با موتور صوتی فارسی</p>
                         </div>
 
                         <!-- Audio Controls -->
@@ -535,6 +598,32 @@
                     </div>
                 </div>
 
+                <!-- 24/7 Autonomous Agent Card -->
+                <div class="bg-gradient-to-r from-purple-950/40 via-slate-900 to-emerald-950/40 p-5 rounded-2xl border border-purple-500/30 flex flex-col md:flex-row items-center justify-between gap-4 mb-5">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-robot text-purple-400"></i>
+                                <span>پایش و ارسال خودکار ۲۴ ساعته (Autonomous 24/7 Agent)</span>
+                            </h3>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed">
+                            رصد لحظه‌ای آگهی‌های ۳۰ روز گذشته و جدید بازار کار تهران (کاربرد، جابینجا، جاب‌ویژن، دیوار) با تطابق بالای ۷۰٪ و اعمال خودکار سقف روزانه.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="runAutonomous30DayScan()" id="btn-scan-30days" class="text-xs bg-purple-600 hover:bg-purple-500 text-white font-bold px-3.5 py-2 rounded-xl shadow-lg shadow-purple-600/25 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <span>⚡ اسکن ۳۰ روز گذشته و ارسال فوری</span>
+                        </button>
+                        <button onclick="toggle24hAutonomous()" id="btn-toggle-24h" class="text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-3.5 py-2 rounded-xl shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-power-off"></i>
+                            <span id="text-24h-status">پایش ۲۴ ساعته: فعال ✅</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Jobs Table/List -->
                 <div class="space-y-4" id="jobs-container">
                     <!-- Loaded dynamically -->
@@ -560,6 +649,14 @@
                             <span>آپلود فایل جدید رزومه (PDF/Word)</span>
                             <input type="file" id="resume-file-input" onchange="uploadResumeFile(event)" accept=".pdf,.docx,.doc,.txt" class="hidden">
                         </label>
+                        <button onclick="toggleResumeLiveDemo()" id="btn-toggle-demo" class="text-xs bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-3.5 py-2.5 rounded-xl shadow-lg shadow-cyan-600/25 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <span>📄 پیش‌نمایش زنده ATS</span>
+                        </button>
+                        <button onclick="syncResumeWithPlatforms()" id="btn-sync-platforms" class="text-xs bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black px-4 py-2.5 rounded-xl shadow-lg shadow-teal-500/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                            <span>🔄 ارسال به رزومه‌ساز جابینجا و جاب‌ویژن</span>
+                        </button>
                         <button onclick="aiEnhanceResume()" id="btn-ai-enhance" class="text-xs bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl shadow-lg shadow-purple-600/25 transition flex items-center gap-2">
                             <i class="fa-solid fa-wand-magic-sparkles"></i>
                             <span>✨ بهینه‌سازی خودکار با هوش مصنوعی (ATS 95+)</span>
@@ -568,6 +665,27 @@
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>💾 ذخیره تغییرات</span>
                         </button>
+                    </div>
+                </div>
+
+                <!-- Live ATS Resume Demo Box (Collapsible / Dynamic) -->
+                <div id="resume-live-demo-box" class="hidden mb-6 p-6 rounded-2xl bg-[#0a0f1d] border-2 border-emerald-500/40 shadow-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <h3 class="text-sm font-black text-white">پیش‌نمایش زنده و تایید فرمت رسمی رزومه (ATS Live Preview)</h3>
+                            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">فرمت تاییدشده جابینجا و جاب‌ویژن</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="syncResumeWithPlatforms()" class="text-xs bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>✅ تایید و اعمال در فرم‌های رزومه‌ساز جابینجا و جاب‌ویژن</span>
+                            </button>
+                            <button onclick="toggleResumeLiveDemo()" class="text-xs text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">بستن</button>
+                        </div>
+                    </div>
+                    <div id="resume-live-demo-content" class="text-xs text-slate-200 space-y-4 font-sans leading-relaxed">
+                        <!-- Loaded via renderResumeLiveDemo() -->
                     </div>
                 </div>
 
@@ -600,6 +718,14 @@
                                 <label class="block text-xs font-semibold text-slate-400 mb-1">ایمیل رسمی:</label>
                                 <input type="email" id="builder-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="aliajvand@gmail.com">
                             </div>
+                        </div>
+
+                        <!-- Additional Custom Skills & Instructions for AI Enhancer -->
+                        <div class="p-3 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-1">
+                            <label class="block text-xs font-bold text-purple-300">
+                                <i class="fa-solid fa-plus-circle ml-1"></i> مهارت‌ها یا دستاوردهای دلخواه تکمیلی (جهت تزریق به هوش مصنوعی بدون اضافه کردن سابقه نامعتبر):
+                            </label>
+                            <input type="text" id="builder-additional-notes" class="w-full bg-slate-950 border border-purple-500/40 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-purple-400" placeholder="مثال: تسلط کامل بر Docker Compose، خطوط لوله CI/CD و پایگاه‌داده ClickHouse">
                         </div>
 
                         <!-- Professional Summary Section -->
@@ -783,20 +909,30 @@
         <section id="tab-salary" class="tab-content hidden space-y-6">
             <div class="glass-panel rounded-2xl p-6">
                 <div class="border-b border-slate-800 pb-5 mb-5">
-                    <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                        <i class="fa-solid fa-sack-dollar text-teal-400"></i>
-                        <span>رادار تخمین و پیشنهاد حقوق منصفانه (بازار کار تهران)</span>
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">تطبیق حقوق پوزیشن‌های تحلیل داده، علم داده و هوش تجاری در اسنپ، دیجی‌کالا و بازار</p>
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                                <i class="fa-solid fa-sack-dollar text-teal-400"></i>
+                                <span>رادار تخمین و پیشنهاد حقوق منصفانه (پیمایش رسمی سال ۱۴۰۳ جاب‌ویژن)</span>
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-1">تطبیق حقوق پوزیشن‌های تحلیل داده، علم داده و هوش تجاری در اسنپ، دیجی‌کالا، بازار و کل کشور</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 font-bold">
+                            ۷۴,۰۰۰ شرکت‌کننده سراسری
+                        </span>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div>
                         <label class="block text-xs text-slate-400 mb-1.5">حوزه تخصصی:</label>
                         <select id="salary-role-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
-                            <option value="data_analyst" selected>تحلیل‌گر و دانشمند داده (Data Science & BI)</option>
+                            <option value="data_analyst" selected>تحلیل‌گر داده و هوش تجاری (Data & BI)</option>
+                            <option value="data_scientist">دانشمند داده و یادگیری ماشین (Data Science)</option>
+                            <option value="data_engineer">مهندس کلان‌داده و پایپ‌لاین (Data Engineer)</option>
                             <option value="python_developer">توسعه‌دهنده پایتون و بک‌اند</option>
-                            <option value="ai_engineer">مهندس سیستم‌های ایجنتی و هوش مصنوعی</option>
+                            <option value="ai_engineer">مهندس هوش مصنوعی و مدل‌های زبانی (AI / LLM)</option>
+                            <option value="frontend_developer">توسعه‌دهنده فرانت‌اند (React / TypeScript)</option>
                         </select>
                     </div>
                     <div>
@@ -806,6 +942,31 @@
                             <option value="mid">میان‌رده (Mid-Level)</option>
                             <option value="senior" selected>ارشد (Senior)</option>
                         </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5">استان / شهر (ضرایب گزارش حقوق جاب‌ویژن):</label>
+                        <select id="salary-city-select" onchange="updateSalaryData()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none">
+                            <option value="تهران" selected>تهران (ضریب ۱۰۰٪)</option>
+                            <option value="کرج">البرز و کرج (ضریب ۸۸٪)</option>
+                            <option value="اصفهان">اصفهان (ضریب ۸۵٪)</option>
+                            <option value="مشهد">خراسان رضوی / مشهد (ضریب ۸۴٪)</option>
+                            <option value="شیراز">فارس / شیراز (ضریب ۸۳٪)</option>
+                            <option value="تبریز">آذربایجان شرقی / تبریز (ضریب ۸۲٪)</option>
+                            <option value="اهواز">خوزستان / اهواز (ضریب ۸۵٪)</option>
+                            <option value="سایر استان‌ها">سایر استان‌ها و شهرستان‌ها (ضریب ۷۴٪)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Jobvision Source & Recommended Bid Banner -->
+                <div id="salary-source-banner" class="p-4 rounded-xl bg-gradient-to-r from-teal-950/40 via-slate-900 to-emerald-950/40 border border-teal-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs mb-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-teal-400"></i>
+                        <span id="salary-source-text" class="text-slate-300">گزارش سراسری حقوق و دستمزد جاب‌ویژن سال ۱۴۰۳ (جامعه آماری ۷۴,۰۰۰ نفری متخصصان ایران)</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="text-slate-400">رقم پیشنهادی رزومه:</span>
+                        <strong class="text-emerald-400 font-bold" id="salary-recommended-bid">۵۵ الی ۹۰ میلیون تومان</strong>
                     </div>
                 </div>
 
@@ -1182,6 +1343,59 @@
             }
         }
 
+        async function runAutonomous30DayScan() {
+            const btn = document.getElementById('btn-scan-30days');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> در حال اسکن ۳۰ روز گذشته...`;
+            }
+            showToast('در حال اسکن عمیق ۳۰ روز گذشته در بازار کار تهران (کاربورد، جابینجا، جاب‌ویژن، دیوار)...');
+            try {
+                const res = await fetch('/api/jobs/autonomous-scan', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_id: 1, days_back: 30})
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message);
+                    loadJobs();
+                    fetchLogs();
+                } else {
+                    showToast(data.message || 'خطا در اسکن ۳۰ روز گذشته', 'warning');
+                }
+            } catch (e) {
+                showToast('خطا در اجرای اسکن ۳۰ روزه', 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <span>⚡ اسکن ۳۰ روز گذشته و ارسال فوری</span>`;
+                }
+            }
+        }
+
+        async function toggle24hAutonomous() {
+            try {
+                const res = await fetch('/api/jobs/autonomous-toggle', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_id: 1})
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const active = data.autonomous_24h_active;
+                    const textSpan = document.getElementById('text-24h-status');
+                    if (textSpan) {
+                        textSpan.innerText = active ? 'پایش ۲۴ ساعته: فعال ✅' : 'پایش ۲۴ ساعته: غیرفعال ⏸️';
+                    }
+                    showToast(data.message);
+                    fetchLogs();
+                }
+            } catch (e) {
+                showToast('خطا در تغییر وضعیت پایش ۲۴ ساعته', 'error');
+            }
+        }
+
         // ==========================================
         // 5. Multi-Agent War Room Council
         // ==========================================
@@ -1303,22 +1517,121 @@
         }
 
         // ==========================================
-        // 6. B2B Interview Simulator & Voice
+        // 6. B2B Interview Simulator & Voice (Dr. Kian Radmanesh Persona)
         // ==========================================
+        let currentInterviewMode = 'full'; // 'full' or 'drill'
+        let currentIntroSpeechText = '';
+
+        function setInterviewMode(mode) {
+            currentInterviewMode = mode;
+            const btnFull = document.getElementById('mode-btn-full');
+            const btnDrill = document.getElementById('mode-btn-drill');
+            const drillPanel = document.getElementById('drill-controls-panel');
+            const introCard = document.getElementById('interview-intro-card');
+
+            if (mode === 'drill') {
+                btnDrill.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition bg-purple-600 text-white';
+                btnFull.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white';
+                if (drillPanel) drillPanel.classList.remove('hidden');
+                if (introCard) introCard.classList.add('hidden');
+                loadInterviewQuestion();
+            } else {
+                btnFull.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition bg-purple-600 text-white';
+                btnDrill.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white';
+                if (drillPanel) drillPanel.classList.add('hidden');
+                if (introCard) introCard.classList.remove('hidden');
+                loadInterviewIntro();
+                loadInterviewQuestion();
+            }
+        }
+
+        async function onCompanyChange() {
+            if (currentInterviewMode === 'full') {
+                await loadInterviewIntro();
+            }
+            await loadInterviewQuestion();
+        }
+
+        async function loadInterviewIntro() {
+            const comp = document.getElementById('interview-company-select')?.value || 'گروه اسنپ (Snapp Group)';
+            try {
+                const res = await fetch('/api/interview/intro', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({company: comp, candidate_name: 'علی رجوند'})
+                });
+                const data = await res.json();
+                if (data.intro_speech) {
+                    currentIntroSpeechText = data.intro_speech;
+                    const speechEl = document.getElementById('intro-speech-text');
+                    if (speechEl) speechEl.innerText = data.intro_speech;
+                    const titleEl = document.getElementById('intro-company-title');
+                    if (titleEl) titleEl.innerText = `معرفی و پرزنت چالش‌های ${comp}`;
+                }
+            } catch (e) {
+                console.error('Error loading interview intro:', e);
+            }
+        }
+
+        function playIntroSpeech() {
+            const text = currentIntroSpeechText || document.getElementById('intro-speech-text')?.innerText;
+            if (!text) return;
+
+            isSpeakingAnim = true;
+            document.getElementById('interviewer-voice-status').innerText = 'دکتر کیان رادمنش: در حال خوشامدگویی و پرزنت ابعاد شرکت...';
+            playSynthesizedHologramAudio(6000);
+
+            if ('speechSynthesis' in window) {
+                try {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    const voices = window.speechSynthesis.getVoices();
+                    const faVoice = voices.find(v => v.lang.startsWith('fa') || v.name.toLowerCase().includes('persian') || v.name.toLowerCase().includes('iran'));
+                    if (faVoice) utterance.voice = faVoice;
+                    else utterance.lang = 'fa-IR';
+                    utterance.rate = 0.95;
+
+                    utterance.onend = () => {
+                        isSpeakingAnim = false;
+                        document.getElementById('interviewer-voice-status').innerText = 'آماده بیان سوال فنی اول';
+                    };
+                    utterance.onerror = () => {
+                        setTimeout(() => {
+                            isSpeakingAnim = false;
+                            document.getElementById('interviewer-voice-status').innerText = 'آماده شروع مصاحبه';
+                        }, 5000);
+                    };
+                    window.speechSynthesis.speak(utterance);
+                } catch (e) {
+                    setTimeout(() => { isSpeakingAnim = false; }, 5000);
+                }
+            } else {
+                setTimeout(() => { isSpeakingAnim = false; }, 6000);
+            }
+        }
+
         async function loadInterviewQuestion(customTitle, customCompany) {
-            const comp = customCompany || document.getElementById('interview-company-select').value;
+            const comp = customCompany || document.getElementById('interview-company-select')?.value || 'گروه اسنپ (Snapp Group)';
             const title = customTitle || "تحلیل‌گر داده و هوش تجاری";
+            const topic = document.getElementById('drill-topic-select')?.value || 'python';
+            const stage = document.getElementById('drill-stage-select')?.value || 'level2_scenario';
 
             try {
                 const res = await fetch('/api/interview/question', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({job_title: title, company: comp})
+                    body: JSON.stringify({
+                        job_title: title,
+                        company: comp,
+                        mode: currentInterviewMode,
+                        topic: topic,
+                        stage: stage
+                    })
                 });
                 const data = await res.json();
                 document.getElementById('q-text').innerText = data.question;
-                document.getElementById('q-type').innerText = data.type || 'سناریوی تخصصی حل مسئله';
-                document.getElementById('q-context').innerText = comp;
+                document.getElementById('q-type').innerText = data.type || (currentInterviewMode === 'drill' ? `تمرین تخصصی (${topic})` : 'سناریوی تخصصی حل مسئله');
+                document.getElementById('q-context').innerText = currentInterviewMode === 'drill' ? `تمرین: ${topic.toUpperCase()} - ${stage}` : comp;
                 document.getElementById('q-hint').innerHTML = `<i class="fa-solid fa-lightbulb ml-1"></i> ${data.hint || ''}`;
                 document.getElementById('interview-feedback-box').classList.add('hidden');
                 document.getElementById('interview-user-answer').value = '';
@@ -1571,30 +1884,41 @@
         }
 
         async function updateSalaryData() {
-            const role = document.getElementById('salary-role-select').value;
-            const level = document.getElementById('salary-level-select').value;
+            const role = document.getElementById('salary-role-select')?.value || 'data_analyst';
+            const level = document.getElementById('salary-level-select')?.value || 'senior';
+            const city = document.getElementById('salary-city-select')?.value || 'تهران';
+
             try {
-                const res = await fetch(`/api/market/benchmarks?role=${role}&level=${level}`);
+                const res = await fetch(`/api/market/benchmarks?role=${role}&level=${level}&city=${encodeURIComponent(city)}`);
                 const data = await res.json();
                 const b = data.benchmark;
+
+                const sourceText = document.getElementById('salary-source-text');
+                if (sourceText && b.data_source) sourceText.innerText = b.data_source;
+
+                const bidEl = document.getElementById('salary-recommended-bid');
+                if (bidEl && b.recommended_bid) bidEl.innerText = b.recommended_bid;
+
                 const container = document.getElementById('salary-cards-container');
-                container.innerHTML = `
-                    <div class="glass-card p-5 rounded-2xl border-emerald-500/20 text-center">
-                        <span class="text-xs text-slate-400 block mb-1">کف حقوق منصفانه (Minimum)</span>
-                        <span class="text-2xl font-black text-emerald-400">${b.min_salary}</span>
-                        <span class="text-xs text-slate-400 block mt-1">میلیون تومان</span>
-                    </div>
-                    <div class="glass-card p-5 rounded-2xl border-teal-500/30 text-center glow-emerald">
-                        <span class="text-xs text-slate-400 block mb-1">میانگین بازار تهران (Median)</span>
-                        <span class="text-2xl font-black text-teal-300">${b.median_salary}</span>
-                        <span class="text-xs text-slate-400 block mt-1">میلیون تومان</span>
-                    </div>
-                    <div class="glass-card p-5 rounded-2xl border-cyan-500/20 text-center">
-                        <span class="text-xs text-slate-400 block mb-1">سقف حقوق شرکت‌های برتر</span>
-                        <span class="text-2xl font-black text-cyan-400">${b.max_salary}</span>
-                        <span class="text-xs text-slate-400 block mt-1">میلیون تومان</span>
-                    </div>
-                `;
+                if (container) {
+                    container.innerHTML = `
+                        <div class="glass-card p-5 rounded-2xl border-emerald-500/20 text-center">
+                            <span class="text-xs text-slate-400 block mb-1">کف حقوق منصفانه (${b.city})</span>
+                            <span class="text-2xl font-black text-emerald-400">${b.min_salary}</span>
+                            <span class="text-xs text-slate-400 block mt-1">میلیون تومان ماهانه</span>
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl border-teal-500/30 text-center glow-emerald">
+                            <span class="text-xs text-slate-400 block mb-1">میانگین بازار (${b.city})</span>
+                            <span class="text-2xl font-black text-teal-300">${b.median_salary}</span>
+                            <span class="text-xs text-slate-400 block mt-1">میلیون تومان ماهانه</span>
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl border-cyan-500/20 text-center">
+                            <span class="text-xs text-slate-400 block mb-1">سقف حقوق شرکت‌های برتر</span>
+                            <span class="text-2xl font-black text-cyan-400">${b.max_salary}</span>
+                            <span class="text-xs text-slate-400 block mt-1">میلیون تومان ماهانه</span>
+                        </div>
+                    `;
+                }
             } catch (e) {
                 console.error(e);
             }
@@ -1788,7 +2112,8 @@
                 target_title: document.getElementById('builder-target-title').value,
                 summary: document.getElementById('builder-summary').value,
                 experience: document.getElementById('builder-experience').value,
-                skills: document.getElementById('builder-skills').value.split(/[,،]+/).map(s => s.trim()).filter(Boolean)
+                skills: document.getElementById('builder-skills').value.split(/[,،]+/).map(s => s.trim()).filter(Boolean),
+                additional_notes: document.getElementById('builder-additional-notes')?.value || ''
             };
 
             try {
@@ -1835,6 +2160,131 @@
             }
         }
 
+        let liveDemoVisible = false;
+        async function toggleResumeLiveDemo() {
+            liveDemoVisible = !liveDemoVisible;
+            const box = document.getElementById('resume-live-demo-box');
+            if (box) {
+                box.classList.toggle('hidden', !liveDemoVisible);
+            }
+            if (liveDemoVisible) {
+                await renderResumeLiveDemo();
+            }
+        }
+
+        async function renderResumeLiveDemo() {
+            const content = document.getElementById('resume-live-demo-content');
+            if (!content) return;
+            content.innerHTML = '<div class="text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin text-lg"></i> در حال بارگذاری ساختار رسمی رزومه...</div>';
+
+            try {
+                const res = await fetch('/api/resume/demo?user_id=1');
+                const data = await res.json();
+
+                content.innerHTML = `
+                    <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800/80 pb-4 gap-2">
+                            <div>
+                                <h2 class="text-base font-black text-white">${data.full_name}</h2>
+                                <p class="text-xs text-emerald-400 font-bold mt-0.5">${data.target_title}</p>
+                            </div>
+                            <div class="text-[11px] text-slate-400 space-y-0.5 sm:text-left">
+                                <div><i class="fa-solid fa-phone text-emerald-400 ml-1"></i> ${data.contact.phone}</div>
+                                <div><i class="fa-solid fa-envelope text-cyan-400 ml-1"></i> ${data.contact.email}</div>
+                                <div><i class="fa-brands fa-github text-white ml-1"></i> ${data.contact.github}</div>
+                            </div>
+                        </div>
+
+                        <!-- Summary -->
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-user"></i> خلاصه حرفه‌ای (Professional Summary)
+                            </h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">${data.summary}</p>
+                        </div>
+
+                        <!-- Work History -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-briefcase"></i> سوابق شغلی و پروژه‌های رسمی (Work Experience)
+                            </h4>
+                            <div class="space-y-2">
+                                ${(data.work_history || []).map(w => `
+                                    <div class="p-3 rounded-lg bg-slate-900/70 border border-slate-800/80">
+                                        <div class="flex items-center justify-between flex-wrap gap-1 text-xs">
+                                            <strong class="text-white">${w.title} @ ${w.company}</strong>
+                                            <span class="text-slate-400">${w.period}</span>
+                                        </div>
+                                        <ul class="mt-2 space-y-1 text-slate-300 text-[11px]">
+                                            ${(w.bullets || []).map(b => `<li>• ${b}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Key Products -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-diagram-project"></i> محصولات داده‌ای و افتخارات (End-to-End Data Products & Honors)
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                ${(data.projects || []).slice(0, 4).map(p => `
+                                    <div class="p-2.5 rounded-lg bg-slate-900/50 border border-slate-800 text-[11px]">
+                                        <strong class="text-cyan-300 block font-bold">${p.name}</strong>
+                                        <p class="text-slate-400 mt-1">${p.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Technical Skills Matrix -->
+                        <div class="space-y-1.5">
+                            <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-code"></i> ماتریس مهارت‌های فنی مورد تایید ATS
+                            </h4>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
+                                ${(data.skills_matrix || []).map(sk => `<span class="px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-[10px] text-slate-300">${sk}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                content.innerHTML = '<div class="text-rose-400 text-xs py-4 text-center">خطا در دریافت اطلاعات دمو رزومه</div>';
+            }
+        }
+
+        async function syncResumeWithPlatforms() {
+            const btn = document.getElementById('btn-sync-platforms');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> در حال انتقال به جابینجا و جاب‌ویژن...`;
+            }
+            showToast('در حال همگام‌سازی مشخصات در فیلدهای رزومه‌ساز آنلاین جابینجا و جاب‌ویژن...');
+
+            try {
+                const res = await fetch('/api/resume/sync-platforms', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_id: 1})
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message);
+                    fetchLogs();
+                } else {
+                    showToast(data.message || 'خطا در همگام‌سازی با رزومه‌سازها', 'warning');
+                }
+            } catch (e) {
+                showToast('خطا در ارتباط با سرور', 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> <span>🔄 ارسال به رزومه‌ساز جابینجا و جاب‌ویژن</span>`;
+                }
+            }
+        }
+
         async function tailorResumeForSelectedJob() {
             const jobSelect = document.getElementById('tailor-job-select');
             const jobId = jobSelect ? jobSelect.value : null;
@@ -1874,6 +2324,7 @@
             loadWarRoomDomains();
             loadProfileData();
             updateSalaryData();
+            loadInterviewIntro();
             fetchLogs();
             setInterval(fetchLogs, 4000);
         });

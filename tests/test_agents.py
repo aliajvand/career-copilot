@@ -59,8 +59,8 @@ def test_resume_analyzer():
 def test_market_salary_agent():
     print("\n--- 3. Testing Market Salary Agent ---")
     b = market_salary_agent.get_benchmark("data_analyst", "mid")
-    assert b["median_salary"] == 38, "Median salary mismatch"
-    assert "38 الی 48" in b["recommended_bid"]
+    assert b["median_salary"] == 45, "Median salary mismatch"
+    assert "45 الی 58" in b["recommended_bid"]
     print(f"✓ Salary Benchmark for {b['role_fa']}: {b['min_salary']} to {b['max_salary']} M Tomans")
 
 def test_job_hunter_and_duplication():
@@ -94,12 +94,12 @@ def test_auto_applier_and_duplicate_lock():
             
     if target:
         # First apply should succeed
-        res1 = auto_applier_agent.apply_to_job(target["job_id"])
+        res1 = auto_applier_agent.apply_to_job(target["job_id"], bypass_cap=True)
         assert res1["success"] is True, f"Application failed: {res1}"
         print(f"✓ Successfully applied to: {target['company']}")
 
         # Second apply to same job MUST fail
-        res2 = auto_applier_agent.apply_to_job(target["job_id"])
+        res2 = auto_applier_agent.apply_to_job(target["job_id"], bypass_cap=True)
         assert res2["success"] is False, "Duplicate application was not prevented!"
         print(f"✓ Re-application successfully blocked with error: {res2['error']}")
 

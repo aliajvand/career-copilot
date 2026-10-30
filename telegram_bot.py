@@ -65,16 +65,33 @@ def get_or_create_user(telegram_id: int, full_name: str) -> dict:
     row = cursor.fetchone()
     
     if not row:
-        cursor.execute("""
-        INSERT INTO profiles (full_name, target_title, target_city, telegram_user_id, golden_hour_enabled, match_threshold, daily_cap)
-        VALUES (?, 'دیتا آنالیست / Data Analyst', 'تهران', ?, 1, 70, 15)
-        """, (full_name, telegram_id))
-        conn.commit()
-        cursor.execute("SELECT * FROM profiles WHERE telegram_user_id = ?", (telegram_id,))
-        row = cursor.fetchone()
+        # Check if profile 1 is available to be linked to candidate
+        cursor.execute("SELECT * FROM profiles WHERE id = 1 AND (telegram_user_id IS NULL OR telegram_user_id = '')")
+        p1 = cursor.fetchone()
+        if p1:
+            cursor.execute("UPDATE profiles SET telegram_user_id = ? WHERE id = 1", (telegram_id,))
+            conn.commit()
+            cursor.execute("SELECT * FROM profiles WHERE id = 1")
+            row = cursor.fetchone()
+        else:
+            cursor.execute("""
+            INSERT INTO profiles (full_name, target_title, target_city, telegram_user_id, golden_hour_enabled, match_threshold, daily_cap)
+            VALUES (?, 'دانشمند داده و هوش تجاری', 'تهران', ?, 1, 70, 15)
+            """, (full_name, telegram_id))
+            conn.commit()
+            cursor.execute("SELECT * FROM profiles WHERE telegram_user_id = ?", (telegram_id,))
+            row = cursor.fetchone()
         
     conn.close()
     return dict(row)
+
+def get_reply_keyboard():
+    from telegram import ReplyKeyboardMarkup
+    return ReplyKeyboardMarkup([
+        ["📋 مشاهده رزومه هوشمند و ATS", "🎯 فرصت‌های شغلی منطبق"],
+        ["🚀 ارسال خودکار به همه", "🤖 پایش خودکار ۲۴ ساعته"],
+        ["✏️ ویرایش مشخصات", "⚙️ وضعیت حساب‌های استخدامی"]
+    ], resize_keyboard=True)
 
 def get_main_keyboard():
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -82,15 +99,15 @@ def get_main_keyboard():
         [InlineKeyboardButton("📊 مشاهده وضعیت پروفایل و نمره ATS", callback_data="status")],
         [InlineKeyboardButton("🎯 فرصت‌های شغلی پیشنهادی من", callback_data="jobs")],
         [InlineKeyboardButton("🚀 ارسال خودکار برای تمام موقعیت‌ها (/apply_all)", callback_data="apply_all_jobs")],
+        [InlineKeyboardButton("🤖 پایش خودکار ۲۴ ساعته و اسکن ۳۰ روز گذشته", callback_data="autonomous_menu")],
         [
             InlineKeyboardButton("✏️ ویرایش و ثبت اطلاعات من", callback_data="edit_profile_menu"),
             InlineKeyboardButton("⚙️ ماژول‌ها و ساعت طلایی", callback_data="modules_menu")
         ],
         [
             InlineKeyboardButton("🔑 وضعیت اتصال جابینجا/جاب‌ویژن", callback_data="accounts_menu"),
-            InlineKeyboardButton("💳 خرید اشتراک ویژه (Sandbox)", callback_data="sandbox_pay")
+            InlineKeyboardButton("🛡️ ممیزی امنیتی پلتفرم (OWASP)", callback_data="security_audit")
         ],
-        [InlineKeyboardButton("🛡️ ممیزی امنیتی پلتفرم (OWASP)", callback_data="security_audit")],
         [InlineKeyboardButton("🌐 ورود به داشبورد و شبیه‌ساز مصاحبه", url=settings.PUBLIC_URL)]
     ])
 
@@ -108,7 +125,7 @@ def format_user_status(profile: dict) -> str:
         except Exception:
             skills = []
 
-    skills_text = ", ".join(skills[:6]) if skills else "هنوز مهارتی ثبت نشده است"
+    skills_text = ", ".join(skills[:8]) if skills else "هنوز مهارتی ثبت نشده است"
     now_str = datetime.now().strftime("%H:%M")
 
     return f"""
@@ -118,32 +135,31 @@ def format_user_status(profile: dict) -> str:
 📍 **شهر هدف:** {profile.get('target_city', 'تهران')}
 📊 **نمره ATS رزومه شما:** {profile.get('ats_score', 0)} از ۱۰۰
 🎯 **مهارت‌های ثبت‌شده:** {skills_text}
-🏢 **آگهی‌های فعال در بازار:** {total_jobs} موقعیت
+🏢 **آگهی‌های فعال در بازار تهران:** {total_jobs} موقعیت
 🚀 **رزومه‌های ارسال‌شده برای شما:** {total_applied} مورد
 ⏳ **در صف ساعت طلایی شما:** {golden_hour_queue} آگهی
 
 ⚙️ **وضعیت ماژول‌ها:**
+- 🤖 پایش خودکار ۲۴ ساعته: {'فعال ✅' if profile.get('autonomous_24h_enabled') else 'خاموش (دستی)'}
 - ⏰ ساعت طلایی: {'فعال (۸ تا ۱۰ صبح)' if profile.get('golden_hour_enabled') else 'خاموش'}
-- 🔒 تأیید قبل از ارسال: {'فعال (امن)' if profile.get('requires_confirmation', 1) else 'ارسال بدون توقف'}
 - 🎯 حداقل درصد انطباق: {profile.get('match_threshold', 70)}٪
 - 📦 سقف روزانه: {profile.get('daily_cap', 15)} عدد
 
 💡 *می‌توانید اطلاعات خود را از دکمه «ویرایش و ثبت اطلاعات» تکمیل کنید یا فایل رزومه بفرستید.*
     """
 
-def format_user_jobs(profile: dict) -> str:
+def format_user_jobs_with_keyboard(profile: dict):
+    from telegram import InlineKeyboardButton, InlineKeyboardMarkup
     user_id = profile.get("id", 1)
-    
-    if profile.get("parsed_skills") and profile.get("ats_score", 0) > 0:
-        jobs = job_matcher_agent.match_all_jobs_for_user(user_id=user_id)[:6]
-        header_text = f"🔥 **پیشنهادات هوشمند منطبق بر مهارت‌های شما ({profile.get('full_name')}):**\n"
-    else:
-        jobs = get_user_jobs_list(user_id=user_id, limit=6)
-        if not jobs:
-            jobs = job_hunter_agent.hunt_jobs()[:6]
-        header_text = "📋 **تازه‌ترین موقعیت‌های شغلی فعال بازار تهران:**\n"
+    jobs = job_matcher_agent.match_all_jobs_for_user(user_id=user_id, only_matched=True)[:6]
+    if not jobs:
+        jobs = get_user_jobs_list(user_id=user_id, limit=6, min_score=60)
+    if not jobs:
+        jobs = get_user_jobs_list(user_id=1, limit=6)
 
-    lines = [header_text]
+    lines = [f"🔥 **پیشنهادات هوشمند منطبق بر مهارت‌های شما ({profile.get('full_name')}):**\n"]
+    buttons = []
+
     for idx, j in enumerate(jobs, 1):
         status = j.get('status', 'discovered')
         status_badge = "🟢 آماده ارسال"
@@ -157,8 +173,7 @@ def format_user_jobs(profile: dict) -> str:
         if isinstance(reasons, str):
             try: reasons = json.loads(reasons)
             except: reasons = []
-
-        reason_str = ", ".join(reasons[:3]) if reasons else "تطابق عنوان و زمینه کاری"
+        reason_str = ", ".join(reasons[:3]) if reasons else "تطابق عنوان و استک"
 
         lines.append(f"""
 {idx}. **{j.get('title')}**
@@ -166,12 +181,19 @@ def format_user_jobs(profile: dict) -> str:
 💰 حقوق: {j.get('salary_range', 'توافقی')}
 🎯 درصد انطباق: **{match_score}٪** | وضعیت: {status_badge}
 💡 **دلیل پیشنهاد:** اشتراک در مهارت‌های [{reason_str}]
-👉 ارسال اختصاصی: `/apply {j.get('job_id')}`
 ------------------------------------
         """)
+        if status != "applied":
+            buttons.append([InlineKeyboardButton(f"🚀 ارسال فوری رزومه برای {j.get('company')}", callback_data=f"apply_single:{j.get('job_id')}")])
 
-    lines.append("⚡ برای ارسال تک‌به‌تک از `/apply <job_id>` یا برای ارسال یکجای همه از دستور `/apply_all` استفاده کنید.")
-    return "\n".join(lines)
+    buttons.append([InlineKeyboardButton("🚀 ارسال خودکار برای تمام موقعیت‌ها", callback_data="apply_all_jobs")])
+    buttons.append([InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")])
+
+    return "\n".join(lines), InlineKeyboardMarkup(buttons)
+
+def format_user_jobs(profile: dict) -> str:
+    text, _ = format_user_jobs_with_keyboard(profile)
+    return text
 
 def run_bot():
     if not TELEGRAM_BOT_TOKEN:
@@ -191,12 +213,14 @@ def run_bot():
                 f"👋 سلام **{user.first_name}** عزیز!\n\n"
                 "به **دستیار هوشمند شغلی و اتوماسیون Career Co-Pilot Enterprise** خوش آمدید.\n\n"
                 "امکانات اختصاصی ربات شما:\n"
-                "1. تحلیل ATS رزومه با هوش مصنوعی (ارسال فایل PDF/Word در همین چت)\n"
-                "2. پیشنهادهای شغلی بر اساس بردار مهارتی شما (Recommender System)\n"
-                "3. ارسال خودکار یکجا به تمام موقعیت‌های منتخب با یک کلیک\n"
-                "4. ثبت و ویرایش مستقیم مشخصات و اکانت‌های کاریابی از داخل بات\n"
-                "5. خرید اشتراک در محیط Sandbox درگاه پرداخت"
+                "1. 📊 نمره ATS و تحلیل رزومه متصل به دیتابیس (ارسال فایل PDF در همین چت)\n"
+                "2. 🎯 پیشنهادات شغلی واقعی و منطبق بازار تهران (بدون مشاغل متفرقه)\n"
+                "3. 🚀 ارسال با ۱ کلیک بدون نیاز به تایپ دستی کد آگهی\n"
+                "4. 🤖 پایش خودکار ۲۴ ساعته و اسکن ۳۰ روز گذشته بازار کار\n"
+                "5. ✏️ ویرایش و ثبت مستقیم اطلاعات، مهارت‌ها و اکانت‌ها\n"
+                "6. 💯 استفاده ۱۰۰٪ رایگان و نامحدود در تمامی بخش‌ها"
             )
+            await update.message.reply_text("کیبورد دسترسی سریع فعال شد:", reply_markup=get_reply_keyboard())
             await update.message.reply_text(welcome_text, reply_markup=get_main_keyboard(), parse_mode="Markdown")
 
         async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -208,11 +232,25 @@ def run_bot():
         async def jobs_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
             profile = get_or_create_user(user.id, user.full_name)
-            keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🚀 ارسال خودکار برای تمام این آگهی‌ها", callback_data="apply_all_jobs")],
+            text, keyboard = format_user_jobs_with_keyboard(profile)
+            await update.message.reply_text(text, reply_markup=keyboard, parse_mode="Markdown")
+
+        async def autonomous_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            profile = get_or_create_user(user.id, user.full_name)
+            auto_kb = InlineKeyboardMarkup([
+                [InlineKeyboardButton("⚡ اجرای اسکن ۳۰ روز گذشته و ارسال فوری", callback_data="run_autonomous_scan")],
+                [InlineKeyboardButton("🔄 تغییر وضعیت پایش خودکار ۲۴ ساعته", callback_data="toggle_autonomous_24h")],
                 [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
             ])
-            await update.message.reply_text(format_user_jobs(profile), reply_markup=keyboard, parse_mode="Markdown")
+            auto_text = (
+                "🤖 **مدیریت پایش خودکار ۲۴ ساعته بازار کار (Autonomous 24/7 Agent):**\n\n"
+                f"• وضعیت پایش ۲۴ ساعته: `{'فعال ✅' if profile.get('autonomous_24h_enabled') else 'خاموش (دستی)'}`\n"
+                f"• حد آستانه انطباق: `{profile.get('match_threshold', 70)}٪`\n"
+                f"• سقف ارسال روزانه: `{profile.get('daily_cap', 15)} عدد`\n\n"
+                "با اجرای اسکن ۳۰ روز گذشته، ربات تمامی آگهی‌های ثبت‌شده در جابینجا، جاب‌ویژن، دیوار و کاربرد را رصد کرده و برای موقعیت‌های واجد شرایط رزومه ارسال می‌کند."
+            )
+            await update.message.reply_text(auto_text, reply_markup=auto_kb, parse_mode="Markdown")
 
         async def apply_all_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
@@ -355,13 +393,62 @@ def run_bot():
             await update.message.reply_text(msg, reply_markup=keyboard, parse_mode="Markdown")
 
         async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-            """Handles interactive inputs for setting title, city, skills, and accounts."""
+            """Handles interactive inputs and persistent reply menu buttons."""
             user = update.effective_user
             profile = get_or_create_user(user.id, user.full_name)
             user_text = update.message.text.strip()
             waiting_for = context.user_data.get("waiting_for")
 
             back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]])
+
+            # Persistent bottom keyboard navigation
+            if user_text == "📋 مشاهده رزومه هوشمند و ATS":
+                return await status_cmd(update, context)
+            elif user_text == "🎯 فرصت‌های شغلی منطبق":
+                return await jobs_cmd(update, context)
+            elif user_text == "🚀 ارسال خودکار به همه":
+                return await apply_all_cmd(update, context)
+            elif user_text == "🤖 پایش خودکار ۲۴ ساعته":
+                return await autonomous_cmd(update, context)
+            elif user_text == "✏️ ویرایش مشخصات":
+                edit_text = (
+                    "✏️ **ویرایش و ثبت مستقیم اطلاعات در سیستم:**\n\n"
+                    f"1. عنوان فعلی: `{profile.get('target_title')}`\n"
+                    f"2. شهر هدف: `{profile.get('target_city')}`\n"
+                    f"3. مهارت‌ها: `{profile.get('parsed_skills')}`\n\n"
+                    "می‌خواهید کدام بخش را ثبت یا ویرایش کنید؟"
+                )
+                edit_kb = InlineKeyboardMarkup([
+                    [InlineKeyboardButton("📝 تغییر عنوان شغلی هدف", callback_data="prompt_set_title")],
+                    [InlineKeyboardButton("📍 تغییر شهر هدف", callback_data="prompt_set_city")],
+                    [InlineKeyboardButton("🛠️ افزودن مهارت‌های جدید", callback_data="prompt_add_skill")],
+                    [InlineKeyboardButton("🔑 ثبت اکانت جابینجا یا جاب‌ویژن", callback_data="prompt_set_account")],
+                    [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+                ])
+                return await update.message.reply_text(edit_text, reply_markup=edit_kb, parse_mode="Markdown")
+            elif user_text == "⚙️ وضعیت حساب‌های استخدامی":
+                conn = get_connection()
+                cur = conn.cursor()
+                cur.execute("SELECT platform, username_or_email, status FROM accounts")
+                accs = {r["platform"]: dict(r) for r in cur.fetchall()}
+                conn.close()
+                jobinja_acc = accs.get("jobinja", {})
+                jobvision_acc = accs.get("jobvision", {})
+                acc_text = (
+                    "🔐 **وضعیت اتصال حساب‌های کاریابی شما:**\n\n"
+                    f"🏢 **جابینجا (Jobinja):**\n"
+                    f"- کاربر: `{jobinja_acc.get('username_or_email', settings.JOBINJA_USER)}`\n"
+                    f"- وضعیت: `{'✅ متصل و آماده' if jobinja_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
+                    f"💼 **جاب‌ویژن (Jobvision):**\n"
+                    f"- کاربر: `{jobvision_acc.get('username_or_email', settings.JOBVISION_USER)}`\n"
+                    f"- وضعیت: `{'✅ متصل و آماده' if jobvision_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
+                    "💡 *برای تغییر یا ثبت حساب جدید، از دکمه «ویرایش و ثبت اطلاعات» استفاده کنید.*"
+                )
+                keyboard = InlineKeyboardMarkup([
+                    [InlineKeyboardButton("✏️ ثبت / تغییر اطلاعات اکانت", callback_data="prompt_set_account")],
+                    [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+                ])
+                return await update.message.reply_text(acc_text, reply_markup=keyboard, parse_mode="Markdown")
 
             if waiting_for == "title":
                 conn = get_connection()
@@ -430,11 +517,70 @@ def run_bot():
                 await query.edit_message_text(format_user_status(profile), reply_markup=back_kb, parse_mode="Markdown")
 
             elif query.data == "jobs":
-                keyboard = InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🚀 ارسال خودکار برای تمام این آگهی‌ها", callback_data="apply_all_jobs")],
+                text, keyboard = format_user_jobs_with_keyboard(profile)
+                await query.edit_message_text(text, reply_markup=keyboard, parse_mode="Markdown")
+
+            elif query.data.startswith("apply_single:"):
+                job_id = query.data.split(":")[1]
+                res = platform_auth_manager.execute_live_apply(
+                    job_id=job_id, 
+                    user_id=profile["id"], 
+                    requires_confirmation=False, 
+                    user_confirmed=True
+                )
+                if res.get("success"):
+                    single_kb = InlineKeyboardMarkup([
+                        [InlineKeyboardButton("🎯 مشاهده سایر فرصت‌های شغلی", callback_data="jobs")],
+                        [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+                    ])
+                    await query.edit_message_text(
+                        f"🎉 **{res['message']}**\n\n"
+                        f"🏢 کارفرما: **{res.get('company')}**\n"
+                        f"💼 موقعیت: **{res.get('title')}**\n"
+                        f"🔑 کد پیگیری: `{res.get('tracking_code')}`\n"
+                        f"⏰ زمان ثبت: {res.get('applied_at')}",
+                        reply_markup=single_kb,
+                        parse_mode="Markdown"
+                    )
+                else:
+                    await query.edit_message_text(f"❌ خطا در ارسال: {res.get('error', res.get('message'))}", reply_markup=back_kb)
+
+            elif query.data == "autonomous_menu":
+                auto_kb = InlineKeyboardMarkup([
+                    [InlineKeyboardButton("⚡ اجرای اسکن ۳۰ روز گذشته و ارسال فوری", callback_data="run_autonomous_scan")],
+                    [InlineKeyboardButton("🔄 تغییر وضعیت پایش خودکار ۲۴ ساعته", callback_data="toggle_autonomous_24h")],
                     [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
                 ])
-                await query.edit_message_text(format_user_jobs(profile), reply_markup=keyboard, parse_mode="Markdown")
+                auto_text = (
+                    "🤖 **مدیریت پایش خودکار ۲۴ ساعته بازار کار (Autonomous 24/7 Agent):**\n\n"
+                    f"• وضعیت پایش ۲۴ ساعته: `{'فعال ✅' if profile.get('autonomous_24h_enabled') else 'خاموش (دستی)'}`\n"
+                    f"• حد آستانه انطباق: `{profile.get('match_threshold', 70)}٪`\n"
+                    f"• سقف ارسال روزانه: `{profile.get('daily_cap', 15)} عدد`\n\n"
+                    "با اجرای اسکن ۳۰ روز گذشته، ربات تمامی آگهی‌های ثبت‌شده در جابینجا، جاب‌ویژن، دیوار و کاربرد را رصد کرده و برای موقعیت‌های واجد شرایط رزومه ارسال می‌کند."
+                )
+                await query.edit_message_text(auto_text, reply_markup=auto_kb, parse_mode="Markdown")
+
+            elif query.data == "run_autonomous_scan":
+                await query.edit_message_text("⏳ در حال اسکن موقعیت‌های ۳۰ روز گذشته در بازار کار تهران...")
+                from agents.autonomous_agent import autonomous_agent
+                res = autonomous_agent.scan_and_auto_apply_past_30_days(user_id=profile["id"])
+                
+                scan_res_text = (
+                    f"🎉 **نتیجه اسکن ۳۰ روز گذشته:**\n\n"
+                    f"🔍 تعداد آگهی‌های اسکن‌شده: **{res.get('total_scanned_30days')} مورد**\n"
+                    f"🎯 فرصت‌های واجد شرایط (>۷۰٪ انطباق): **{res.get('qualified_count')} موقعیت**\n"
+                    f"🚀 رزومه‌های ارسال‌شده جدید: **{res.get('applied_count')} عدد**\n\n"
+                    f"💡 {res.get('message')}"
+                )
+                await query.edit_message_text(scan_res_text, reply_markup=back_kb, parse_mode="Markdown")
+
+            elif query.data == "toggle_autonomous_24h":
+                from agents.autonomous_agent import autonomous_agent
+                current = bool(profile.get("autonomous_24h_enabled"))
+                new_state = not current
+                res = autonomous_agent.set_24h_monitoring(user_id=profile["id"], enabled=new_state)
+                profile = get_or_create_user(user.id, user.full_name)
+                await query.edit_message_text(f"✅ {res['message']}", reply_markup=back_kb, parse_mode="Markdown")
 
             elif query.data == "apply_all_jobs":
                 user_id = profile["id"]

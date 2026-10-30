@@ -213,6 +213,11 @@ class JobMatcherAgent:
         matched = []
         missing = []
 
+        # Immediate filter for non-tech / laborer jobs
+        non_tech_terms = ["کارگر", "نظافت", "پیک", "راننده", "نگهبان", "آشپز", "سالندار", "سرایدار", "ویزیتور"]
+        if any(term in job_title.lower() for term in non_tech_terms):
+            return 10, [], job_skills
+
         for js in job_skills:
             clean_js = js.lower().strip()
             if any(us in clean_js or clean_js in us for us in user_set):
@@ -222,17 +227,23 @@ class JobMatcherAgent:
 
         # Base overlap ratio
         overlap_ratio = len(matched) / max(1, len(job_skills))
-        score = int(50 + (overlap_ratio * 40))
+        if len(matched) == 0:
+            score = 20
+        else:
+            score = int(45 + (overlap_ratio * 45))
 
-        # Title alignment bonus
+        # Title alignment bonus for tech and data fields
         clean_title = job_title.lower()
-        if any(term in clean_title for term in ["data", "بی‌آی", "bi", "هوش تجاری", "تحلیل", "agent", "ai"]):
-            score += 6
+        if any(term in clean_title for term in [
+            "data", "بی‌آی", "bi", "هوش تجاری", "تحلیل", "agent", "ai", 
+            "علم داده", "یادگیری ماشین", "پایتون", "python", "machine learning"
+        ]):
+            score += 10
 
-        score = min(98, max(30, score))
+        score = min(98, max(10, score))
         return score, matched, missing
 
-    def match_all_jobs_for_user(self, user_id: int = 1) -> list:
+    def match_all_jobs_for_user(self, user_id: int = 1, only_matched: bool = True) -> list:
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT job_id, title, description, skills_required FROM jobs WHERE is_deleted = 0")
@@ -248,6 +259,7 @@ class JobMatcherAgent:
         for jid in job_ids:
             self.evaluate_job(jid, user_id=user_id, use_llm=False)
 
-        return get_user_jobs_list(user_id=user_id, limit=20)
+        min_score = 60 if only_matched else 0
+        return get_user_jobs_list(user_id=user_id, limit=20, min_score=min_score)
 
 job_matcher_agent = JobMatcherAgent()

@@ -1,0 +1,1762 @@
+[
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "دیجی‌کالا (Digikala)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/digikala/jobs/job-1",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در دیجی‌کالا (Digikala). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-27 16:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "دیجی‌کالا (Digikala)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/digikala/jobs/job-2",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در دیجی‌کالا (Digikala). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-24 15:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "دیجی‌کالا (Digikala)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/digikala/jobs/job-3",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در دیجی‌کالا (Digikala). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-21 14:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "دیجی‌کالا (Digikala)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/digikala/jobs/job-4",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در دیجی‌کالا (Digikala). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-18 13:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "دیجی‌کالا (Digikala)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/digikala/jobs/job-5",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در دیجی‌کالا (Digikala). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-15 12:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "گروه اسنپ (Snapp Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snapp/jobs/job-6",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در گروه اسنپ (Snapp Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-12 11:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "گروه اسنپ (Snapp Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snapp/jobs/job-7",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در گروه اسنپ (Snapp Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-09 10:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "گروه اسنپ (Snapp Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snapp/jobs/job-8",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در گروه اسنپ (Snapp Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-06 09:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "گروه اسنپ (Snapp Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snapp/jobs/job-9",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در گروه اسنپ (Snapp Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-03 08:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "گروه اسنپ (Snapp Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snapp/jobs/job-10",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در گروه اسنپ (Snapp Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-28 07:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/hezardastan/job-11",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در هلدینگ هزاردستان (کافه‌بازار و دیوار). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-25 06:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/hezardastan/job-12",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در هلدینگ هزاردستان (کافه‌بازار و دیوار). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-22 17:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/hezardastan/job-13",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در هلدینگ هزاردستان (کافه‌بازار و دیوار). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-19 16:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/hezardastan/job-14",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در هلدینگ هزاردستان (کافه‌بازار و دیوار). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-16 15:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/hezardastan/job-15",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در هلدینگ هزاردستان (کافه‌بازار و دیوار). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-13 14:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "تپسی (Tapsi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/tapsi/jobs/job-16",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در تپسی (Tapsi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-10 13:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "تپسی (Tapsi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/tapsi/jobs/job-17",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در تپسی (Tapsi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-07 12:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "تپسی (Tapsi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/tapsi/jobs/job-18",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در تپسی (Tapsi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-04 11:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "تپسی (Tapsi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/tapsi/jobs/job-19",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در تپسی (Tapsi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-29 10:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "تپسی (Tapsi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/tapsi/jobs/job-20",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در تپسی (Tapsi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-26 09:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "ایرانسل (MTN Irancell)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/irancell/job-21",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در ایرانسل (MTN Irancell). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-23 08:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "ایرانسل (MTN Irancell)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/irancell/job-22",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در ایرانسل (MTN Irancell). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-20 07:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "ایرانسل (MTN Irancell)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/irancell/job-23",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در ایرانسل (MTN Irancell). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-17 06:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "ایرانسل (MTN Irancell)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/irancell/job-24",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در ایرانسل (MTN Irancell). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-14 17:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "ایرانسل (MTN Irancell)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/irancell/job-25",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در ایرانسل (MTN Irancell). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-11 16:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "نوبیتکس (Nobitex)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://karbord.io/companies/nobitex/job-26",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در نوبیتکس (Nobitex). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-08 15:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "نوبیتکس (Nobitex)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://karbord.io/companies/nobitex/job-27",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در نوبیتکس (Nobitex). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-05 14:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "نوبیتکس (Nobitex)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://karbord.io/companies/nobitex/job-28",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در نوبیتکس (Nobitex). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-30 13:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "نوبیتکس (Nobitex)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://karbord.io/companies/nobitex/job-29",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در نوبیتکس (Nobitex). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-27 12:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "نوبیتکس (Nobitex)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://karbord.io/companies/nobitex/job-30",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در نوبیتکس (Nobitex). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-24 11:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "صباایده (آپارات و فیلیمو)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/sabaidea/jobs/job-31",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در صباایده (آپارات و فیلیمو). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-21 10:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "صباایده (آپارات و فیلیمو)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/sabaidea/jobs/job-32",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در صباایده (آپارات و فیلیمو). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-18 09:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "صباایده (آپارات و فیلیمو)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/sabaidea/jobs/job-33",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در صباایده (آپارات و فیلیمو). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-15 08:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "صباایده (آپارات و فیلیمو)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/sabaidea/jobs/job-34",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در صباایده (آپارات و فیلیمو). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-12 07:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "صباایده (آپارات و فیلیمو)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/sabaidea/jobs/job-35",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در صباایده (آپارات و فیلیمو). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-09 06:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "علی‌بابا (Alibaba Travels)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/alibaba/job-36",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در علی‌بابا (Alibaba Travels). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-06 17:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "علی‌بابا (Alibaba Travels)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/alibaba/job-37",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در علی‌بابا (Alibaba Travels). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-03 16:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "علی‌بابا (Alibaba Travels)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/alibaba/job-38",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در علی‌بابا (Alibaba Travels). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-28 15:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "علی‌بابا (Alibaba Travels)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/alibaba/job-39",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در علی‌بابا (Alibaba Travels). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-25 14:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "علی‌بابا (Alibaba Travels)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/alibaba/job-40",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در علی‌بابا (Alibaba Travels). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-22 13:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "جاباما (Jobama)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://karbord.io/companies/jobama/job-41",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در جاباما (Jobama). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-19 12:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "جاباما (Jobama)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://karbord.io/companies/jobama/job-42",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در جاباما (Jobama). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-16 11:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "جاباما (Jobama)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://karbord.io/companies/jobama/job-43",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در جاباما (Jobama). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-13 10:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "جاباما (Jobama)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://karbord.io/companies/jobama/job-44",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در جاباما (Jobama). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-10 09:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "جاباما (Jobama)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://karbord.io/companies/jobama/job-45",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در جاباما (Jobama). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-07 08:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "ترب (Torob)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/torob/job-46",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در ترب (Torob). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-04 07:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "ترب (Torob)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/torob/job-47",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در ترب (Torob). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-29 06:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "ترب (Torob)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/torob/job-48",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در ترب (Torob). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-26 17:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "ترب (Torob)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/torob/job-49",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در ترب (Torob). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-23 16:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "ترب (Torob)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/torob/job-50",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در ترب (Torob). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-20 15:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "اسنپ‌فود (SnappFood)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snappfood/jobs/job-51",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در اسنپ‌فود (SnappFood). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-17 14:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "اسنپ‌فود (SnappFood)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snappfood/jobs/job-52",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در اسنپ‌فود (SnappFood). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-14 13:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "اسنپ‌فود (SnappFood)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snappfood/jobs/job-53",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در اسنپ‌فود (SnappFood). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-11 12:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "اسنپ‌فود (SnappFood)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snappfood/jobs/job-54",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در اسنپ‌فود (SnappFood). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-08 11:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "اسنپ‌فود (SnappFood)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/snappfood/jobs/job-55",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در اسنپ‌فود (SnappFood). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-05 10:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "زرین‌پال (ZarinPal)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/zarinpal/job-56",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در زرین‌پال (ZarinPal). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-30 09:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "زرین‌پال (ZarinPal)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/zarinpal/job-57",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در زرین‌پال (ZarinPal). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-27 08:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "زرین‌پال (ZarinPal)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/zarinpal/job-58",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در زرین‌پال (ZarinPal). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-24 07:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "زرین‌پال (ZarinPal)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/zarinpal/job-59",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در زرین‌پال (ZarinPal). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-21 06:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "زرین‌پال (ZarinPal)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/zarinpal/job-60",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در زرین‌پال (ZarinPal). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-18 17:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "آسان‌پرداخت (آپ)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://karbord.io/companies/asan-pardakht/job-61",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در آسان‌پرداخت (آپ). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-15 16:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "آسان‌پرداخت (آپ)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://karbord.io/companies/asan-pardakht/job-62",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در آسان‌پرداخت (آپ). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-12 15:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "آسان‌پرداخت (آپ)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://karbord.io/companies/asan-pardakht/job-63",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در آسان‌پرداخت (آپ). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-09 14:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "آسان‌پرداخت (آپ)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://karbord.io/companies/asan-pardakht/job-64",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در آسان‌پرداخت (آپ). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-06 13:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "آسان‌پرداخت (آپ)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://karbord.io/companies/asan-pardakht/job-65",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در آسان‌پرداخت (آپ). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-03 12:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "ازکی (AzKi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/azki/jobs/job-66",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در ازکی (AzKi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-28 11:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "ازکی (AzKi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/azki/jobs/job-67",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در ازکی (AzKi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-25 10:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "ازکی (AzKi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/azki/jobs/job-68",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در ازکی (AzKi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-22 09:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "ازکی (AzKi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/azki/jobs/job-69",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در ازکی (AzKi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-19 08:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "ازکی (AzKi)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/azki/jobs/job-70",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در ازکی (AzKi). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-16 07:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "فلای‌تودی (FlyToday)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/flytoday/job-71",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در فلای‌تودی (FlyToday). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-13 06:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "فلای‌تودی (FlyToday)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/flytoday/job-72",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در فلای‌تودی (FlyToday). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-10 17:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "فلای‌تودی (FlyToday)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/flytoday/job-73",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در فلای‌تودی (FlyToday). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-07 16:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "فلای‌تودی (FlyToday)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/flytoday/job-74",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در فلای‌تودی (FlyToday). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-04 15:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "فلای‌تودی (FlyToday)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/flytoday/job-75",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در فلای‌تودی (FlyToday). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-29 14:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "همکاران سیستم (System Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/systemgroup/job-76",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در همکاران سیستم (System Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-26 13:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "همکاران سیستم (System Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/systemgroup/job-77",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در همکاران سیستم (System Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-23 12:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "همکاران سیستم (System Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/systemgroup/job-78",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در همکاران سیستم (System Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-20 11:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "همکاران سیستم (System Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/systemgroup/job-79",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در همکاران سیستم (System Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-17 10:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "همکاران سیستم (System Group)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/systemgroup/job-80",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در همکاران سیستم (System Group). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-14 09:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "داتین (Dotin)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/dotin/jobs/job-81",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در داتین (Dotin). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-11 08:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "داتین (Dotin)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobinja.ir/companies/dotin/jobs/job-82",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در داتین (Dotin). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-08 07:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "داتین (Dotin)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/dotin/jobs/job-83",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در داتین (Dotin). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-05 06:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "داتین (Dotin)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobinja.ir/companies/dotin/jobs/job-84",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در داتین (Dotin). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-30 17:34:09"
+  },
+  {
+    "platform": "jobinja",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "داتین (Dotin)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobinja.ir/companies/dotin/jobs/job-85",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در داتین (Dotin). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-27 16:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "فناپ (Fanap)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://karbord.io/companies/fanap/job-86",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در فناپ (Fanap). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-24 15:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "فناپ (Fanap)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://karbord.io/companies/fanap/job-87",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در فناپ (Fanap). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-21 14:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "فناپ (Fanap)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://karbord.io/companies/fanap/job-88",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در فناپ (Fanap). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-18 13:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "فناپ (Fanap)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://karbord.io/companies/fanap/job-89",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در فناپ (Fanap). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-15 12:34:09"
+  },
+  {
+    "platform": "karbord",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "فناپ (Fanap)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://karbord.io/companies/fanap/job-90",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در فناپ (Fanap). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-12 11:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "به‌پرداخت ملت (Behpardakht)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/behpardakht/job-91",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در به‌پرداخت ملت (Behpardakht). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-09 10:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "به‌پرداخت ملت (Behpardakht)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://jobvision.ir/company/behpardakht/job-92",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در به‌پرداخت ملت (Behpardakht). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-06 09:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "به‌پرداخت ملت (Behpardakht)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/behpardakht/job-93",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در به‌پرداخت ملت (Behpardakht). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-03 08:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "به‌پرداخت ملت (Behpardakht)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://jobvision.ir/company/behpardakht/job-94",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در به‌پرداخت ملت (Behpardakht). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-28 07:34:09"
+  },
+  {
+    "platform": "jobvision",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "به‌پرداخت ملت (Behpardakht)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://jobvision.ir/company/behpardakht/job-95",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در به‌پرداخت ملت (Behpardakht). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-25 06:34:09"
+  },
+  {
+    "platform": "divar",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
+    "company": "دیوار (Divar Tech)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۵ تا ۷۰ میلیون تومان",
+    "url": "https://divar.ir/tehran/jobs/job-96",
+    "description": "استخدام دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting) در دیوار (Divar Tech). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "یادگیری ماشین (ML)",
+      "پیش‌بینی سری‌های زمانی",
+      "Scikit-Learn",
+      "XGBoost & LightGBM",
+      "SQL پیشرفته"
+    ],
+    "posted_at": "2026-10-22 17:34:09"
+  },
+  {
+    "platform": "divar",
+    "title": "تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst)",
+    "company": "دیوار (Divar Tech)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۰ تا ۶۰ میلیون تومان",
+    "url": "https://divar.ir/tehran/jobs/job-97",
+    "description": "استخدام تحلیل‌گر ارشد داده و هوش تجاری (Senior Data & BI Analyst) در دیوار (Divar Tech). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "Power BI & DAX",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "مدل‌سازی ابعادی (Star Schema)",
+      "طراحی پایپ‌لاین‌های ETL"
+    ],
+    "posted_at": "2026-10-19 16:34:09"
+  },
+  {
+    "platform": "divar",
+    "title": "توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer)",
+    "company": "دیوار (Divar Tech)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۴۲ تا ۶۵ میلیون تومان",
+    "url": "https://divar.ir/tehran/jobs/job-98",
+    "description": "استخدام توسعه‌دهنده بک‌اند و پایپ‌لاین داده (Python / FastAPI / Data Engineer) در دیوار (Divar Tech). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "پایتون (Python)",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker",
+      "طراحی پایپ‌لاین‌های ETL",
+      "Git & CI/CD"
+    ],
+    "posted_at": "2026-10-16 15:34:09"
+  },
+  {
+    "platform": "divar",
+    "title": "مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer)",
+    "company": "دیوار (Divar Tech)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۵۵ تا ۸۵ میلیون تومان",
+    "url": "https://divar.ir/tehran/jobs/job-99",
+    "description": "استخدام مهندس هوش مصنوعی و سیستم‌های زبانی (AI / RAG / LLM Engineer) در دیوار (Divar Tech). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "سیستم‌های RAG و بازیابی اسناد",
+      "FAISS Vector Search",
+      "پایتون (Python)",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "posted_at": "2026-10-13 14:34:09"
+  },
+  {
+    "platform": "divar",
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst)",
+    "company": "دیوار (Divar Tech)",
+    "location": "تهران (اقدسیه / ونک / سعادت‌آباد / جردن)",
+    "salary_range": "۳۸ تا ۵۲ میلیون تومان",
+    "url": "https://divar.ir/tehran/jobs/job-100",
+    "description": "استخدام تحلیل‌گر داده‌های رشد و محصول (Product & Growth Data Analyst) در دیوار (Divar Tech). مسئولیت‌ها شامل طراحی مدل‌های تحلیلی، پایپ‌لاین‌های مقیاس‌پذیر و بهینه‌سازی شاخص‌های عملکردی با استفاده از استک داده.",
+    "skills_required": [
+      "تحلیل پیشرفته داده",
+      "SQL پیشرفته",
+      "پایتون (Python)",
+      "A/B Testing",
+      "Power BI & DAX"
+    ],
+    "posted_at": "2026-10-10 13:34:09"
+  }
+]

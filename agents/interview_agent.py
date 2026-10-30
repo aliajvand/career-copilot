@@ -52,7 +52,52 @@ class InterviewSimulatorAgent:
         ]
     }
 
-    def get_question_for_job(self, job_title: str, company: str) -> dict:
+    def get_interview_intro(self, job_title: str, company: str, candidate_name: str = "علی") -> dict:
+        """
+        Generates human-like warm greeting, company tech briefing, and conversational tone.
+        """
+        prompt = f"""
+        تو "دکتر کیان رادمنش"، راهبر ارشد تیم مهندسی داده و هوش مصنوعی در شرکت {company} در تهران هستی.
+        قرار است با کارجو به نام "{candidate_name}" برای نقش "{job_title}" مصاحبه کنی.
+        یک متن خوش‌آمدگویی گرم، محترمانه و خودمانی (مثل دو مهندس همکار در شرکت‌های دیجی‌کالا یا اسنپ) بنویس.
+        در متن:
+        1. به او سلام کن و حالش را بپرس.
+        2. شرکت {company} و حجم داده‌ها یا چالش‌های جذابی که تیم در حال حاضر روی آن کار می‌کند را خلاصه پرزنت کن تا دید شفافی بگیرد.
+        3. بگو که خیلی خوشحالی که پروژه‌های کاربردی او در رزومه (مثل RAG و پیش‌بینی داده‌ها) را دیده‌ای.
+        4. اعلام کن که می‌خواهیم از سوالات ساده و گپ‌وگفت شروع کنیم و بعد به سراغ سناریوهای جذاب برویم.
+        
+        خروجی را در قالب JSON بده:
+        {{
+            "interviewer_name": "دکتر کیان رادمنش",
+            "interviewer_title": "راهبر ارشد هوش تجاری و مهندسی داده در {company}",
+            "greeting_title": "جلسه مصاحبه تخصصی و آشنایی متقابل",
+            "company_intro": "پرزنت خلاصه شرکت و ماموریت تیم دیتا",
+            "speech_text": "متن روان و محاوره‌ای محترمانه که هوش مصنوعی باید دقیقاً با صوت بخواند"
+        }}
+        """
+
+        raw = gemini_client.generate_content(prompt, thinking_level="low", max_output_tokens=600)
+        res = None
+        if raw:
+            try:
+                clean_json = re.sub(r'```json\s*', '', raw)
+                clean_json = re.sub(r'```\s*', '', clean_json).strip()
+                res = json.loads(clean_json)
+            except Exception:
+                res = None
+
+        if not res:
+            res = {
+                "interviewer_name": "دکتر کیان رادمنش",
+                "interviewer_title": f"راهبر ارشد هوش تجاری و مهندسی داده در {company}",
+                "greeting_title": f"جلسه مصاحبه و آشنایی تیم فنی {company}",
+                "company_intro": f"در {company}، ما روزانه با پردازش مقادیر عظیمی از داده‌های رفتاری و تراکنش‌های زنده سر و کار داریم و هدفمون بهینه‌سازی زنجیره تصمیم‌گیری با هوش مصنوعی و داشبوردهای استراتژیکه.",
+                "speech_text": f"سلام {candidate_name} عزیز! روزت بخیر و خیلی خوش اومدی به مصاحبه تیم {company}. من کیان رادمنش هستم. رزومه‌ت رو به خصوص پروژه‌های پایپ‌لاین داده و RAG رو دیدم و واقعا برام جالب بود. اول از همه حالت چطوره؟ ما اینجا در {company} روی چالش‌های پردازش بلادرنگ کار می‌کنیم. بیا با هم راحت گپ بزنیم و مرحله به مرحله جلو بریم."
+            }
+
+        return res
+
+    def get_question_for_job(self, job_title: str, company: str, stage: str = "level1_easy", topic: str = "", mode: str = "full") -> dict:
         comp_key = "default"
         company_lower = company.lower()
         if "اسنپ" in company_lower or "snapp" in company_lower:
@@ -60,15 +105,28 @@ class InterviewSimulatorAgent:
         elif "دیجی" in company_lower or "digikala" in company_lower:
             comp_key = "digikala"
 
+        stage_labels = {
+            "level1_easy": "مرحله ۱: سوال آشنایی و مفاهیم پایه (Easy)",
+            "level2_scenario": "مرحله ۲: سناریوی کاربردی و حل مسئله (Medium)",
+            "level3_architecture": "مرحله ۳: چالش معماری مقیاس کلان و بهینه‌سازی (Hard)"
+        }
+        current_stage_label = stage_labels.get(stage, stage_labels["level1_easy"])
+
         prompt = f"""
-        تو مدیر ارشد مصاحبه‌کننده در شرکت {company} برای موقعیت شغلی "{job_title}" در تهران هستی.
-        یک سوال فنی و تحلیلی بسیار واقعی، چالش‌برانگیز و جذاب برای این مصاحبه طراحی کن.
+        تو "دکتر کیان رادمنش"، مدیر ارشد مصاحبه‌کننده در شرکت {company} برای موقعیت شغلی "{job_title}" در تهران هستی.
+        مرحله فعلی مصاحبه: {current_stage_label}
+        موضوع تخصصی مدنظر کارجو: {topic if topic else "حوزه عمومی داده و مهندسی نرم‌افزار"}
+
+        یک سوال متناسب با این سطح و به شیوه یک انسان مصاحبه‌کننده صمیمی و حرفه‌ای طراحی کن.
         فرمت خروجی صرفاً به صورت JSON معتبر باشد:
         {{
-            "question": "متن سوال به زبان فارسی صریح و حرفه‌ای",
-            "type": "دسته‌بندی سوال (تخصصی / حل مسئله / رفتاری)",
+            "question": "متن سوال به زبان فارسی صریح و انسانی",
+            "type": "دسته‌بندی سوال",
+            "stage": "{stage}",
+            "stage_label": "{current_stage_label}",
             "context": "سناریوی مرتبط با چالش‌های شرکت {company}",
-            "hint": "راهنمایی کلیدی برای پاسخ‌دهی استاندارد"
+            "hint": "راهنمایی کلیدی برای پاسخ‌دهی استاندارد",
+            "speech_text": "جمله‌ای که مصاحبه‌کننده برای طرح سوال با صدای بلند می‌گوید"
         }}
         """
 
@@ -88,8 +146,11 @@ class InterviewSimulatorAgent:
             res = {
                 "question": item["question"],
                 "type": item["type"],
+                "stage": stage,
+                "stage_label": current_stage_label,
                 "context": f"سناریوی واقعی در تیم فنی {company}",
-                "hint": f"روی مفاهیم {item['focus']} تمرکز کنید و با ساختار STAR پاسخ دهید."
+                "hint": f"روی مفاهیم {item['focus']} تمرکز کنید و با ساختار STAR پاسخ دهید.",
+                "speech_text": f"بسیار عالی، به عنوان سوال بعدی: {item['question']}"
             }
 
         res["data_retention_policy"] = self.DATA_RETENTION_POLICY

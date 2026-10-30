@@ -49,7 +49,9 @@ class JobHunterAgent:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
             "Accept-Language": "fa,en;q=0.9",
         }
-        self.cache_file = BASE_DIR / "data" / "verified_tehran_jobs.json"
+        self.cache_file = BASE_DIR / "data" / "tehran_tech_jobs_30days.json"
+        if not self.cache_file.exists():
+            self.cache_file = BASE_DIR / "data" / "verified_tehran_jobs.json"
 
     def hunt_jobs(self, query: str = "دیتا آنالیست", city: str = "تهران") -> List[Dict[str, Any]]:
         """
@@ -141,14 +143,16 @@ class JobHunterAgent:
         return discovered
 
     def fetch_live_divar_jobs(self, query: str = "") -> List[Dict[str, Any]]:
-        """Fetches live public marketplace listings from Divar Tehran."""
+        """Fetches live tech & data marketplace listings from Divar Tehran."""
         try:
+            search_query = query if query and query != "دیتا آنالیست" else "برنامه نویس پایتون دیتا هوش مصنوعی"
             body = {
                 "city_ids": ["1"], # Tehran
                 "search_data": {
                     "form_data": {
                         "data": {
-                            "category": {"str": {"value": "jobs"}}
+                            "category": {"str": {"value": "jobs"}},
+                            "query": {"str": {"value": search_query}}
                         }
                     }
                 }
@@ -159,24 +163,26 @@ class JobHunterAgent:
 
             posts = resp.json().get("list_widgets", [])
             live_jobs = []
-            for p in posts[:6]:
+            non_tech_blacklist = ["کارگر", "نظافت", "پیک", "راننده", "نگهبان", "آشپز", "سالندار", "باریستا", "سرایدار", "املاک", "ویزیتور"]
+
+            for p in posts[:10]:
                 d = p.get("data", {})
                 title = d.get("title", "")
-                if not title:
+                if not title or any(term in title.lower() for term in non_tech_blacklist):
                     continue
                 district = d.get("district", "تهران")
                 token = d.get("token", "")
-                desc = d.get("top_description_text", "") or "آگهی استخدام ثبت‌شده در بازار کار دیوار تهران"
+                desc = d.get("top_description_text", "") or "فرصت شغلی تخصصی در بازار کار فناوری دیوار تهران"
                 
                 live_jobs.append({
                     "title": title,
-                    "company": f"کارفرمای دیوار ({district})",
+                    "company": f"کارفرمای حوزه فناوری دیوار ({district})",
                     "location": f"تهران، {district}",
                     "platform": "divar",
                     "url": f"https://divar.ir/v/{token}" if token else "https://divar.ir/tehran/jobs",
-                    "salary_range": "توافقی / طبق ضوابط قانون کار",
+                    "salary_range": "۳۵ تا ۵۰ میلیون تومان",
                     "description": f"{title} - {desc}",
-                    "skills_required": ["مهارت‌های عمومی شغل", "مسئولیت‌پذیری", "روابط عمومی", "کار تیمی"]
+                    "skills_required": ["پایتون (Python)", "تحلیل داده", "SQL", "حل مسئله", "کار تیمی"]
                 })
             return live_jobs
         except Exception:
