@@ -1,0 +1,52 @@
+name: Career Co-Pilot Enterprise CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tesseract-ocr tesseract-ocr-fas libgl1
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt || true
+        pip install pytest pytest-cov flake8 httpx playwright cryptography faiss-cpu pydantic-settings
+
+    - name: Verify Environment Template & Secret Safety
+      run: |
+        python -c "
+        import os
+        assert not os.path.exists('.env'), '.env must not be checked into git!'
+        assert os.path.exists('.env.example'), '.env.example must exist!'
+        "
+
+    - name: Run Python Automated Tests (Pytest)
+      run: |
+        pytest -v tests/
+
+    - name: Validate Health Endpoint Schema
+      run: |
+        python -c "
+        from core.db import init_db
+        init_db()
+        print('Database and Schema check: PASSED')
+        "

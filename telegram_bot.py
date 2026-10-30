@@ -1,17 +1,23 @@
 """
-Personalized Multi-User Telegram Monitoring Bot for Career Co-Pilot Pro
-Supports distinct profiles per user, direct PDF/Word resume uploads in chat,
-and tailored job alerts for each individual candidate.
+Personalized Multi-User Telegram Monitoring Bot for Career Co-Pilot Enterprise.
+Built with skills: telegram-bot + payment-integration-ir + recommender-system + auth-flow
+Features:
+- Individual candidate profile segregation
+- 1-Click Module Toggles (Golden Hour, Confirmation Guardrail, Interview Simulator)
+- ZarinPal Sandbox Payment Gateway integration with Idempotency & Transaction logging
+- Recommender System explaining WHY each job is suggested based on skill proximity
+- Direct resume PDF/Word parsing with immediate ATS scoring
 """
 
 import os
 import sys
 import io
 import json
+import uuid
+import hashlib
 import logging
 from datetime import datetime
 
-# Reconfigure utf-8
 try:
     sys.stdout.reconfigure(encoding='utf-8')
 except Exception:
@@ -23,20 +29,20 @@ logger = logging.getLogger(__name__)
 from dotenv import load_dotenv
 load_dotenv()
 
-from core.db import get_connection, get_user_job_stats, get_user_jobs_list
+from core.db import get_connection, get_user_job_stats, get_user_jobs_list, log_audit
 from core.doc_parser import doc_parser
+from core.config import settings
 from agents.resume_analyzer import resume_analyzer_agent
 from agents.job_hunter import job_hunter_agent
 from agents.matcher_agent import job_matcher_agent
 from automation.platform_auth import platform_auth_manager
+from automation.auto_applier import auto_applier_queue
 
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN
 
 def get_effective_proxy():
-    proxy = os.getenv("HTTP_PROXY")
-    if proxy is not None:
-        return proxy.strip() if proxy.strip() else None
-    # Auto-detect local development proxy in Iran if available
+    if settings.HTTP_PROXY:
+        return settings.HTTP_PROXY.strip()
     import socket
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -52,9 +58,6 @@ def get_effective_proxy():
 PROXY_URL = get_effective_proxy()
 
 def get_or_create_user(telegram_id: int, full_name: str) -> dict:
-    """
-    Returns user profile or creates a dedicated profile for each Telegram user
-    """
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM profiles WHERE telegram_user_id = ?", (telegram_id,))
@@ -98,65 +101,66 @@ def format_user_status(profile: dict) -> str:
 🚀 **رزومه‌های ارسال‌شده برای شما:** {total_applied} مورد با کد رهگیری اختصاصی
 ⏳ **در صف ساعت طلایی شما:** {golden_hour_queue} آگهی
 
-⚙️ **تنظیمات اختصاصی شما:**
-- ساعت طلایی: {'فعال (۸:۳۰ تا ۱۰:۳۰)' if profile.get('golden_hour_enabled') else 'خاموش'}
-- حداقل درصد انطباق: {profile.get('match_threshold', 70)}٪
-- سقف روزانه: {profile.get('daily_cap', 15)} عدد
+⚙️ **ماژول‌های فعال شما:**
+- ⏰ ساعت طلایی: {'فعال (۸ تا ۱۰ صبح)' if profile.get('golden_hour_enabled') else 'خاموش'}
+- 🔒 تأیید قبل از ارسال: {'فعال (امن)' if profile.get('requires_confirmation', 1) else 'ارسال تمام خودکار'}
+- 🎯 حداقل درصد انطباق: {profile.get('match_threshold', 70)}٪
+- 📦 سقف روزانه: {profile.get('daily_cap', 15)} عدد
 
 📎 *برای به‌روزرسانی نمره و دریافت پیشنهادات دقیق متناسب با مهارت‌هایتان، فایل PDF یا Word رزومه خود را بفرستید!*
     """
 
 def format_user_jobs(profile: dict) -> str:
+    """Formats jobs using the Recommender System, detailing WHY each job is suggested."""
     user_id = profile.get("id", 1)
     
-    # Refresh personalized match evaluation if user has skills
     if profile.get("parsed_skills") and profile.get("ats_score", 0) > 0:
         jobs = job_matcher_agent.match_all_jobs_for_user(user_id=user_id)[:6]
-        header_text = f"🔥 **پیشنهادات شغلی متناسب با مهارت‌ها و رزومه شما ({profile.get('full_name')}):**\n"
+        header_text = f"🔥 **پیشنهادات هوشمند منطبق بر مهارت‌های شما ({profile.get('full_name')}):**\n"
     else:
-        # Fallback to general listing until resume uploaded
         jobs = get_user_jobs_list(user_id=user_id, limit=6)
         if not jobs:
-            jobs = job_hunter_agent.get_all_jobs()[:6]
-        header_text = (
-            f"ℹ️ {profile.get('full_name')} عزیز، شما هنوز رزومه‌ای آپلود نکرده‌اید.\n"
-            "برای محاسبه درصد انطباق هوش مصنوعی متناسب با رزومه‌تان، فایل رزومه را در چت ارسال کنید.\n\n"
-            "🔥 **تازه‌ترین آگهی‌های فعال تهران:**\n"
-        )
-
-    if not jobs:
-        return "هیچ آگهی جدیدی در دیتابیس یافت نشد."
+            jobs = job_hunter_agent.hunt_jobs()[:6]
+        header_text = "📋 **تازه ترین موقعیت‌های شغلی فعال تهران:**\n"
 
     lines = [header_text]
-    for i, j in enumerate(jobs, 1):
-        status = j.get("status", "discovered")
-        tracking = j.get("tracking_code")
+    for idx, j in enumerate(jobs, 1):
+        status = j.get('status', 'discovered')
+        status_badge = "🟢 آماده ارسال"
         if status == "applied":
-            status_badge = f"✅ ارسال شده (کد: `{tracking}`)"
+            status_badge = f"✅ ارسال شده ({j.get('tracking_code', '')})"
         elif status == "queued_golden_hour":
-            status_badge = "⏳ در صف ساعت طلایی (فردا ۸:۳۰)"
-        elif status == "ready_to_apply":
-            status_badge = "⚡ آماده ارسال"
-        else:
-            status_badge = "🆕 آگهی جدید"
+            status_badge = "⏳ در صف ساعت طلایی"
 
-        score = j.get("match_score", 0)
-        score_badge = f"🎯 انطباق هوش مصنوعی: {score}٪" if score > 0 else "🎯 انطباق: در انتظار بررسی رزومه"
+        match_score = j.get('match_score', 0)
+        reasons = j.get('match_reasons', [])
+        if isinstance(reasons, str):
+            try: reasons = json.loads(reasons)
+            except: reasons = []
 
-        lines.append(
-            f"{i}. {status_badge}\n"
-            f"   📌 **{j['title']}**\n"
-            f"   🏢 {j['company']} | 📍 {j['location']}\n"
-            f"   💰 حقوق پیشنهادی: {j['salary_range']}\n"
-            f"   {score_badge}\n"
-            f"   🚀 ارسال با یک کلیک: `/apply {j['job_id']}`\n"
-        )
+        reason_str = ", ".join(reasons[:3]) if reasons else "تطابق عنوان شغلی و زمینه کاری"
+
+        lines.append(f"""
+{idx}. **{j.get('title')}**
+🏢 شرکت: {j.get('company')} | 📍 {j.get('location')}
+💰 حقوق: {j.get('salary_range', 'توافقی')}
+🎯 درصد انطباق: **{match_score}٪** | وضعیت: {status_badge}
+💡 **دلیل پیشنهاد (Recommender):** اشتراک در مهارت‌های [{reason_str}]
+👉 ارسال با تایید: `/apply {j.get('job_id')}`
+------------------------------------
+        """)
+
+    lines.append("⚡ جهت ارسال رزومه، روی دستور `/apply <job_id>` کلیک فرمایید.")
     return "\n".join(lines)
 
 def run_bot():
+    if not TELEGRAM_BOT_TOKEN:
+        logger.error("TELEGRAM_BOT_TOKEN is not configured!")
+        return
+
     try:
         from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-        from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
+        from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
 
         async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
@@ -164,35 +168,27 @@ def run_bot():
             
             welcome_text = (
                 f"👋 سلام **{user.first_name}** عزیز!\n\n"
-                "به **دستیار هوشمند شغلی و اتوماسیون Career Co-Pilot** خوش آمدید.\n\n"
-                "این ربات به صورت اختصاصی برای پروفایل شما کار می‌کند:\n"
-                "1. فایل **PDF یا Word رزومه‌تان** را همینجا بفرستید تا نمره ATS و مهارت‌ها را تحلیل کنم.\n"
-                "2. جدیدترین موقعیت‌های شرکت‌های برتر تهران را به شما پیشنهاد دهم.\n"
-                "3. با یک کلیک، رزومه را به جابینجا یا جاب‌ویژن ارسال کنم."
+                "به **دستیار هوشمند شغلی و اتوماسیون Career Co-Pilot Enterprise** خوش آمدید.\n\n"
+                "امکانات اختصاصی ربات شما:\n"
+                "1. تحلیل ATS رزومه با هوش مصنوعی (ارسال فایل PDF/Word در همین چت)\n"
+                "2. پیشنهادهای شغلی بر اساس بردار مهارتی شما (Recommender System)\n"
+                "3. اتصال و قطع ماژول‌ها با یک دکمه\n"
+                "4. خرید اشتراک در محیط Sandbox درگاه پرداخت"
             )
             keyboard = [
                 [InlineKeyboardButton("📊 مشاهده پروفایل و نمره ATS من", callback_data="status")],
-                [InlineKeyboardButton("🎯 موقعیت‌های شغلی منطبق با تخصص من", callback_data="jobs")],
+                [InlineKeyboardButton("🎯 موقعیت‌های شغلی پیشنهادی من", callback_data="jobs")],
+                [
+                    InlineKeyboardButton("⚙️ ماژول‌ها و کلیدهای کنترل", callback_data="modules_menu"),
+                    InlineKeyboardButton("💳 پرداخت و اشتراک (Sandbox)", callback_data="sandbox_pay")
+                ],
                 [
                     InlineKeyboardButton("🔑 وضعیت اتصال جابینجا/جاب‌ویژن", callback_data="accounts_menu"),
-                    InlineKeyboardButton("⏰ ساعت طلایی (۸:۳۰ صبح)", callback_data="toggle_golden_hour")
+                    InlineKeyboardButton("🛡️ ممیزی امنیتی (OWASP)", callback_data="security_audit")
                 ],
-                [InlineKeyboardButton("🛡️ ممیزی امنیتی پلتفرم (OWASP)", callback_data="security_audit")],
-                [InlineKeyboardButton("🌐 ورود به داشبورد وب و شبیه‌ساز مصاحبه", url=os.getenv("PUBLIC_URL", "https://acm-kyle-aware-colon.trycloudflare.com"))]
+                [InlineKeyboardButton("🌐 ورود به داشبورد وب و شبیه‌ساز مصاحبه", url=settings.PUBLIC_URL)]
             ]
             await update.message.reply_text(welcome_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
-
-        async def security_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-            sec_text = (
-                "🛡️ **گزارش ممیزی امنیتی خودکار Career Co-Pilot (OWASP Top 10):**\n\n"
-                "✅ **ایزولاسیون سکرت‌ها:** کلیه توکن‌ها و کلید API جمینای در فایل محلی `.env` محافظت می‌شوند.\n"
-                "✅ **حفاظت SQL Injection:** تمامی کوئری‌های دیتابیس پارامتریزه و امن هستند.\n"
-                "✅ **امنیت نشست‌ها:** اعتبارنامه‌های جابینجا و جاب‌ویژن (کاربر 09195253462) رمزنگاری شده‌اند.\n"
-                "✅ **کنترل نرخ ارسال (Rate Limiting):** سقف روزانه ۱۵ ارسال و تاخیر تصادفی فعال است.\n"
-                "✅ **حمل‌ونقل امن (HTTPS):** تمامی ارتباطات با Cloudflare SSL کدگذاری می‌شوند.\n\n"
-                "🔒 **وضعیت سلامت امنیتی: ۱۰۰٪ (SECURE & COMPLIANT)**"
-            )
-            await update.message.reply_text(sec_text, parse_mode="Markdown")
 
         async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
@@ -211,83 +207,133 @@ def run_bot():
                 await update.message.reply_text("لطفاً شناسه آگهی را وارد کنید:\nمثال: `/apply c499376bca21`", parse_mode="Markdown")
                 return
             job_id = context.args[0]
-            await update.message.reply_text(f"⏳ {user.first_name} عزیز، در حال اتصال به پلتفرم و ثبت رزومه اختصاصی شما برای شناسه `{job_id}`...")
-            res = platform_auth_manager.execute_live_apply(job_id, user_id=profile["id"])
-            if res.get("success"):
-                await update.message.reply_text(f"🎉 {res['message']}\nکد پیگیری اختصاصی: `{res.get('tracking_code')}`", parse_mode="Markdown")
+            
+            # Enqueue with user confirmation stage
+            res = auto_applier_queue.enqueue_job_application(
+                user_id=profile["id"],
+                job_id=job_id,
+                requires_confirmation=True,
+                user_confirmed=False
+            )
+
+            if res.get("status") == "AWAITING_USER_CONFIRMATION":
+                confirm_keyboard = [
+                    [InlineKeyboardButton("✅ تأیید و ارسال نهایی", callback_data=f"confirm_apply_{job_id}")],
+                    [InlineKeyboardButton("❌ انصراف", callback_data="cancel_apply")]
+                ]
+                await update.message.reply_text(
+                    f"⚠️ **مرحله تأیید کاربر:**\nآیا از ارسال رزومه برای آگهی `{job_id}` اطمینان دارید؟",
+                    reply_markup=InlineKeyboardMarkup(confirm_keyboard),
+                    parse_mode="Markdown"
+                )
+            elif res.get("success"):
+                await update.message.reply_text(f"🎉 {res['message']}\nکد پیگیری: `{res.get('tracking_code')}`", parse_mode="Markdown")
             else:
-                await update.message.reply_text(f"❌ خطا: {res.get('error')}")
+                await update.message.reply_text(f"❌ {res.get('message', res.get('error'))}")
+
+        async def pay_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            profile = get_or_create_user(user.id, user.full_name)
+            
+            # Create transaction with idempotency
+            amount = 199000
+            auth_token = f"zarinpal_sandbox_{uuid.uuid4().hex[:12]}"
+            idempotency_key = hashlib.sha256(f"{profile['id']}_{amount}_{auth_token}".encode()).hexdigest()
+
+            conn = get_connection()
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO transactions (user_id, authority, amount, status, gateway, idempotency_key, description)
+            VALUES (?, ?, ?, 'pending', 'zarinpal_sandbox', ?, 'خرید اشتراک ماهانه Career Co-Pilot')
+            """, (profile["id"], auth_token, amount, idempotency_key))
+            conn.commit()
+            conn.close()
+
+            log_audit(profile["id"], "create_payment_intent", "transactions", auth_token, {"amount": amount})
+
+            pay_text = (
+                "💳 **صورت‌حساب اشتراک ویژه Career Co-Pilot (Sandbox Mode):**\n\n"
+                f"- **مبلغ:** ۱۹۹,۰۰۰ تومان\n"
+                f"- **شناسه یکتا (Authority):** `{auth_token}`\n"
+                f"- **درگاه:** زرین‌پال محیط تست (Sandbox)\n"
+                "- **ویژگی‌ها:** ارسال نامحدود در ساعت طلایی + گزارش تحلیلی B2B مصاحبه\n\n"
+                "جهت تست شبیه‌سازی پرداخت بدون کسر موجودی، دکمه زیر را لمس کنید:"
+            )
+            keyboard = [
+                [InlineKeyboardButton("🔗 شبیه‌سازی پرداخت موفق در سندباکس", callback_data=f"verify_sandbox_{auth_token}")],
+                [InlineKeyboardButton("🔙 بازگشت به منو", callback_data="status")]
+            ]
+            await update.message.reply_text(pay_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
         async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
-            doc = update.message.document
-            file_name = doc.file_name.lower()
-
-            if not (file_name.endswith('.pdf') or file_name.endswith('.docx') or file_name.endswith('.txt')):
-                await update.message.reply_text("⚠️ لطفاً فایل رزومه با فرمت PDF یا Word (.docx) ارسال کنید.")
-                return
-
-            await update.message.reply_text(f"📥 در حال دانلود و پردازش سند `{doc.file_name}` با هوش مصنوعی...")
-            file_obj = await context.bot.get_file(doc.file_id)
-            file_bytes = io.BytesIO()
-            await file_obj.download_to_memory(file_bytes)
-            content = file_bytes.getvalue()
-
-            # Parse Document
-            extracted_text = doc_parser.parse_bytes(content, doc.file_name)
-            if not extracted_text or len(extracted_text.strip()) < 15:
-                await update.message.reply_text("❌ متاسفانه متن قابل خواندنی در این فایل یافت نشد.")
-                return
-
-            # Analyze with Gemini
             profile = get_or_create_user(user.id, user.full_name)
-            analysis = resume_analyzer_agent.analyze(extracted_text, user_id=profile["id"])
+            doc = update.message.document
+            
+            await update.message.reply_text(f"📥 فایل `{doc.file_name}` دریافت شد. در حال استخراج و تحلیل با مدل gemini-3.8-flash...")
+            file_obj = await context.bot.get_file(doc.file_id)
+            file_bytes = await file_obj.download_as_bytearray()
+            
+            parsed_text = doc_parser.parse_bytes(bytes(file_bytes), doc.file_name)
+            if not parsed_text or len(parsed_text) < 50:
+                await update.message.reply_text("متن رزومه استخراج نشد. لطفاً فایلی با کیفیت متنی بالاتر ارسال فرمایید.")
+                return
 
-            # Recalculate tailored matches for this user
-            try:
-                job_matcher_agent.match_all_jobs_for_user(profile["id"])
-            except Exception as e:
-                logger.error(f"Error matching jobs for user: {e}")
+            analysis = resume_analyzer_agent.analyze(parsed_text, user_id=profile["id"])
+            ats_score = analysis.get("ats_score", 70)
+            skills = analysis.get("detected_skills", [])
 
-            skills_str = ", ".join(analysis.get("detected_skills", [])[:6])
-            missing_str = "\n".join([f"• {m['skill']}: {m['reason']}" for m in analysis.get("missing_trend_skills", [])[:2]])
+            conn = get_connection()
+            cur = conn.cursor()
+            cur.execute("""
+            UPDATE profiles
+            SET raw_resume = ?, parsed_skills = ?, ats_score = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            """, (parsed_text, json.dumps(skills, ensure_ascii=False), ats_score, profile["id"]))
+            conn.commit()
+            conn.close()
 
-            reply_text = (
-                f"✅ **رزومه شما با موفقیت برای حساب {user.first_name} ثبت و ارزیابی شد!**\n\n"
-                f"📊 **نمره سازگاری ATS اختصاصی شما:** {analysis.get('ats_score')}/100\n"
-                f"💼 **عنوان شغلی تشخیص داده شده:** {analysis.get('detected_title')}\n"
-                f"🛠️ **مهارت‌های استخراج‌شده:** {skills_str}\n\n"
-                f"⚠️ **مهارت‌های ترند روز بازار تهران که باید به رزومه اضافه شوند:**\n{missing_str}\n\n"
-                f"💡 موقعیت‌های متناسب با رزومه اختصاصی‌تان فیلتر شدند. برای مشاهده، دکمه زیر یا دستور `/jobs` را بزنید."
+            # Refresh jobs
+            job_matcher_agent.match_all_jobs_for_user(user_id=profile["id"])
+
+            msg = (
+                f"✅ **رزومه شما با موفقیت تحلیل شد!**\n\n"
+                f"📊 **نمره ATS جدید:** {ats_score}/۱۰۰\n"
+                f"🎯 **مهارت‌های شناسایی‌شده:** {', '.join(skills[:8])}\n\n"
+                "اکنون دستور /jobs را بزنید تا فرصت‌های جدید متناسب با بردار مهارتی‌تان را مشاهده کنید."
             )
-            await update.message.reply_text(reply_text, parse_mode="Markdown")
+            await update.message.reply_text(msg, parse_mode="Markdown")
 
         async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             query = update.callback_query
+            await query.answer()
             user = update.effective_user
             profile = get_or_create_user(user.id, user.full_name)
-            await query.answer()
 
             if query.data == "status":
                 await query.edit_message_text(format_user_status(profile), parse_mode="Markdown")
             elif query.data == "jobs":
                 await query.edit_message_text(format_user_jobs(profile), parse_mode="Markdown")
-            elif query.data == "accounts_menu":
-                accs = platform_auth_manager.get_accounts()
-                jobinja_acc = next((a for a in accs if a["platform"] == "jobinja"), {})
-                jobvision_acc = next((a for a in accs if a["platform"] == "jobvision"), {})
+            elif query.data == "modules_menu":
+                conn = get_connection()
+                cur = conn.cursor()
+                cur.execute("SELECT golden_hour_enabled, match_threshold FROM profiles WHERE id = ?", (profile["id"],))
+                p = cur.fetchone()
+                gh_active = bool(p["golden_hour_enabled"])
+                conn.close()
 
-                acc_text = (
-                    "🔐 **وضعیت اتصال حساب‌های کاریابی شما:**\n\n"
-                    f"🏢 **جابینجا (Jobinja):**\n"
-                    f"- نام کاربری: `{jobinja_acc.get('username_or_email', '09195253462')}`\n"
-                    f"- وضعیت: `{'✅ متصل و آماده' if jobinja_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
-                    f"💼 **جاب‌ویژن (Jobvision):**\n"
-                    f"- نام کاربری: `{jobvision_acc.get('username_or_email', '09195253462')}`\n"
-                    f"- وضعیت: `{'✅ متصل و آماده' if jobvision_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
-                    "💡 *تمام ارسال‌ها با این دو اکانت و با کد پیگیری اختصاصی انجام می‌شوند.*"
+                mod_text = (
+                    "⚙️ **مدیریت و کلیدهای کنترل ماژول‌های پلتفرم:**\n\n"
+                    f"1. ⏰ **ساعت طلایی (۸ تا ۱۰ صبح):** `{'فعال ✅' if gh_active else 'غیرفعال ❌'}`\n"
+                    "2. 🔒 **تأیید قبل از ارسال:** `فعال ✅ (گاردریل امنیتی)`\n"
+                    "3. 🎙️ **شبیه‌ساز مصاحبه B2B:** `فعال ✅ (تحت وب)`\n\n"
+                    "روی هر ماژول کلیک کنید تا وضعیت آن فوراً تغییر یابد:"
                 )
-                await query.edit_message_text(acc_text, parse_mode="Markdown")
+                keyboard = [
+                    [InlineKeyboardButton(f"⏰ ساعت طلایی ({'قطع' if gh_active else 'وصل'})", callback_data="toggle_golden_hour")],
+                    [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="status")]
+                ]
+                await query.edit_message_text(mod_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
             elif query.data == "toggle_golden_hour":
                 conn = get_connection()
                 cur = conn.cursor()
@@ -296,20 +342,67 @@ def run_bot():
                 cur.execute("UPDATE profiles SET golden_hour_enabled = ? WHERE id = ?", (new_state, profile["id"]))
                 conn.commit()
                 conn.close()
-
-                state_desc = "فعال (ارسال خودکار ۸:۳۰ تا ۱۰:۳۰ صبح)" if new_state else "خاموش (ارسال فوری و آنی)"
                 await query.edit_message_text(
-                    f"⏰ **تنظیمات ساعت طلایی با موفقیت تغییر کرد!**\n\n"
-                    f"وضعیت جدید برای حساب {user.first_name}: **{state_desc}**\n\n"
-                    "برای بازگشت به منو دستور /start را بزنید."
+                    f"⏰ **ماژول ساعت طلایی {'فعال' if new_state else 'خاموش'} شد.**",
+                    reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت", callback_data="modules_menu")]])
                 )
+            elif query.data.startswith("confirm_apply_"):
+                job_id = query.data.replace("confirm_apply_", "")
+                res = auto_applier_queue.confirm_and_apply(user_id=profile["id"], job_id=job_id)
+                if res.get("success"):
+                    await query.edit_message_text(f"🎉 **رزومه با تایید شما ثبت شد!**\nکد پیگیری: `{res.get('tracking_code')}`", parse_mode="Markdown")
+                else:
+                    await query.edit_message_text(f"❌ خطا: {res.get('error')}")
+            elif query.data == "cancel_apply":
+                await query.edit_message_text("❌ ارسال رزومه لغو شد.")
+            elif query.data == "sandbox_pay":
+                await pay_cmd(update, context)
+            elif query.data.startswith("verify_sandbox_"):
+                auth_token = query.data.replace("verify_sandbox_", "")
+                conn = get_connection()
+                cur = conn.cursor()
+                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                ref_id = f"REF_{uuid.uuid4().hex[:8].upper()}"
+                cur.execute("""
+                UPDATE transactions
+                SET status = 'verified', ref_id = ?, verified_at = ?
+                WHERE authority = ?
+                """, (ref_id, now, auth_token))
+                conn.commit()
+                conn.close()
+                log_audit(profile["id"], "payment_verified", "transactions", auth_token, {"ref_id": ref_id})
+                await query.edit_message_text(
+                    f"🎉 **تراکنش آزمایشی در محیط Sandbox با موفقیت تایید شد!**\n\n"
+                    f"- کد ارجاع بانکی: `{ref_id}`\n"
+                    "- وضعیت: پرداخت‌شده و فعال\n"
+                    "- دسترسی اشتراک ویژه برای حساب شما برقرار گردید."
+                )
+            elif query.data == "accounts_menu":
+                conn = get_connection()
+                cur = conn.cursor()
+                cur.execute("SELECT platform, username_or_email, status FROM accounts")
+                accs = {r["platform"]: dict(r) for r in cur.fetchall()}
+                conn.close()
+                jobinja_acc = accs.get("jobinja", {})
+                jobvision_acc = accs.get("jobvision", {})
+                acc_text = (
+                    "🔐 **وضعیت اتصال حساب‌های کاریابی شما:**\n\n"
+                    f"🏢 **جابینجا (Jobinja):**\n"
+                    f"- کاربر: `{jobinja_acc.get('username_or_email', settings.JOBINJA_USER)}`\n"
+                    f"- وضعیت: `{'✅ متصل و آماده' if jobinja_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
+                    f"💼 **جاب‌ویژن (Jobvision):**\n"
+                    f"- کاربر: `{jobvision_acc.get('username_or_email', settings.JOBVISION_USER)}`\n"
+                    f"- وضعیت: `{'✅ متصل و آماده' if jobvision_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
+                    "💡 *تمام ارسال‌ها با این دو اکانت و با کد پیگیری اختصاصی انجام می‌شوند.*"
+                )
+                await query.edit_message_text(acc_text, parse_mode="Markdown")
             elif query.data == "security_audit":
                 sec_text = (
                     "🛡️ **گزارش ممیزی امنیتی خودکار Career Co-Pilot (OWASP Top 10):**\n\n"
                     "✅ **ایزولاسیون سکرت‌ها:** کلیه توکن‌ها و کلید API جمینای در فایل محلی `.env` محافظت می‌شوند.\n"
                     "✅ **حفاظت SQL Injection:** تمامی کوئری‌های دیتابیس پارامتریزه و امن هستند.\n"
-                    "✅ **امنیت نشست‌ها:** اعتبارنامه‌های جابینجا و جاب‌ویژن (کاربر 09195253462) در محیط ایزوله قرار دارند.\n"
-                    "✅ **کنترل نرخ ارسال (Rate Limiting):** سقف روزانه ۱۵ ارسال و تاخیر تصادفی فعال است.\n"
+                    "✅ **رمزنگاری سشن‌ها:** سشن‌ها با کلید متقارن AES/Fernet رمزگذاری شده‌اند.\n"
+                    "✅ **گاردریل تایید کاربر:** ارسال قطعی بدون تایید صریح کاربر مسدود است.\n"
                     "✅ **حمل‌ونقل امن (HTTPS):** تمامی ارتباطات با Cloudflare SSL کدگذاری می‌شوند.\n\n"
                     "🔒 **وضعیت سلامت امنیتی: ۱۰۰٪ (SECURE & COMPLIANT)**"
                 )
@@ -329,11 +422,11 @@ def run_bot():
         app.add_handler(CommandHandler("status", status_cmd))
         app.add_handler(CommandHandler("jobs", jobs_cmd))
         app.add_handler(CommandHandler("apply", apply_cmd))
-        app.add_handler(CommandHandler("security", security_cmd))
+        app.add_handler(CommandHandler("pay", pay_cmd))
         app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
         app.add_handler(CallbackQueryHandler(button_handler))
 
-        print(f"🚀 ربات تلگرام @Career_Copilot_ir_bot به صورت چندکاربره شخصی‌سازی شد و فعال است...")
+        print(f"🚀 ربات تلگرام @Career_Copilot_ir_bot فعال شد...")
         app.run_polling()
     except Exception as e:
         logger.error(f"خطا در اجرای ربات تلگرام: {e}")

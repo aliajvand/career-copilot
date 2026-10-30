@@ -18,6 +18,7 @@ from agents.interview_agent import interview_simulator_agent
 from agents.auto_applier import auto_applier_agent
 from agents.hierarchical_engine import hierarchical_engine, ENTERPRISE_DOMAINS
 from automation.platform_auth import platform_auth_manager, add_log
+from automation.auto_applier import auto_applier_queue
 
 app = FastAPI(title="Job Career Co-Pilot API", version="2.5.0")
 
@@ -285,6 +286,65 @@ def run_security_audit():
         "audited_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
+
+@app.get("/health")
+def health_check():
+    """Liveness and readiness probe for container and cloud deployments."""
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT 1")
+        conn.close()
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"unhealthy: {str(e)}"
+
+    return {
+        "status": "healthy" if db_status == "connected" else "degraded",
+        "service": settings.PROJECT_NAME,
+        "database": db_status,
+        "model": settings.GEMINI_MODEL,
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
+@app.get("/metrics")
+def get_metrics():
+    """Observability metrics tracking total jobs, applications, and audit entries."""
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM jobs WHERE is_deleted = 0")
+    total_jobs = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM user_jobs WHERE status = 'applied'")
+    total_applied = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM audit_logs")
+    total_audits = cur.fetchone()[0]
+    cur.execute("SELECT COUNT(*) FROM interviews")
+    total_interviews = cur.fetchone()[0]
+    conn.close()
+
+    return {
+        "active_jobs_count": total_jobs,
+        "applied_applications_count": total_applied,
+        "audit_logs_count": total_audits,
+        "interviews_conducted_count": total_interviews,
+        "daily_cap": settings.DAILY_APPLICATION_CAP
+    }
+
+@app.post("/api/apply/confirm")
+def confirm_job_application(payload: dict = Body(...)):
+    """User confirmation endpoint enforcing guardrail before dispatch."""
+    job_id = payload.get("job_id")
+    user_id = payload.get("user_id", 1)
+    if not job_id:
+        raise HTTPException(status_code=400, detail="job_id is required")
+
+    res = auto_applier_queue.confirm_and_apply(user_id=user_id, job_id=job_id)
+    return res
+
+@app.get("/api/b2b/interview-report/{interview_id}")
+def get_b2b_report(interview_id: int):
+    """Generates downloadable B2B candidate evaluation report for HR."""
+    return interview_simulator_agent.generate_b2b_report(interview_id)
 
 # Mount frontend
 if STATIC_DIR.exists():

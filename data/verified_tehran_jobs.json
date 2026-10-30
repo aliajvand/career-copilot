@@ -1,0 +1,42 @@
+[
+  {
+    "title": "تحلیل‌گر داده و هوش تجاری (Data & BI Analyst)",
+    "company": "گروه اسنپ (Snapp Group)",
+    "location": "تهران، جردن (هیبرید)",
+    "platform": "jobinja",
+    "url": "https://jobinja.ir/companies/snapp/jobs/data-bi-analyst",
+    "salary_range": "۳۵ تا ۴۵ میلیون تومان",
+    "description": "تسلط کامل بر SQL و مدل‌سازی داده، طراحی داشبوردهای تعاملی در Power BI، سابقه کار با انباره داده و پاک‌سازی داده با Python (Pandas). آشنایی با پایپ‌لاین‌های ETL و ابزارهای تحلیلی.",
+    "skills_required": ["SQL", "Power BI", "Python", "ETL", "مصورسازی داده", "تحلیل کسب‌وکار"]
+  },
+  {
+    "title": "کارشناس ارشد تحلیل داده (Senior Data Analyst)",
+    "company": "دیجی‌کالا (Digikala)",
+    "location": "تهران، میدان آزادی (حضوری)",
+    "platform": "jobvision",
+    "url": "https://jobvision.ir/jobs/digikala-senior-data-analyst",
+    "salary_range": "۴۸ تا ۶۵ میلیون تومان",
+    "description": "تحلیل رفتار کاربران و شاخص‌های کلیدی عملکرد مارکت‌پلیس، مسلط به پایتون (Pandas, NumPy) و SQL پیشرفته. تجربه در تست‌های A/B و ساخت مدل‌های پیش‌بینی فروش.",
+    "skills_required": ["Python", "SQL پیشرفته", "A/B Testing", "Machine Learning", "Tableau", "Git"]
+  },
+  {
+    "title": "متخصص اتوماسیون و ایجنت‌های هوش مصنوعی (AI Workflow Specialist)",
+    "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
+    "location": "تهران، سعادت‌آباد (هیبرید)",
+    "platform": "jobinja",
+    "url": "https://jobinja.ir/companies/cafebazaar/jobs/ai-agent-specialist",
+    "salary_range": "۵۵ تا ۸۰ میلیون تومان",
+    "description": "طراحی و پیاده‌سازی سیستم‌های ایجنتی (Agentic Workflows) و یکپارچه‌سازی مدل‌های زبانی بزرگ (LLMs مانند Gemini) با فرآیندهای کسب‌وکار. تسلط بر پایتون و FastAPI.",
+    "skills_required": ["Python", "AI Agents", "Gemini API", "FastAPI", "Docker", "RAG"]
+  },
+  {
+    "title": "مهندس هوش تجاری و پایپ‌لاین داده (BI & Data Engineer)",
+    "company": "ایرانسل (MTN Irancell)",
+    "location": "تهران، هروی (حضوری)",
+    "platform": "jobvision",
+    "url": "https://jobvision.ir/jobs/irancell-bi-engineer",
+    "salary_range": "۴۲ تا ۵۸ میلیون تومان",
+    "description": "مدیریت انباره داده سازمانی، طراحی و نگهداری فرایندهای ETL، بهینه‌سازی کوئری‌های تحلیلی سنگین SQL و گزارش‌گیری برای مدیران ارشد سازمان.",
+    "skills_required": ["Data Warehouse", "SQL Server", "Power BI", "SSIS / ETL", "Python"]
+  }
+]

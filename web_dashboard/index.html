@@ -59,6 +59,25 @@
         ::-webkit-scrollbar-track { background: #080c14; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        /* Accessibility: Reduced Motion & Focus Rings */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+            #bg-3d-canvas, #interviewer-3d-canvas {
+                display: none !important;
+            }
+        }
+        :focus-visible {
+            outline: 2px solid #10b981 !important;
+            outline-offset: 2px !important;
+        }
+        .rtl-mirror {
+            transform: scaleX(-1);
+        }
     </style>
 </head>
 <body class="bg-[#070a12] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950 pb-20 cyber-grid relative overflow-x-hidden">
@@ -1145,59 +1164,78 @@
         function playQuestionSpeech() {
             const q = document.getElementById('q-text').innerText;
             if (!q || !('speechSynthesis' in window)) {
-                showToast('مرورگر شما از تبدیل صوت پشتیبانی نمی‌کند.', 'error');
+                showToast('مرورگر شما از تبدیل صوت پشتیبانی نمی‌کند؛ لطفاً متن سوال را مطالعه فرمایید.', 'warning');
+                document.getElementById('interviewer-voice-status').innerText = 'حالت متنی فعال است (صدا غیرفعال)';
                 return;
             }
 
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(q);
-            utterance.lang = 'fa-IR';
-            utterance.rate = 0.95;
+            try {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(q);
+                utterance.lang = 'fa-IR';
+                utterance.rate = 0.95;
 
-            isSpeakingAnim = true;
-            document.getElementById('interviewer-voice-status').innerText = 'در حال خواندن سوال...';
+                isSpeakingAnim = true;
+                document.getElementById('interviewer-voice-status').innerText = 'در حال خواندن سوال...';
 
-            utterance.onend = () => {
+                utterance.onend = () => {
+                    isSpeakingAnim = false;
+                    document.getElementById('interviewer-voice-status').innerText = 'آماده دریافت پاسخ شما (صوتی یا متنی)';
+                };
+                utterance.onerror = () => {
+                    isSpeakingAnim = false;
+                    document.getElementById('interviewer-voice-status').innerText = 'خطای پخش صوتی؛ حالت متنی در دسترس است';
+                };
+
+                window.speechSynthesis.speak(utterance);
+            } catch (err) {
                 isSpeakingAnim = false;
-                document.getElementById('interviewer-voice-status').innerText = 'آماده دریافت پاسخ شما';
-            };
-            utterance.onerror = () => {
-                isSpeakingAnim = false;
-                document.getElementById('interviewer-voice-status').innerText = 'آماده دریافت پاسخ شما';
-            };
-
-            window.speechSynthesis.speak(utterance);
+                document.getElementById('interviewer-voice-status').innerText = 'حالت متنی فعال است';
+            }
         }
 
         function startVoiceRecording() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const textarea = document.getElementById('interview-user-answer');
             if (!SpeechRecognition) {
-                showToast('مرورگر شما از ضبط صوتی فارسی پشتیبانی نمی‌کند، لطفاً پاسخ را تایپ فرمایید.', 'error');
+                showToast('سرویس گفتار به متن مرورگر در دسترس نیست؛ پاسخ را مستقیماً در کادر زیر تایپ فرمایید.', 'warning');
+                if (textarea) textarea.focus();
                 return;
             }
 
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'fa-IR';
-            recognition.continuous = false;
-            recognition.interimResults = false;
+            try {
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'fa-IR';
+                recognition.continuous = false;
+                recognition.interimResults = false;
 
-            const btn = document.getElementById('btn-mic-toggle');
-            btn.classList.add('bg-rose-600', 'text-white');
-            document.getElementById('mic-status-text').innerText = 'در حال گوش دادن... صحبت کنید';
+                const btn = document.getElementById('btn-mic-toggle');
+                btn.classList.add('bg-rose-600', 'text-white');
+                document.getElementById('mic-status-text').innerText = 'در حال گوش دادن... صحبت کنید';
 
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                const textarea = document.getElementById('interview-user-answer');
-                textarea.value = textarea.value ? `${textarea.value} ${transcript}` : transcript;
-                showToast('صدای شما دریافت و به متن تبدیل شد.');
-            };
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    textarea.value = textarea.value ? `${textarea.value} ${transcript}` : transcript;
+                    showToast('صدای شما دریافت و به متن تبدیل شد.');
+                };
 
-            recognition.onend = () => {
-                btn.classList.remove('bg-rose-600', 'text-white');
-                document.getElementById('mic-status-text').innerText = 'صحبت با میکروفون';
-            };
+                recognition.onerror = (e) => {
+                    btn.classList.remove('bg-rose-600', 'text-white');
+                    document.getElementById('mic-status-text').innerText = 'صحبت با میکروفون';
+                    showToast('دسترسی به میکروفون میسر نشد؛ لطفاً پاسخ را تایپ فرمایید.', 'warning');
+                    if (textarea) textarea.focus();
+                };
 
-            recognition.start();
+                recognition.onend = () => {
+                    btn.classList.remove('bg-rose-600', 'text-white');
+                    document.getElementById('mic-status-text').innerText = 'صحبت با میکروفون';
+                };
+
+                recognition.start();
+            } catch (err) {
+                showToast('خطا در راه‌اندازی میکروفون؛ لطفاً به صورت متنی پاسخ دهید.', 'warning');
+                if (textarea) textarea.focus();
+            }
         }
 
         async function evaluateInterviewAnswer() {
