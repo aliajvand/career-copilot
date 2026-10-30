@@ -1,3 +1,13 @@
+---
+title: Career Copilot Enterprise
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # پلتفرم و اتوماسیون هوشمند شغلی Career Co-Pilot
 
 سیستم خودکار و دستیار هوشمند ارتقای شغلی، انطباق رزومه و ارسال هدفمند بر پایه **Agentic Workflow** و مدل‌های پیشرفته هوش مصنوعی **Google Gemini**.
@@ -66,3 +76,24 @@ d:\startup\resume\
 ├── run.py                      # اسکریپت اجرای تک‌کلیکه
 └── README.md
 ```
+
+---
+
+## ☁️ راه‌اندازی سرور ابری رایگان ۲۴/۷ (Cloud Deployment)
+
+این پروژه از طریق کانتینر داکر [`Dockerfile`](Dockerfile) و اسکریپت [`run_cloud.py`](run_cloud.py) به صورت آماده و بهینه‌سازی شده برای استقرار روی سرویس‌های ابری رایگان طراحی شده است:
+
+### گزینه ۱: Hugging Face Spaces (۱۶ گیگابایت رم رایگان - توصیه شده)
+1. در سایت [huggingface.co/new-space](https://huggingface.co/new-space) یک Space جدید بسازید.
+2. نوع SDK را **Docker (Blank)** انتخاب کنید.
+3. در تب تنظیمات (Settings)، متغیرهای محیطی زیر را به بخش **Variables & Secrets** اضافه کنید:
+   - `GEMINI_API_KEY`: کلید API گوگل جمینای شما
+   - `TELEGRAM_BOT_TOKEN`: توکن بات تلگرام دریافتی از BotFather
+4. کدها را از ریپازیتوری گیت‌هاب `https://github.com/aliajvand/career-copilot` سینک کنید.
+5. به محض اتمام بیلد، داشبورد وب با دامنه اختصاصی رایگان HTTPS و ربات تلگرام ۲۴/۷ فعال می‌شوند!
+
+### گزینه ۲: Render.com
+1. وارد داشبورد Render شوید و روی **New + Web Service** کلیک کنید.
+2. مخزن گیت‌هاب `aliajvand/career-copilot` را متصل کنید.
+3. محیط اجرا (Runtime) را **Docker** بگذارید و متغیرهای `GEMINI_API_KEY` و `TELEGRAM_BOT_TOKEN` را ثبت کنید.
+
