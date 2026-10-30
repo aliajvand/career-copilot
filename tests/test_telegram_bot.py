@@ -17,15 +17,19 @@ class TestTelegramBotFeatures(unittest.TestCase):
         self.assertIn("Recommender", jobs_text)
 
     def test_sandbox_transaction_record(self):
+        import uuid
+        test_auth = f"zarinpal_sandbox_{uuid.uuid4().hex[:8]}"
+        test_idem = f"idem_{uuid.uuid4().hex[:8]}"
+
         conn = get_connection()
         cur = conn.cursor()
         cur.execute("""
         INSERT INTO transactions (user_id, authority, amount, status, gateway, idempotency_key, description)
-        VALUES (1, 'zarinpal_sandbox_test_123', 199000, 'pending', 'zarinpal_sandbox', 'idem_key_123', 'تست پرداخت')
-        """)
+        VALUES (1, ?, 199000, 'pending', 'zarinpal_sandbox', ?, 'تست پرداخت')
+        """, (test_auth, test_idem))
         conn.commit()
 
-        cur.execute("SELECT status, amount FROM transactions WHERE authority = 'zarinpal_sandbox_test_123'")
+        cur.execute("SELECT status, amount FROM transactions WHERE authority = ?", (test_auth,))
         row = cur.fetchone()
         self.assertEqual(row["status"], "pending")
         self.assertEqual(row["amount"], 199000)
