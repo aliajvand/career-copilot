@@ -1,42 +1,102 @@
 [
   {
-    "title": "تحلیل‌گر داده و هوش تجاری (Data & BI Analyst)",
+    "title": "کارشناس ارشد تحلیل داده و هوش تجاری (Senior BI & Data Analyst)",
     "company": "گروه اسنپ (Snapp Group)",
     "location": "تهران، جردن (هیبرید)",
     "platform": "jobinja",
-    "url": "https://jobinja.ir/companies/snapp/jobs/data-bi-analyst",
-    "salary_range": "۳۵ تا ۴۵ میلیون تومان",
-    "description": "تسلط کامل بر SQL و مدل‌سازی داده، طراحی داشبوردهای تعاملی در Power BI، سابقه کار با انباره داده و پاک‌سازی داده با Python (Pandas). آشنایی با پایپ‌لاین‌های ETL و ابزارهای تحلیلی.",
-    "skills_required": ["SQL", "Power BI", "Python", "ETL", "مصورسازی داده", "تحلیل کسب‌وکار"]
+    "url": "https://jobinja.ir/companies/snapp/jobs/senior-bi-data-analyst",
+    "salary_range": "۴۲ تا ۵۵ میلیون تومان",
+    "description": "طراحی و توسعه داشبوردهای جامع در Power BI و Tableau، استخراج داده‌ها و کوئری‌نویسی پیشرفته با PostgreSQL و ClickHouse. مدل‌سازی داده و محاسبه شاخص‌های سودآوری، نگهداشت مشتری (Retention) و ارزش طول عمر مشتری (LTV).",
+    "skills_required": ["SQL پیشرفته", "Power BI", "Python", "Tableau", "DAX", "مدل‌سازی داده", "ETL"]
   },
   {
-    "title": "کارشناس ارشد تحلیل داده (Senior Data Analyst)",
+    "title": "دانشمند داده و یادگیری ماشین (Data Scientist - ML & Forecasting)",
     "company": "دیجی‌کالا (Digikala)",
     "location": "تهران، میدان آزادی (حضوری)",
     "platform": "jobvision",
-    "url": "https://jobvision.ir/jobs/digikala-senior-data-analyst",
-    "salary_range": "۴۸ تا ۶۵ میلیون تومان",
-    "description": "تحلیل رفتار کاربران و شاخص‌های کلیدی عملکرد مارکت‌پلیس، مسلط به پایتون (Pandas, NumPy) و SQL پیشرفته. تجربه در تست‌های A/B و ساخت مدل‌های پیش‌بینی فروش.",
-    "skills_required": ["Python", "SQL پیشرفته", "A/B Testing", "Machine Learning", "Tableau", "Git"]
+    "url": "https://jobvision.ir/jobs/digikala-data-scientist-forecasting",
+    "salary_range": "۵۰ تا ۷۰ میلیون تومان",
+    "description": "توسعه مدل‌های پیش‌بینی تقاضا و قیمت‌گذاری پویا در مارکت‌پلیس، پردازش داده‌های بزرگ با PySpark و Pandas. تست‌های آماری A/B و استقرار مدل‌های یادگیری ماشین با Docker و FastAPI.",
+    "skills_required": ["Python", "Machine Learning", "PySpark", "A/B Testing", "SQL", "Docker", "FastAPI"]
   },
   {
-    "title": "متخصص اتوماسیون و ایجنت‌های هوش مصنوعی (AI Workflow Specialist)",
+    "title": "متخصص اتوماسیون و ایجنت‌های هوش مصنوعی (AI Workflow & Agentic Engineer)",
     "company": "هلدینگ هزاردستان (کافه‌بازار و دیوار)",
     "location": "تهران، سعادت‌آباد (هیبرید)",
     "platform": "jobinja",
-    "url": "https://jobinja.ir/companies/cafebazaar/jobs/ai-agent-specialist",
-    "salary_range": "۵۵ تا ۸۰ میلیون تومان",
-    "description": "طراحی و پیاده‌سازی سیستم‌های ایجنتی (Agentic Workflows) و یکپارچه‌سازی مدل‌های زبانی بزرگ (LLMs مانند Gemini) با فرآیندهای کسب‌وکار. تسلط بر پایتون و FastAPI.",
-    "skills_required": ["Python", "AI Agents", "Gemini API", "FastAPI", "Docker", "RAG"]
+    "url": "https://jobinja.ir/companies/cafebazaar/jobs/ai-workflow-engineer",
+    "salary_range": "۶۰ تا ۸۵ میلیون تومان",
+    "description": "طراحی پایپ‌لاین‌های خودکار مبتنی بر Multi-Agent Systems و یکپارچه‌سازی LLMs (Gemini / OpenAI) با فرآیندهای عملیاتی شرکت. توسعه میکروسرویس‌های پایتونی با ابزارهای برداری FAISS و معماری RAG.",
+    "skills_required": ["Python", "AI Agents", "LangChain", "RAG", "FAISS", "FastAPI", "Docker", "Git"]
   },
   {
-    "title": "مهندس هوش تجاری و پایپ‌لاین داده (BI & Data Engineer)",
+    "title": "مهندس انباره داده و خطوط انتقال داده (Data Warehouse & ETL Engineer)",
     "company": "ایرانسل (MTN Irancell)",
     "location": "تهران، هروی (حضوری)",
     "platform": "jobvision",
-    "url": "https://jobvision.ir/jobs/irancell-bi-engineer",
-    "salary_range": "۴۲ تا ۵۸ میلیون تومان",
-    "description": "مدیریت انباره داده سازمانی، طراحی و نگهداری فرایندهای ETL، بهینه‌سازی کوئری‌های تحلیلی سنگین SQL و گزارش‌گیری برای مدیران ارشد سازمان.",
-    "skills_required": ["Data Warehouse", "SQL Server", "Power BI", "SSIS / ETL", "Python"]
+    "url": "https://jobvision.ir/jobs/irancell-dwh-etl-engineer",
+    "salary_range": "۴۵ تا ۶۰ میلیون تومان",
+    "description": "طراحی و بهینه‌سازی جداول Fact و Dimension بر اساس مدل Kimball، نگهداری خطوط انتقال داده با Airflow و SSIS، بهینه‌سازی کوئری‌های سنگین تحلیلی در SQL Server و Oracle.",
+    "skills_required": ["Data Warehouse", "SQL Server", "Airflow", "ETL", "SSIS", "Python", "Kimball"]
+  },
+  {
+    "title": "تحلیل‌گر داده‌های رشد و محصول (Product Growth Analyst)",
+    "company": "تپسی (Tapsi)",
+    "location": "تهران، ونک (هیبرید)",
+    "platform": "divar",
+    "url": "https://divar.ir/v/tehran/jobs/tapsi-growth-analyst",
+    "salary_range": "۳۵ تا ۴۸ میلیون تومان",
+    "description": "تحلیل فانل تبدیل سفر، رفتار کاربران در اپلیکیشن مسافر و سفیر، طراحی آزمایش‌های کنترل‌شده A/B و مصورسازی عملکرد مناطق تهران در اکسل پیشرفته و Power BI.",
+    "skills_required": ["SQL", "Excel پیشرفته", "Power BI", "Product Analytics", "Funnel Analysis", "آمار کاربردی"]
+  },
+  {
+    "title": "کارشناس هوش تجاری و تحلیلگر مالی (BI & Financial Data Analyst)",
+    "company": "زرین‌پال (ZarinPal)",
+    "location": "تهران، سهروردی",
+    "platform": "jobinja",
+    "url": "https://jobinja.ir/companies/zarinpal/jobs/bi-financial-analyst",
+    "salary_range": "۴۰ تا ۵۲ میلیون تومان",
+    "description": "تحلیل تراکنش‌های درگاه پرداخت، کشف الگوهای تراکنش‌های مشکوک (Fraud Detection)، ساخت داشبوردهای تسویه و تحلیل درآمد با Power BI و پایتون.",
+    "skills_required": ["SQL", "Power BI", "Python", "Fraud Analytics", "تحلیل مالی", "مدل‌سازی مالی"]
+  },
+  {
+    "title": "مهندس هوش مصنوعی و پردازش زبان طبیعی (NLP & LLM Engineer)",
+    "company": "نوبیتکس (Nobitex)",
+    "location": "تهران، صادقیه",
+    "platform": "jobvision",
+    "url": "https://jobvision.ir/jobs/nobitex-nlp-llm-engineer",
+    "salary_range": "۵۵ تا ۷۵ میلیون تومان",
+    "description": "پیاده‌سازی دستیارهای صوتی و متنی پشتیبانی، پردازش اخبار بازار با مدل‌های زبانی فارسی و ترنسفورمرها. استقرار سامانه‌های RAG برای پایگاه دانش داخلی شرکت.",
+    "skills_required": ["Python", "NLP فارسی", "Transformers", "PyTorch", "FastAPI", "Vector Search"]
+  },
+  {
+    "title": "تحلیل‌گر کلان‌داده و پایگاه‌های داده تحلیلی (Big Data Analyst)",
+    "company": "ترب (Torob)",
+    "location": "تهران، طرشت (نزدیک دانشگاه شریف)",
+    "platform": "divar",
+    "url": "https://divar.ir/v/tehran/jobs/torob-bigdata-analyst",
+    "salary_range": "۵۰ تا ۶۸ میلیون تومان",
+    "description": "تحلیل قیمت میلیون‌ها کالای فروشگاه‌های اینترنتی، خوشه‌بندی کالاها و تطبیق عنوان کالا با پایتون، کوئری‌نویسی در Elasticsearch و ClickHouse.",
+    "skills_required": ["Python", "Elasticsearch", "ClickHouse", "SQL", "Pandas", "Scikit-Learn"]
+  },
+  {
+    "title": "توسعه‌دهنده پایتون و بک‌اند سازمانی (Senior Python / FastAPI Developer)",
+    "company": "هلدینگ صباایده (آپارات و فیلیمو)",
+    "location": "تهران، نیاوران",
+    "platform": "jobinja",
+    "url": "https://jobinja.ir/companies/sabaidea/jobs/senior-python-dev",
+    "salary_range": "۵۵ تا ۸۰ میلیون تومان",
+    "description": "توسعه سرویس‌های پربار استریم ویدیو، مدیریت کش با Redis و طراحی ساختار میکروسرویس با FastAPI و داکر. بهینه‌سازی عملکرد دیتابیس در ترافیک‌های بسیار سنگین.",
+    "skills_required": ["Python", "FastAPI", "PostgreSQL", "Redis", "Docker", "Microservices", "Git"]
+  },
+  {
+    "title": "تحلیل‌گر داده و زنجیره تامین (Supply Chain Data Analyst)",
+    "company": "اسنپ‌مارکت (SnappMarket)",
+    "location": "تهران، شیخ بهایی",
+    "platform": "jobvision",
+    "url": "https://jobvision.ir/jobs/snappmarket-supply-chain-analyst",
+    "salary_range": "۳۲ تا ۴۴ میلیون تومان",
+    "description": "بهینه‌سازی لجستیک و موجودی هایپرمارکت‌ها، کاهش ضایعات انبار، پیش‌بینی سفارشات روزانه با اکسل و پایتون و طراحی گزارش‌های تحلیلی برای مدیران زنجیره تامین.",
+    "skills_required": ["SQL", "Excel پیشرفته", "Power BI", "Supply Chain", "پایتون مقدماتی", "تحلیل موجودی"]
   }
 ]

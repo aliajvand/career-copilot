@@ -1,4 +1,5 @@
 import unittest
+import uuid
 from automation.auto_applier import auto_applier_queue
 from core.db import init_db
 
@@ -7,10 +8,11 @@ class TestAutoApplierQueue(unittest.TestCase):
         init_db()
 
     def test_idempotency_and_confirmation(self):
-        # 1. Enqueue without user confirmation
+        job_id = f"test_queue_job_{uuid.uuid4().hex[:8]}"
+        # 1. Enqueue without user confirmation using isolated test user
         res1 = auto_applier_queue.enqueue_job_application(
-            user_id=1,
-            job_id="test_queue_job_101",
+            user_id=888,
+            job_id=job_id,
             requires_confirmation=True,
             user_confirmed=False
         )
@@ -19,8 +21,8 @@ class TestAutoApplierQueue(unittest.TestCase):
 
         # 2. Second attempt must be caught by idempotency
         res2 = auto_applier_queue.enqueue_job_application(
-            user_id=1,
-            job_id="test_queue_job_101",
+            user_id=888,
+            job_id=job_id,
             requires_confirmation=True,
             user_confirmed=False
         )

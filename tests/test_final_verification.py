@@ -71,9 +71,10 @@ class TestFinalVerification(unittest.TestCase):
         print(f"✓ Point 3: Transparent barrier reporting verified: {jobinja.get('status')}")
 
     def test_04_user_confirmation_apply_guardrail(self):
+        import uuid
         res = auto_applier_queue.enqueue_job_application(
-            user_id=1,
-            job_id="test_apply_guardrail",
+            user_id=999,
+            job_id=f"test_apply_guardrail_{uuid.uuid4().hex[:8]}",
             requires_confirmation=True,
             user_confirmed=False
         )

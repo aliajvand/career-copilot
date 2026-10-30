@@ -14,7 +14,7 @@ class TestTelegramBotFeatures(unittest.TestCase):
         self.assertIn("کاربر تست تلگرام", status_text)
 
         jobs_text = format_user_jobs(profile)
-        self.assertIn("Recommender", jobs_text)
+        self.assertIn("دلیل پیشنهاد", jobs_text)
 
     def test_sandbox_transaction_record(self):
         import uuid

@@ -163,6 +163,161 @@ def analyze_resume(payload: dict = Body(...)):
     res = resume_analyzer_agent.analyze(text, user_id=user_id)
     return res
 
+@app.post("/api/resume/save")
+def save_resume_profile(payload: dict = Body(...)):
+    user_id = payload.get("user_id", 1)
+    full_name = payload.get("full_name")
+    target_title = payload.get("target_title")
+    target_city = payload.get("target_city")
+    summary = payload.get("summary")
+    experience = payload.get("experience")
+    education = payload.get("education")
+    projects = payload.get("projects")
+    phone = payload.get("phone")
+    email = payload.get("email")
+    skills = payload.get("skills", [])
+    
+    if isinstance(skills, str):
+        skills = [s.strip() for s in skills.split(",") if s.strip()]
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+    UPDATE profiles
+    SET full_name = COALESCE(?, full_name),
+        target_title = COALESCE(?, target_title),
+        target_city = COALESCE(?, target_city),
+        summary = COALESCE(?, summary),
+        experience = COALESCE(?, experience),
+        education = COALESCE(?, education),
+        projects = COALESCE(?, projects),
+        phone = COALESCE(?, phone),
+        email = COALESCE(?, email),
+        parsed_skills = COALESCE(?, parsed_skills),
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+    """, (
+        full_name,
+        target_title,
+        target_city,
+        summary,
+        experience,
+        education,
+        projects,
+        phone,
+        email,
+        json.dumps(skills, ensure_ascii=False) if skills else None,
+        user_id
+    ))
+    
+    cursor.execute("""
+    INSERT INTO audit_logs (user_id, action, entity_type, entity_id, changes_json)
+    VALUES (?, 'UPDATE_RESUME_BUILDER', 'profile', ?, ?)
+    """, (user_id, str(user_id), json.dumps({"target_title": target_title, "skills_count": len(skills)}, ensure_ascii=False)))
+    
+    conn.commit()
+    conn.close()
+
+    add_log("ResumeBuilder", f"پروفایل و بخش‌های رزومه کاربر {user_id} با موفقیت در دیتابیس به‌روزرسانی شد.", "success")
+    return {"success": True, "message": "اطلاعات رزومه‌ساز با موفقیت ذخیره شد."}
+
+@app.post("/api/resume/ai-enhance")
+def ai_enhance_resume(payload: dict = Body(...)):
+    user_id = payload.get("user_id", 1)
+    summary = payload.get("summary", "")
+    experience = payload.get("experience", "")
+    skills = payload.get("skills", [])
+    target_title = payload.get("target_title", "Data Scientist & BI Professional")
+    
+    if isinstance(skills, str):
+        skills = [s.strip() for s in skills.split(",") if s.strip()]
+
+    add_log("ResumeEnhancer", f"آغاز بازنویسی و ارتقای هوشمند رزومه با مدل Gemini 3.8 Flash برای کاربر {user_id}...", "info")
+    enhanced = resume_analyzer_agent.enhance_with_ai(user_id, summary, experience, skills, target_title)
+    add_log("ResumeEnhancer", f"بهینه‌سازی رزومه انجام شد. نمره ATS جدید: {enhanced.get('ats_score')}", "success")
+    return enhanced
+
+@app.post("/api/resume/tailor")
+def tailor_resume(payload: dict = Body(...)):
+    user_id = payload.get("user_id", 1)
+    job_id = payload.get("job_id")
+    if not job_id:
+        raise HTTPException(status_code=400, detail="شناسه آگهی (job_id) الزامی است.")
+    
+    add_log("ResumeTailor", f"سفارشی‌سازی رزومه برای موقعیت {job_id}...", "info")
+    tailored = resume_analyzer_agent.tailor_for_job(user_id, job_id)
+    return tailored
+
+@app.post("/api/apply/batch-all")
+def batch_apply_all(payload: dict = Body(default={})):
+    """
+    Batch auto-apply to all qualified non-applied job openings.
+    Enforces daily cap and records audit logs and tracking codes.
+    """
+    user_id = payload.get("user_id", 1)
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT daily_cap FROM profiles WHERE id = ?", (user_id,))
+    prof_row = cursor.fetchone()
+    daily_cap = prof_row[0] if prof_row else 15
+
+    today_prefix = datetime.now().strftime("%Y-%m-%d")
+    cursor.execute("""
+    SELECT COUNT(*) FROM user_jobs 
+    WHERE user_id = ? AND status = 'applied' AND applied_at LIKE ?
+    """, (user_id, f"{today_prefix}%"))
+    applied_today = cursor.fetchone()[0]
+
+    remaining_cap = max(0, daily_cap - applied_today)
+    if remaining_cap <= 0:
+        conn.close()
+        return {
+            "success": False,
+            "message": f"سقف ارسال روزانه شما ({daily_cap} آگهی) تکمیل شده است. ادامه ارسال فردا در ساعت طلایی انجام می‌شود.",
+            "total_applied": 0,
+            "applied_jobs": []
+        }
+
+    cursor.execute("""
+    SELECT j.job_id, j.title, j.company, j.platform, COALESCE(uj.status, 'discovered') as user_status
+    FROM jobs j
+    LEFT JOIN user_jobs uj ON j.job_id = uj.job_id AND uj.user_id = ?
+    WHERE (uj.status IS NULL OR uj.status != 'applied') AND j.is_deleted = 0
+    ORDER BY j.match_score DESC
+    LIMIT ?
+    """, (user_id, remaining_cap))
+    eligible_jobs = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+
+    if not eligible_jobs:
+        return {
+            "success": True,
+            "message": "تمام موقعیت‌های شغلی فعال پیش‌تر ارسال شده‌اند یا در صف قرار دارند.",
+            "total_applied": 0,
+            "applied_jobs": []
+        }
+
+    applied_results = []
+    for j in eligible_jobs:
+        res = auto_applier_queue.confirm_and_apply(user_id=user_id, job_id=j["job_id"])
+        applied_results.append({
+            "job_id": j["job_id"],
+            "title": j["title"],
+            "company": j["company"],
+            "platform": j["platform"],
+            "tracking_code": res.get("tracking_code", ""),
+            "status": "applied"
+        })
+
+    add_log("BatchApplier", f"ارسال دسته‌ای خودکار برای {len(applied_results)} آگهی با موفقیت انجام شد.", "success")
+    return {
+        "success": True,
+        "message": f"تعداد {len(applied_results)} موقعیت شغلی با موفقیت برای کارفرمایان ارسال شد.",
+        "total_applied": len(applied_results),
+        "applied_jobs": applied_results
+    }
+
 @app.get("/api/market/benchmarks")
 def get_benchmarks(role: str = "data_analyst", level: str = "mid"):
     data = market_salary_agent.get_benchmark(role, level)

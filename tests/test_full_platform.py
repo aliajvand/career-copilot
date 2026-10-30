@@ -21,6 +21,12 @@ class TestFullCareerPlatform(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         init_db()
+        pdf_path = Path("D:/startup/Ali_Ajvand_Resume (12) (1).pdf")
+        if pdf_path.exists():
+            text = doc_parser.parse_bytes(pdf_path.read_bytes(), pdf_path.name)
+            resume_analyzer_agent.analyze(text, user_id=1)
+        platform_auth_manager.update_account("jobinja", "09195253462", "0441067824", "09195253462")
+        platform_auth_manager.update_account("jobvision", "09195253462", "0441067824", "09195253462")
 
     def test_01_real_pdf_parsing(self):
         pdf_path = Path("D:/startup/Ali_Ajvand_Resume (12) (1).pdf")
@@ -60,7 +66,7 @@ class TestFullCareerPlatform(unittest.TestCase):
     def test_04_live_apply_simulation(self):
         jobs = get_user_jobs_list(user_id=1, limit=1)
         job_id = jobs[0]["job_id"]
-        res = platform_auth_manager.execute_live_apply(job_id, user_id=1)
+        res = platform_auth_manager.execute_live_apply(job_id, user_id=1, user_confirmed=True)
         self.assertTrue(res.get("success"))
         self.assertTrue(res.get("tracking_code").startswith(("JN-", "JV-", "KB-")))
         print(f"✓ Test 4: Live Apply Simulation verified - Tracking Code: {res['tracking_code']}")

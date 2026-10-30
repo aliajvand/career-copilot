@@ -41,6 +41,8 @@ class TestPlatformAuth(unittest.TestCase):
         status = cur.fetchone()[0]
         self.assertEqual(status, "logged_out")
         conn.close()
+        # Restore status for other integration tests
+        platform_auth_manager.update_account("jobinja", "09195253462", "0441067824", "09195253462")
 
 if __name__ == "__main__":
     unittest.main()

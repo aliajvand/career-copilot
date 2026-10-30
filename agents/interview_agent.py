@@ -245,6 +245,7 @@ class InterviewSimulatorAgent:
         conn.close()
 
         res["interview_id"] = interview_id
+        res["feedback"] = res.get("executive_summary", "")
         log_audit(1, "interview_evaluated", "interviews", str(interview_id), {"score": res.get("score")})
         return res
 

@@ -93,7 +93,7 @@ class JobMatcherAgent:
     def __init__(self):
         self.vector_index = SemanticVectorIndex()
 
-    def evaluate_job(self, job_id: str, user_id: int = 1) -> dict:
+    def evaluate_job(self, job_id: str, user_id: int = 1, use_llm: bool = False) -> dict:
         conn = get_connection()
         cursor = conn.cursor()
         
@@ -116,14 +116,14 @@ class JobMatcherAgent:
         
         job_skills = json.loads(job["skills_required"] or "[]")
         
-        # Stage 1: Vector & Semantic Evaluation
+        # Stage 1: Vector & Semantic Evaluation (Ultra-fast FAISS & set overlap)
         semantic_score, matched_skills, missing_skills = self._compute_semantic_score(
             user_skills, user_resume, job_skills, job["title"], job["description"]
         )
 
-        # Stage 2: Gemini 3.8 Flash refinement if needed
+        # Stage 2: Gemini 3.8 Flash refinement if explicitly requested (e.g. single-job inspection)
         rationale = f"تطابق معنایی {semantic_score}٪ بر اساس بررسی مهارت‌های تخصصی."
-        if gemini_client.api_key:
+        if use_llm and gemini_client.api_key:
             prompt = f"""
             رزومه کارجو و مشخصات موقعیت شغلی را مقایسه کن.
             خروجی را دقیقاً در فرمت JSON بدون هیچ متن اضافی ارائه کن:
@@ -246,7 +246,7 @@ class JobMatcherAgent:
             self.vector_index.fit_and_index(corpus, job_ids)
 
         for jid in job_ids:
-            self.evaluate_job(jid, user_id=user_id)
+            self.evaluate_job(jid, user_id=user_id, use_llm=False)
 
         return get_user_jobs_list(user_id=user_id, limit=20)
 

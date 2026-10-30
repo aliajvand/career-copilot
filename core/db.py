@@ -220,9 +220,21 @@ def init_db():
             cursor.execute(f"ALTER TABLE {tbl} ADD COLUMN deleted_at TIMESTAMP")
         except Exception:
             pass
-    for col, col_type in [("rubric_breakdown", "TEXT DEFAULT '{}'"), ("hiring_recommendation", "TEXT"), ("candidate_tier", "TEXT"), ("candidate_consent", "INTEGER DEFAULT 1")]:
+    for col, col_type in [
+        ("summary", "TEXT"),
+        ("experience", "TEXT"),
+        ("education", "TEXT"),
+        ("projects", "TEXT"),
+        ("phone", "TEXT"),
+        ("email", "TEXT"),
+        ("rubric_breakdown", "TEXT DEFAULT '{}'"),
+        ("hiring_recommendation", "TEXT"),
+        ("candidate_tier", "TEXT"),
+        ("candidate_consent", "INTEGER DEFAULT 1")
+    ]:
+        target_tbl = "interviews" if col in ["rubric_breakdown", "hiring_recommendation", "candidate_tier", "candidate_consent"] else "profiles"
         try:
-            cursor.execute(f"ALTER TABLE interviews ADD COLUMN {col} {col_type}")
+            cursor.execute(f"ALTER TABLE {target_tbl} ADD COLUMN {col} {col_type}")
         except Exception:
             pass
     try:
