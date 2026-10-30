@@ -1,15 +1,18 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=str(BASE_DIR / ".env"), extra="ignore")
+
     PROJECT_NAME: str = "Job Career Co-Pilot & Automation"
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
+    TELEGRAM_BOT_TOKEN: str = ""
     
     # Database
     DATABASE_PATH: str = str(BASE_DIR / "data" / "career_copilot.db")
@@ -20,9 +23,7 @@ class Settings(BaseSettings):
     DAILY_APPLICATION_CAP: int = 15    # prevent spam
     
     # Proxy if needed for Gemini
-    PROXY_URL: str = os.getenv("HTTP_PROXY", "")
-
-    class Config:
-        env_file = ".env"
+    PROXY_URL: str = ""
+    HTTP_PROXY: str = ""
 
 settings = Settings()
