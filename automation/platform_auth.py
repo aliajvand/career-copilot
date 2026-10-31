@@ -249,35 +249,60 @@ class PlatformAuthManager:
             }
 
         # User confirmed or fully auto enabled
-        prefix = "JN" if platform == "jobinja" else ("JV" if platform == "jobvision" else "KB")
-        tracking_code = f"{prefix}-{random.randint(100000, 999999)}"
+        real_submission = False
+        live_result = None
+
+        if platform == "jobvision":
+            from automation.jobvision_real_applier import jobvision_real_applier
+            if jobvision_real_applier.has_saved_session():
+                add_log("AutoApplier", f"در حال اجرای ارسال مرورگری واقعی برای '{job['title']}' در جاب‌ویژن...", "info")
+                live_result = jobvision_real_applier.submit_application_to_job(job.get("url", ""))
+                if live_result.get("success"):
+                    real_submission = True
+            else:
+                add_log("AutoApplier", f"سشن ذخیره‌شده جاب‌ویژن یافت نشد. ارسال نیازمند نشست فعال یا کلیک روی لینک مستقیم است.", "warning")
+
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        tracking_code = f"REAL-JV-{job_id.replace('jv-', '')}" if (platform == "jobvision" and real_submission) else f"PENDING-DIRECT-{job_id}"
 
-        apply_user_job(user_id, job_id, tracking_code)
+        if real_submission or (live_result and live_result.get("already_applied")):
+            apply_user_job(user_id, job_id, tracking_code)
+            if user_id == 1:
+                cursor.execute("""
+                UPDATE jobs
+                SET status = 'applied', tracking_code = ?, applied_at = ?
+                WHERE job_id = ?
+                """, (tracking_code, now_str, job_id))
+                conn.commit()
+            conn.close()
 
-        if user_id == 1:
-            cursor.execute("""
-            UPDATE jobs
-            SET status = 'applied', tracking_code = ?, applied_at = ?
-            WHERE job_id = ?
-            """, (tracking_code, now_str, job_id))
-            conn.commit()
-
-        conn.close()
-
-        add_log("AutoApplier", f"رزومه با تایید کاربر برای '{job['title']}' ارسال شد. کد پیگیری: {tracking_code}", "success")
-        log_audit(user_id, "apply_confirmed", "job", job_id, {"tracking_code": tracking_code})
-
-        return {
-            "success": True,
-            "status": "APPLIED",
-            "job_id": job_id,
-            "title": job["title"],
-            "company": job["company"],
-            "tracking_code": tracking_code,
-            "applied_at": now_str,
-            "message": f"رزومه شما با موفقیت در {plat_fa} ثبت شد. کد پیگیری: {tracking_code}"
-        }
+            add_log("AutoApplier", f"رزومه با موفقیت به سرور جاب‌ویژن برای '{job['title']}' تحویل داده شد.", "success")
+            log_audit(user_id, "apply_confirmed_real", "job", job_id, {"status": "applied_real"})
+            return {
+                "success": True,
+                "status": "APPLIED_REAL",
+                "real_submission": True,
+                "job_id": job_id,
+                "title": job["title"],
+                "company": job["company"],
+                "tracking_code": tracking_code,
+                "applied_at": now_str,
+                "direct_url": job.get("url", ""),
+                "message": f"رزومه شما با موفقیت به صورت واقعی در {plat_fa} ثبت شد."
+            }
+        else:
+            conn.close()
+            reason_msg = live_result.get("message") if live_result else "سشن مرورگر لاگین نیست یا نیاز به حل کپچای ورود دارد."
+            return {
+                "success": False,
+                "status": "REQUIRES_AUTH_OR_MANUAL_CLICK",
+                "real_submission": False,
+                "job_id": job_id,
+                "title": job["title"],
+                "company": job["company"],
+                "direct_url": job.get("url", ""),
+                "message": f"برای ارسال این آگهی در {plat_fa}، به دلیل کپچای امنیتی، روی لینک مستقیم زیر کلیک کرده و با یک کلیک ارسال کنید، یا اسکریپت ورود جاب‌ویژن را اجرا نمایید: {job.get('url', '')}"
+            }
 
     @classmethod
     def sync_resume_to_platforms(cls, user_id: int = 1) -> Dict[str, Any]:
