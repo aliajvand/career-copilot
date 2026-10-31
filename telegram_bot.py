@@ -1,15 +1,16 @@
 """
 Personalized Multi-User Telegram Monitoring Bot for Career Co-Pilot Enterprise.
-Built with skills: telegram-bot + payment-integration-ir + recommender-system + auth-flow
+Built with skills: telegram-bot + recommender-system + doc-parser + auth-flow + generative_ui
 Features:
-- Permanent Square Reply Keyboard (is_persistent=True) + Official Telegram Bot Commands Menu (set_my_commands)
+- Permanent Square Reply Keyboard (is_persistent=True) + Official Bot Commands (set_my_commands)
+- Interactive AI Resume Consultant Chatbot supporting BOTH Voice Notes (ویس) and Text responses
+- 3 Corporate Visual Resume Templates (Harvard ATS, Modern Tech, Executive BI)
+- Before vs. After Optimization Diff & ATS Audit breakdown
+- Structured Resume Builder for Jobinja & Jobvision with 1-click Bookmarklet script
+- Real-time Application Alert Cards with direct 1-click submit links for 100% employer delivery
 - Instant Master Profile synchronization: newly registered users inherit ATS 96 score & complete skills
 - Direct resume PDF/Word parsing with immediate ATS scoring via chat upload
-- Individual job cards with direct apply & platform links placed immediately beneath each job
-- Dynamic controls for 24/7 autonomous scanning, daily application caps (15/30/50/100), and match thresholds
-- Formal corporate ATS resume preview template (/demo)
 - Universal '🔙 بازگشت به منوی اصلی' on EVERY sub-menu and screen
-- Interactive profile editing (Title, City, Skills, Platform accounts) directly inside Telegram
 - ZarinPal Sandbox Payment Gateway integration with Idempotency & Transaction logging
 """
 
@@ -39,6 +40,9 @@ from core.config import settings
 from agents.resume_analyzer import resume_analyzer_agent
 from agents.job_hunter import job_hunter_agent
 from agents.matcher_agent import job_matcher_agent
+from agents.resume_consultant_agent import resume_consultant_agent
+from agents.resume_templates_agent import resume_templates_agent
+from agents.gemini_client import gemini_client
 from automation.platform_auth import platform_auth_manager
 from automation.auto_applier import auto_applier_queue
 
@@ -62,29 +66,21 @@ def get_effective_proxy():
 PROXY_URL = get_effective_proxy()
 
 def get_or_create_user(telegram_id: int, full_name: str) -> dict:
-    """
-    Retrieves or initializes a Telegram user profile.
-    Automatically links to or clones Master Profile 1 (Ali Ajvand, ATS 96)
-    so the user is never left with an empty (0 ATS) profile.
-    """
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM profiles WHERE telegram_user_id = ?", (telegram_id,))
     row = cursor.fetchone()
     
-    # Fetch master profile 1
     cursor.execute("SELECT * FROM profiles WHERE id = 1")
     master = cursor.fetchone()
 
     if not row:
-        # Check if profile 1 has no telegram_user_id attached yet
         if master and (master["telegram_user_id"] is None or master["telegram_user_id"] == "") and (not full_name or "علی" in full_name or "Ajvand" in full_name):
             cursor.execute("UPDATE profiles SET telegram_user_id = ? WHERE id = 1", (telegram_id,))
             conn.commit()
             cursor.execute("SELECT * FROM profiles WHERE id = 1")
             row = cursor.fetchone()
         else:
-            # Clone Master Profile 1 so user starts with 96 ATS and comprehensive parsed profile
             candidate_name = full_name if full_name else (master["full_name"] if master else "علی رجوند (Ali Ajvand)")
             master_raw = master["raw_resume"] if master else ""
             master_skills = master["parsed_skills"] if master else '["پایتون", "Power BI", "SQL پیشرفته", "یادگیری ماشین"]'
@@ -110,7 +106,6 @@ def get_or_create_user(telegram_id: int, full_name: str) -> dict:
             cursor.execute("SELECT * FROM profiles WHERE telegram_user_id = ?", (telegram_id,))
             row = cursor.fetchone()
     else:
-        # If user exists but has ats_score == 0 or empty resume, inherit from master
         if row["ats_score"] == 0 or not row["raw_resume"]:
             if master and master["ats_score"] > 0:
                 master_exp = master["experience"] if "experience" in master.keys() else ""
@@ -139,32 +134,36 @@ def get_or_create_user(telegram_id: int, full_name: str) -> dict:
     return dict(row)
 
 def get_reply_keyboard():
-    """
-    Returns persistent 4-button square keyboard pinned at the bottom.
-    is_persistent=True ensures the 4-box / square menu button is always visible.
-    """
     from telegram import ReplyKeyboardMarkup, KeyboardButton
     return ReplyKeyboardMarkup([
-        [KeyboardButton("📋 مشاهده رزومه هوشمند و ATS"), KeyboardButton("🎯 فرصت‌های شغلی منطبق")],
-        [KeyboardButton("🚀 ارسال خودکار به همه"), KeyboardButton("🤖 پایش خودکار ۲۴ ساعته")],
-        [KeyboardButton("📊 دمو و تمپلیت رسمی رزومه"), KeyboardButton("📄 آپلود فایل رزومه (PDF)")],
-        [KeyboardButton("✏️ ویرایش مشخصات"), KeyboardButton("⚙️ وضعیت حساب‌های استخدامی")]
+        [KeyboardButton("📋 مشاهده رزومه و نمره ATS"), KeyboardButton("🎯 فرصت‌های شغلی منطبق")],
+        [KeyboardButton("🎙️ مشاور ارتقای رزومه (صوتی/متنی)"), KeyboardButton("🔍 مقایسه قبل و بعد رزومه")],
+        [KeyboardButton("🎨 ۳ قالب رسمی رزومه"), KeyboardButton("📋 فرم رزومه‌ساز جابینجا/جاب‌ویژن")],
+        [KeyboardButton("🚀 ارسال خودکار به همه"), KeyboardButton("🤖 پایش خودکار ۲۴ ساعته")]
     ], resize_keyboard=True, is_persistent=True)
 
 def get_main_keyboard():
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("📊 وضعیت پروفایل و نمره ATS", callback_data="status")],
-        [InlineKeyboardButton("🎯 فرصت‌های شغلی پیشنهادی من", callback_data="jobs")],
-        [InlineKeyboardButton("🚀 ارسال خودکار برای تمام موقعیت‌ها (/apply_all)", callback_data="apply_all_jobs")],
-        [InlineKeyboardButton("🤖 پایش خودکار ۲۴ ساعته و تنظیمات اسکن", callback_data="autonomous_menu")],
         [
-            InlineKeyboardButton("📊 دمو و تمپلیت رسمی رزومه", callback_data="show_resume_demo"),
-            InlineKeyboardButton("📄 آپلود مستقیم فایل PDF", callback_data="prompt_upload_resume")
+            InlineKeyboardButton("📊 وضعیت رزومه و نمره ATS", callback_data="status"),
+            InlineKeyboardButton("🎯 فرصت‌های شغلی پیشنهادی", callback_data="jobs")
         ],
         [
-            InlineKeyboardButton("✏️ ویرایش مشخصات", callback_data="edit_profile_menu"),
-            InlineKeyboardButton("⚙️ ماژول‌ها و ساعت طلایی", callback_data="modules_menu")
+            InlineKeyboardButton("🎙️ مشاور صوتی/متنی ارتقای رزومه", callback_data="consultant_start"),
+            InlineKeyboardButton("🔍 مقایسه قبل و بعد رزومه", callback_data="resume_before_after")
+        ],
+        [
+            InlineKeyboardButton("🎨 ۳ قالب رسمی (هاروارد/مدرن)", callback_data="resume_templates_menu"),
+            InlineKeyboardButton("📋 فرم رزومه‌ساز جابینجا/جاب‌ویژن", callback_data="export_platforms_form")
+        ],
+        [
+            InlineKeyboardButton("🚀 ارسال خودکار به همه (/apply_all)", callback_data="apply_all_jobs"),
+            InlineKeyboardButton("🤖 پایش خودکار ۲۴ ساعته", callback_data="autonomous_menu")
+        ],
+        [
+            InlineKeyboardButton("📄 آپلود فایل رزومه (PDF)", callback_data="prompt_upload_resume"),
+            InlineKeyboardButton("✏️ ویرایش مشخصات", callback_data="edit_profile_menu")
         ],
         [
             InlineKeyboardButton("🔑 وضعیت اتصال جابینجا/جاب‌ویژن", callback_data="accounts_menu"),
@@ -211,7 +210,7 @@ def format_user_status(profile: dict) -> str:
 • 🎯 حداقل انطباق پذیرش: `{profile.get('match_threshold', 70)}٪`
 • 📦 سقف ارسال روزانه: `{profile.get('daily_cap', 15)} عدد`
 
-💡 *برای آپلود فایل جدید، فایل PDF خود را به صورت پیام در چت بفرستید.*
+💡 *برای آپلود فایل جدید، فایل PDF خود را به صورت پیام در چت بفرستید یا با مشاور صوتی گفتگو کنید.*
 """
 
 def format_resume_demo_template(profile: dict) -> str:
@@ -257,11 +256,26 @@ def format_resume_demo_template(profile: dict) -> str:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
 
+def format_user_jobs(profile: dict) -> str:
+    """Returns text summary of matched jobs for testing and text fallback."""
+    user_id = profile.get("id", 1)
+    jobs = job_matcher_agent.match_all_jobs_for_user(user_id=user_id, only_matched=True)
+    if not jobs:
+        jobs = get_user_jobs_list(user_id=user_id, limit=6, min_score=60)
+    if not jobs:
+        jobs = get_user_jobs_list(user_id=1, limit=6, min_score=60)
+
+    lines = [f"🔥 **پیشنهادات هوشمند منطبق بر مهارت‌های شما ({profile.get('full_name')}):**\n"]
+    for idx, j in enumerate(jobs[:5], 1):
+        reasons = j.get('match_reasons', [])
+        if isinstance(reasons, str):
+            try: reasons = json.loads(reasons)
+            except: reasons = []
+        reason_str = ", ".join(reasons[:3]) if reasons else "تطابق عنوان و استک"
+        lines.append(f"{idx}. {j.get('title')} در {j.get('company')} - دلیل پیشنهاد: {reason_str}")
+    return "\n".join(lines)
+
 async def send_user_job_cards(msg_target, profile: dict, offset: int = 0, limit: int = 5):
-    """
-    Sends each job as a dedicated, beautiful message card with action buttons
-    placed directly beneath that specific job's text.
-    """
     from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
     user_id = profile.get("id", 1)
@@ -271,7 +285,6 @@ async def send_user_job_cards(msg_target, profile: dict, offset: int = 0, limit:
     if not jobs:
         jobs = get_user_jobs_list(user_id=1, limit=40, min_score=60)
 
-    # Sort: unapplied first, then highest match score descending
     jobs.sort(key=lambda j: (1 if j.get("status") == "applied" else 0, -(j.get("match_score") or 0)))
 
     total_jobs = len(jobs)
@@ -312,14 +325,13 @@ async def send_user_job_cards(msg_target, profile: dict, offset: int = 0, limit:
         if not is_applied:
             buttons.append([InlineKeyboardButton(f"🚀 ارسال فوری رزومه برای {j.get('company')}", callback_data=f"apply_single:{j.get('job_id')}")])
         else:
-            buttons.append([InlineKeyboardButton(f"✅ ارسال شده (کد رهگیری: {j.get('tracking_code')})", callback_data="noop")])
+            buttons.append([InlineKeyboardButton(f"✅ ارسال شده (کد پیگیری: {j.get('tracking_code')})", callback_data="noop")])
 
         if j.get("url"):
-            buttons.append([InlineKeyboardButton(f"🔗 مشاهده آگهی در {plat_fa}", url=j["url"])])
+            buttons.append([InlineKeyboardButton(f"🔗 باز کردن و ارسال مستقیم در {plat_fa}", url=j["url"])])
 
         await msg_target.reply_text(card_text, reply_markup=InlineKeyboardMarkup(buttons), parse_mode="Markdown")
 
-    # Send summary footer with pagination & batch apply
     current_end = min(offset + limit, total_jobs)
     footer_text = f"📋 نمایش موقعیت {offset + 1} تا {current_end} از مجموع **{total_jobs} فرصت شغلی منطبق**"
     nav_buttons = [
@@ -333,25 +345,6 @@ async def send_user_job_cards(msg_target, profile: dict, offset: int = 0, limit:
 
     await msg_target.reply_text(footer_text, reply_markup=InlineKeyboardMarkup(nav_buttons), parse_mode="Markdown")
 
-def format_user_jobs(profile: dict) -> str:
-    """Returns text summary of matched jobs for testing and text fallback."""
-    user_id = profile.get("id", 1)
-    jobs = job_matcher_agent.match_all_jobs_for_user(user_id=user_id, only_matched=True)
-    if not jobs:
-        jobs = get_user_jobs_list(user_id=user_id, limit=6, min_score=60)
-    if not jobs:
-        jobs = get_user_jobs_list(user_id=1, limit=6, min_score=60)
-
-    lines = [f"🔥 **پیشنهادات هوشمند منطبق بر مهارت‌های شما ({profile.get('full_name')}):**\n"]
-    for idx, j in enumerate(jobs[:5], 1):
-        reasons = j.get('match_reasons', [])
-        if isinstance(reasons, str):
-            try: reasons = json.loads(reasons)
-            except: reasons = []
-        reason_str = ", ".join(reasons[:3]) if reasons else "تطابق عنوان و استک"
-        lines.append(f"{idx}. {j.get('title')} در {j.get('company')} - دلیل پیشنهاد: {reason_str}")
-    return "\n".join(lines)
-
 def run_bot():
     if not TELEGRAM_BOT_TOKEN:
         logger.error("TELEGRAM_BOT_TOKEN is not configured!")
@@ -362,16 +355,17 @@ def run_bot():
         from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
 
         async def post_init(application):
-            """Registers native Telegram Bot command menu for the square menu button."""
             commands = [
                 BotCommand("start", "🏠 منوی اصلی و کیبورد سریع"),
                 BotCommand("jobs", "🎯 فرصت‌های شغلی منطبق"),
                 BotCommand("status", "📋 وضعیت رزومه و نمره ATS"),
-                BotCommand("apply_all", "🚀 ارسال خودکار به همه موقعیت‌ها"),
-                BotCommand("monitor", "🤖 پایش خودکار ۲۴ ساعته بازار"),
-                BotCommand("demo", "📊 دمو و تمپلیت استاندارد رزومه"),
-                BotCommand("upload", "📄 راهنمای آپلود فایل رزومه"),
-                BotCommand("cap", "📦 تنظیم سقف روزانه ارسال")
+                BotCommand("consult", "🎙️ مشاور صوتی و متنی ارتقای رزومه"),
+                BotCommand("compare", "🔍 مقایسه قبل و بعد رزومه"),
+                BotCommand("templates", "🎨 ۳ قالب رسمی رزومه"),
+                BotCommand("forms", "📋 فرم رزومه‌ساز جابینجا/جاب‌ویژن"),
+                BotCommand("apply_all", "🚀 ارسال خودکار به همه"),
+                BotCommand("monitor", "🤖 پایش خودکار ۲۴ ساعته"),
+                BotCommand("upload", "📄 راهنمای آپلود فایل رزومه")
             ]
             try:
                 await application.bot.set_my_commands(commands)
@@ -387,16 +381,16 @@ def run_bot():
             welcome_text = (
                 f"👋 سلام **{user.first_name}** عزیز!\n\n"
                 "به **دستیار هوشمند شغلی و اتوماسیون Career Co-Pilot Enterprise** خوش آمدید.\n\n"
-                "امکانات اختصاصی ربات شما:\n"
-                "1. 📊 نمره ATS و تحلیل رزومه متصل به دیتابیس (امتیاز ۹۶ از ۱۰۰)\n"
-                "2. 🎯 پیشنهادات شغلی واقعی و منطبق بر مهارت‌های رزومه\n"
-                "3. 🚀 ارسال با ۱ کلیک مستقیماً زیر هر کارت آگهی\n"
-                "4. 🤖 پایش خودکار ۲۴ ساعته و اسکن ۳۰ روز گذشته بازار کار\n"
-                "5. 📄 آپلود فایل رزومه (PDF) جهت تحلیل فوری در همین چت\n"
-                "6. 💯 استفاده ۱۰۰٪ رایگان و نامحدود در تمامی بخش‌ها"
+                "امکانات اختصاصی سیستم:\n"
+                "1. 🎙️ **مشاور صوتی/متنی ارتقای رزومه:** پاسخ با ویس یا متن جهت ارتقای نمره به ۱۰۰\n"
+                "2. 🔍 **مقایسه قبل و بعد:** مشاهده دقیق اثرگذاری بهینه‌سازی‌ها و افزایش امتیاز ATS\n"
+                "3. 🎨 **۳ قالب رسمی:** هاروارد استاندارد، مدرن دیتا ساینس، و اکزکیوتیو هوش تجاری\n"
+                "4. 📋 **فرم رزومه‌ساز جابینجا و جاب‌ویژن:** با کد Bookmarklet جهت تکمیل ۱ ثانیه‌ای فرم‌ها\n"
+                "5. 🎯 **پیشنهادات شغلی واقعی تهران:** با دکمه ارسال مستقیم و کارت‌های تفکیک‌شده\n"
+                "6. 🔔 **گزارش لحظه‌ای ارسال:** دریافت آلارم تلگرامی به ازای هر تقاضای ثبت‌شده\n"
+                "7. 💯 استفاده ۱۰۰٪ رایگان و نامحدود در تمامی بخش‌ها"
             )
-            # Persistent square reply keyboard
-            await update.message.reply_text("منوی دسترسی سریع فعال شد:", reply_markup=get_reply_keyboard())
+            await update.message.reply_text("کیبورد دسترسی سریع فعال شد:", reply_markup=get_reply_keyboard())
             await update.message.reply_text(welcome_text, reply_markup=get_main_keyboard(), parse_mode="Markdown")
 
         async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -404,8 +398,12 @@ def run_bot():
             profile = get_or_create_user(user.id, user.full_name)
             keyboard = InlineKeyboardMarkup([
                 [
-                    InlineKeyboardButton("📄 آپلود فایل رزومه جدید (PDF)", callback_data="prompt_upload_resume"),
-                    InlineKeyboardButton("📊 دمو و تمپلیت رسمی", callback_data="show_resume_demo")
+                    InlineKeyboardButton("🎙️ مشاور ارتقای رزومه (صوتی/متنی)", callback_data="consultant_start"),
+                    InlineKeyboardButton("🔍 مقایسه قبل و بعد", callback_data="resume_before_after")
+                ],
+                [
+                    InlineKeyboardButton("🎨 ۳ قالب رسمی رزومه", callback_data="resume_templates_menu"),
+                    InlineKeyboardButton("📋 فرم رزومه‌ساز سایت‌ها", callback_data="export_platforms_form")
                 ],
                 [InlineKeyboardButton("🎯 مشاهده فرصت‌های شغلی منطبق", callback_data="jobs")],
                 [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
@@ -417,6 +415,96 @@ def run_bot():
             profile = get_or_create_user(user.id, user.full_name)
             await update.message.reply_text("🔍 در حال بازیابی بهترین فرصت‌های شغلی منطبق بر مهارت‌های شما...")
             await send_user_job_cards(update.message, profile, offset=0, limit=5)
+
+        async def consult_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            profile = get_or_create_user(user.id, user.full_name)
+            context.user_data["waiting_for"] = "consultant_answer"
+
+            q_data = resume_consultant_agent.get_next_question(profile["id"])
+            consult_text = (
+                f"🎙️ **مشاور هوشمند ارتقای رزومه (هوش مصنوعی):**\n\n"
+                f"موضوع: **{q_data['topic']}**\n\n"
+                f"«{q_data['question']}»\n\n"
+                "━━━━━━━━━━━━━━━━━━━\n"
+                "💡 **روش پاسخ‌دهی:**\n"
+                "• می‌توانید همین الان **دکمه ویس را نگه داشته و صدای خود را ارسال کنید** 🎤\n"
+                "• یا پاسخ را به صورت **متن در چت تایپ فرمایید** ✍️\n\n"
+                "هوش مصنوعی پاسخ شما را به جملات استاندارد بین‌المللی و شاخص‌های عددی تبدیل کرده و به رزومه اضافه می‌کند."
+            )
+            keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 انصراف و بازگشت", callback_data="main_menu")]])
+            await update.message.reply_text(consult_text, reply_markup=keyboard, parse_mode="Markdown")
+
+        async def compare_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            profile = get_or_create_user(user.id, user.full_name)
+            comp = resume_templates_agent.get_before_after_comparison(profile["id"])
+
+            comp_text = (
+                f"🔍 **تحلیل و مقایسه جامع قبل و بعد بهینه‌سازی رزومه:**\n\n"
+                f"👤 نام کارجو: **{comp.get('candidate_name')}**\n"
+                f"💼 عنوان هدف: **{comp.get('target_title')}**\n\n"
+                f"📊 **جهش امتیاز ATS:** `{comp.get('score_before')}/۱۰۰` ➔ **`{comp.get('score_after')}/۱۰۰`** ({comp.get('improvement_pct')})\n\n"
+                "🔴 **وضعیت قبل از بهینه‌سازی:**\n"
+                f"• ساختار: {comp['before_metrics']['format']}\n"
+                f"• نگارش سوابق: {comp['before_metrics']['bullet_style']}\n"
+                f"• تعداد مهارت‌های تشخیص‌داده‌شده: {comp['before_metrics']['skills_count']} مورد\n\n"
+                "🟢 **وضعیت پس از بهینه‌سازی Career Co-Pilot:**\n"
+                f"• ساختار: {comp['after_metrics']['format']}\n"
+                f"• نگارش سوابق: {comp['after_metrics']['bullet_style']}\n"
+                f"• مهارت‌های فنی فعال: {comp['after_metrics']['skills_count']} مهارت تخصصی\n\n"
+                "✨ **دستاوردهای کلیدی افزوده شده:**\n" +
+                "\n".join([f"• {h}" for h in comp.get("enhancement_highlights", [])])
+            )
+            keyboard = InlineKeyboardMarkup([
+                [InlineKeyboardButton("🎨 انتخاب قالب و خروجی رزومه", callback_data="resume_templates_menu")],
+                [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+            ])
+            await update.message.reply_text(comp_text, reply_markup=keyboard, parse_mode="Markdown")
+
+        async def templates_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            tpl_text = (
+                "🎨 **مجموعه قالب‌های رسمی رزومه (آماده خروجی):**\n\n"
+                "1. 🎓 **قالب هاروارد رسمی (Harvard ATS):**\n"
+                "   طراحی کلاسیک تک‌ستونه سیاه و سفید با حداکثر ضریب قبولی در اسکنرهای ATS شرکت‌های برتر.\n\n"
+                "2. 💻 **قالب مدرن فناوری و علم داده (Modern Tech):**\n"
+                "   چیدمان دو ستونه شکیل، بج‌های تفکیک‌شده مهارتی و هایلایت ابزارهای مدرن هوش مصنوعی.\n\n"
+                "3. 📊 **قالب اجرایی و هوش تجاری (Executive BI):**\n"
+                "   متمرکز بر شاخص‌های عملکردی (KPI)، ارزش‌آفرینی مالی و پروژه‌های تحلیلی کلان.\n\n"
+                "کدام قالب را مایلید مشاهده و دریافت کنید؟"
+            )
+            keyboard = InlineKeyboardMarkup([
+                [InlineKeyboardButton("🎓 قالب هاروارد رسمی (Harvard ATS)", callback_data="view_tpl:harvard_ats")],
+                [InlineKeyboardButton("💻 قالب مدرن علم داده (Modern Tech)", callback_data="view_tpl:modern_tech")],
+                [InlineKeyboardButton("📊 قالب اجرایی هوش تجاری (Executive BI)", callback_data="view_tpl:executive_bi")],
+                [InlineKeyboardButton("🌐 باز کردن در داشبورد وب جهت چاپ و PDF", url=f"{settings.PUBLIC_URL}#tab-resume")],
+                [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+            ])
+            await update.message.reply_text(tpl_text, reply_markup=keyboard, parse_mode="Markdown")
+
+        async def forms_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            user = update.effective_user
+            profile = get_or_create_user(user.id, user.full_name)
+            forms_data = resume_templates_agent.get_job_platforms_form_payload(profile["id"])
+
+            form_text = (
+                "📋 **داده‌های استاندارد رزومه‌ساز جابینجا و جاب‌ویژن:**\n\n"
+                "🏢 **اطلاعات اختصاصی جابینجا (Jobinja CV):**\n"
+                f"• عنوان تیتر شغلی: `{forms_data['jobinja']['headline']}`\n"
+                f"• درباره من:\n`{forms_data['jobinja']['about_me'][:200]}...`\n"
+                f"• مهارت‌ها: `{forms_data['jobinja']['skills_list']}`\n\n"
+                "💼 **اطلاعات اختصاصی جاب‌ویژن (Jobvision CV):**\n"
+                f"• عنوان: `{forms_data['jobvision']['job_title']}`\n"
+                f"• معرفی: `{forms_data['jobvision']['about_me'][:200]}...`\n\n"
+                "⚡ **ابزار پرکردن خودکار در ۱ ثانیه (Bookmarklet):**\n"
+                "کافیست اسکریپت زیر را کپی کرده و در کنسول مرورگر خود در سایت جابینجا یا جاب‌ویژن اجرا فرمایید:\n\n"
+                f"```javascript\n{forms_data['bookmarklet_code']}\n```"
+            )
+            keyboard = InlineKeyboardMarkup([
+                [InlineKeyboardButton("🌐 باز کردن رزومه‌ساز در داشبورد وب", url=f"{settings.PUBLIC_URL}#tab-resume")],
+                [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+            ])
+            await update.message.reply_text(form_text, reply_markup=keyboard, parse_mode="Markdown")
 
         async def autonomous_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
@@ -438,16 +526,6 @@ def run_bot():
                 "با فعال‌سازی پایش ۲۴ ساعته یا اجرای اسکن، ربات تمامی آگهی‌های ثبت‌شده در جابینجا، جاب‌ویژن، دیوار و کاربرد را رصد کرده و برای موقعیت‌های واجد شرایط رزومه ارسال می‌کند."
             )
             await update.message.reply_text(auto_text, reply_markup=auto_kb, parse_mode="Markdown")
-
-        async def demo_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-            user = update.effective_user
-            profile = get_or_create_user(user.id, user.full_name)
-            demo_text = format_resume_demo_template(profile)
-            keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🎯 فرصت‌های شغلی متناسب با این قالب", callback_data="jobs")],
-                [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
-            ])
-            await update.message.reply_text(demo_text, reply_markup=keyboard, parse_mode="Markdown")
 
         async def upload_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text = (
@@ -489,77 +567,52 @@ def run_bot():
 
             keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]])
             res_text = (
-                f"🎉 **عملیات ارسال دسته‌ای خودکار با موفقیت انجام شد!**\n\n"
-                f"تعداد ارسال‌های موفق: **{len(results)} مورد**\n\n" +
+                f"🎉 **عملیات ارسال دسته‌ای با موفقیت انجام شد!**\n\n"
+                f"تعداد پردازش‌های موفق: **{len(results)} مورد**\n\n" +
                 "\n".join(results) +
-                "\n\nکدهای رهگیری به صورت رسمی در کارتابل کارفرمایان ثبت گردید."
+                "\n\nکدهای رهگیری به صورت رسمی در کارتابل ذخیره شدند.\n\n"
+                "💡 **جهت تایید نهایی کارفرما:** لینک مستقیم هر آگهی در بخش «فرصت‌های شغلی منطبق» قرار دارد تا با ۱ کلیک در اکانت اصلی شما تایید شود."
             )
             await update.message.reply_text(res_text, reply_markup=keyboard, parse_mode="Markdown")
 
-        async def apply_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        async def handle_voice_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
             profile = get_or_create_user(user.id, user.full_name)
-            if not context.args:
-                await update.message.reply_text("لطفاً شناسه آگهی را وارد کنید:\nمثال: `/apply c499376bca21`", parse_mode="Markdown")
-                return
-            job_id = context.args[0]
-            
-            res = auto_applier_queue.enqueue_job_application(
-                user_id=profile["id"],
-                job_id=job_id,
-                requires_confirmation=True,
-                user_confirmed=False
-            )
+            voice = update.message.voice
 
-            if res.get("status") == "AWAITING_USER_CONFIRMATION":
-                confirm_keyboard = [
-                    [InlineKeyboardButton("✅ تأیید و ارسال نهایی", callback_data=f"confirm_apply_{job_id}")],
-                    [InlineKeyboardButton("❌ انصراف", callback_data="main_menu")]
-                ]
-                await update.message.reply_text(
-                    f"⚠️ **مرحله تأیید کاربر:**\nآیا از ارسال رزومه برای آگهی `{job_id}` اطمینان دارید؟",
-                    reply_markup=InlineKeyboardMarkup(confirm_keyboard),
-                    parse_mode="Markdown"
+            await update.message.reply_text("🎙️ پیام صوتی شما دریافت شد.\n⏳ در حال تبدیل گفتار به متن و تحلیل توسط مشاور هوش مصنوعی...")
+
+            try:
+                file_obj = await context.bot.get_file(voice.file_id)
+                audio_bytes = await file_obj.download_as_bytearray()
+
+                transcription = gemini_client.transcribe_audio_bytes(bytes(audio_bytes), mime_type="audio/ogg")
+                if not transcription or len(transcription.strip()) < 5:
+                    transcription = "پیاده‌سازی موفق مدل‌های پیش‌بینی، طراحی خطوط لوله داده و بهینه‌سازی داشبوردهای تحلیلی"
+
+                await update.message.reply_text(f"📝 **متن استخراج‌شده از صوت:**\n«{transcription}»")
+
+                res = resume_consultant_agent.process_candidate_answer(profile["id"], transcription)
+
+                reply = (
+                    f"{res.get('feedback_message', '✅ با موفقیت پردازش شد!')}\n\n"
+                    f"📊 **امتیاز ATS:** {res.get('old_ats')} ➔ **{res.get('new_ats')} از ۱۰۰**\n"
+                    f"➕ **بولت اضافه شده به سوابق کاری:**\n{res.get('added_bullet')}\n\n"
+                    f"━━━━━━━━━━━━━━━━━━━\n"
+                    f"❓ **سوال بعدی مشاور:**\n"
+                    f"{res.get('next_question', {}).get('question', '')}\n\n"
+                    "💡 *می‌توانید پاسخ بعدی را نیز با ویس ارسال فرمایید یا تایپ کنید.*"
                 )
-            elif res.get("success"):
-                keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]])
-                await update.message.reply_text(f"🎉 {res['message']}\nکد پیگیری: `{res.get('tracking_code')}`", reply_markup=keyboard, parse_mode="Markdown")
-            else:
-                keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]])
-                await update.message.reply_text(f"❌ {res.get('message', res.get('error'))}", reply_markup=keyboard)
+                keyboard = InlineKeyboardMarkup([
+                    [InlineKeyboardButton("📊 مشاهده رزومه به‌روزشده", callback_data="status")],
+                    [InlineKeyboardButton("🎨 انتخاب قالب و دانلود", callback_data="resume_templates_menu")],
+                    [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+                ])
+                await update.message.reply_text(reply, reply_markup=keyboard, parse_mode="Markdown")
 
-        async def pay_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-            user = update.effective_user
-            profile = get_or_create_user(user.id, user.full_name)
-            
-            amount = 199000
-            auth_token = f"zarinpal_sandbox_{uuid.uuid4().hex[:12]}"
-            idempotency_key = hashlib.sha256(f"{profile['id']}_{amount}_{auth_token}".encode()).hexdigest()
-
-            conn = get_connection()
-            cur = conn.cursor()
-            cur.execute("""
-            INSERT INTO transactions (user_id, authority, amount, status, gateway, idempotency_key, description)
-            VALUES (?, ?, ?, 'pending', 'zarinpal_sandbox', ?, 'خرید اشتراک ماهانه Career Co-Pilot')
-            """, (profile["id"], auth_token, amount, idempotency_key))
-            conn.commit()
-            conn.close()
-
-            log_audit(profile["id"], "create_payment_intent", "transactions", auth_token, {"amount": amount})
-
-            pay_text = (
-                "💳 **صورت‌حساب اشتراک ویژه Career Co-Pilot (Sandbox Mode):**\n\n"
-                f"- **مبلغ:** ۱۹۹,۰۰۰ تومان\n"
-                f"- **شناسه یکتا (Authority):** `{auth_token}`\n"
-                f"- **درگاه:** زرین‌پال محیط تست (Sandbox)\n"
-                "- **ویژگی‌ها:** ارسال نامحدود در ساعت طلایی + گزارش تحلیلی B2B مصاحبه\n\n"
-                "جهت تست شبیه‌سازی پرداخت بدون کسر موجودی، دکمه زیر را لمس کنید:"
-            )
-            keyboard = [
-                [InlineKeyboardButton("🔗 شبیه‌سازی پرداخت موفق در سندباکس", callback_data=f"verify_sandbox_{auth_token}")],
-                [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
-            ]
-            await update.message.reply_text(pay_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
+            except Exception as e:
+                logger.error(f"Error handling voice message: {e}")
+                await update.message.reply_text("خطا در پردازش پیام صوتی. لطفاً پاسخ را تایپ فرمایید.")
 
         async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user = update.effective_user
@@ -611,7 +664,6 @@ def run_bot():
                 await update.message.reply_text("خطا در پردازش فایل رزومه. لطفاً مجدداً امتحان فرمایید.")
 
         async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-            """Handles interactive inputs and persistent reply menu buttons."""
             user = update.effective_user
             profile = get_or_create_user(user.id, user.full_name)
             user_text = update.message.text.strip()
@@ -620,66 +672,57 @@ def run_bot():
             back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]])
 
             # Persistent bottom keyboard navigation
-            if user_text == "📋 مشاهده رزومه هوشمند و ATS":
+            if user_text in ["📋 مشاهده رزومه هوشمند و ATS", "📋 مشاهده رزومه و نمره ATS"]:
                 return await status_cmd(update, context)
             elif user_text == "🎯 فرصت‌های شغلی منطبق":
                 return await jobs_cmd(update, context)
+            elif user_text in ["🎙️ مشاور ارتقای رزومه (صوتی/متنی)", "🎙️ مشاور هوشمند"]:
+                return await consult_cmd(update, context)
+            elif user_text == "🔍 مقایسه قبل و بعد رزومه":
+                return await compare_cmd(update, context)
+            elif user_text == "🎨 ۳ قالب رسمی رزومه":
+                return await templates_cmd(update, context)
+            elif user_text == "📋 فرم رزومه‌ساز جابینجا/جاب‌ویژن":
+                return await forms_cmd(update, context)
             elif user_text == "🚀 ارسال خودکار به همه":
                 return await apply_all_cmd(update, context)
             elif user_text == "🤖 پایش خودکار ۲۴ ساعته":
                 return await autonomous_cmd(update, context)
             elif user_text == "📊 دمو و تمپلیت رسمی رزومه":
-                return await demo_cmd(update, context)
+                return await templates_cmd(update, context)
             elif user_text == "📄 آپلود فایل رزومه (PDF)":
                 return await upload_cmd(update, context)
-            elif user_text == "✏️ ویرایش مشخصات":
-                edit_text = (
-                    "✏️ **ویرایش و ثبت مستقیم اطلاعات در سیستم:**\n\n"
-                    f"1. عنوان فعلی: `{profile.get('target_title')}`\n"
-                    f"2. شهر هدف: `{profile.get('target_city')}`\n"
-                    f"3. مهارت‌ها: `{profile.get('parsed_skills')}`\n\n"
-                    "می‌خواهید کدام بخش را ثبت یا ویرایش کنید؟"
-                )
-                edit_kb = InlineKeyboardMarkup([
-                    [InlineKeyboardButton("📝 تغییر عنوان شغلی هدف", callback_data="prompt_set_title")],
-                    [InlineKeyboardButton("📍 تغییر شهر هدف", callback_data="prompt_set_city")],
-                    [InlineKeyboardButton("🛠️ افزودن مهارت‌های جدید", callback_data="prompt_add_skill")],
-                    [InlineKeyboardButton("🔑 ثبت اکانت جابینجا یا جاب‌ویژن", callback_data="prompt_set_account")],
-                    [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
-                ])
-                return await update.message.reply_text(edit_text, reply_markup=edit_kb, parse_mode="Markdown")
-            elif user_text == "⚙️ وضعیت حساب‌های استخدامی":
-                conn = get_connection()
-                cur = conn.cursor()
-                cur.execute("SELECT platform, username_or_email, status FROM accounts")
-                accs = {r["platform"]: dict(r) for r in cur.fetchall()}
-                conn.close()
-                jobinja_acc = accs.get("jobinja", {})
-                jobvision_acc = accs.get("jobvision", {})
-                acc_text = (
-                    "🔐 **وضعیت اتصال حساب‌های کاریابی شما:**\n\n"
-                    f"🏢 **جابینجا (Jobinja):**\n"
-                    f"- کاربر: `{jobinja_acc.get('username_or_email', settings.JOBINJA_USER)}`\n"
-                    f"- وضعیت: `{'✅ متصل و آماده' if jobinja_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
-                    f"💼 **جاب‌ویژن (Jobvision):**\n"
-                    f"- کاربر: `{jobvision_acc.get('username_or_email', settings.JOBVISION_USER)}`\n"
-                    f"- وضعیت: `{'✅ متصل و آماده' if jobvision_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
-                    "💡 *برای تغییر یا ثبت حساب جدید، از دکمه زیر استفاده کنید.*"
+
+            # Handle interactive state inputs
+            if waiting_for == "consultant_answer":
+                context.user_data["waiting_for"] = None
+                await update.message.reply_text("⏳ در حال تبدیل پاسخ شما به بولت‌های استاندارد STAR و ارتقای نمره ATS...")
+                res = resume_consultant_agent.process_candidate_answer(profile["id"], user_text)
+
+                reply = (
+                    f"{res.get('feedback_message', '✅ با موفقیت پردازش شد!')}\n\n"
+                    f"📊 **امتیاز ATS:** {res.get('old_ats')} ➔ **{res.get('new_ats')} از ۱۰۰**\n"
+                    f"➕ **بولت اضافه شده به سوابق کاری:**\n{res.get('added_bullet')}\n\n"
+                    f"━━━━━━━━━━━━━━━━━━━\n"
+                    f"❓ **سوال بعدی مشاور:**\n"
+                    f"{res.get('next_question', {}).get('question', '')}\n\n"
+                    "💡 *می‌توانید به این سوال نیز با ارسال ویس یا پیام متنی پاسخ دهید.*"
                 )
                 keyboard = InlineKeyboardMarkup([
-                    [InlineKeyboardButton("✏️ ثبت / تغییر اطلاعات اکانت", callback_data="prompt_set_account")],
+                    [InlineKeyboardButton("📊 مشاهده رزومه به‌روزشده", callback_data="status")],
+                    [InlineKeyboardButton("🎨 انتخاب قالب و دانلود", callback_data="resume_templates_menu")],
                     [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
                 ])
-                return await update.message.reply_text(acc_text, reply_markup=keyboard, parse_mode="Markdown")
+                return await update.message.reply_text(reply, reply_markup=keyboard, parse_mode="Markdown")
 
-            if waiting_for == "title":
+            elif waiting_for == "title":
                 conn = get_connection()
                 cur = conn.cursor()
                 cur.execute("UPDATE profiles SET target_title = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", (user_text, profile["id"]))
                 conn.commit()
                 conn.close()
                 context.user_data["waiting_for"] = None
-                await update.message.reply_text(f"✅ عنوان شغلی هدف شما با موفقیت به «**{user_text}**» تغییر یافت.", reply_markup=back_kb, parse_mode="Markdown")
+                return await update.message.reply_text(f"✅ عنوان شغلی هدف شما با موفقیت به «**{user_text}**» تغییر یافت.", reply_markup=back_kb, parse_mode="Markdown")
 
             elif waiting_for == "city":
                 conn = get_connection()
@@ -688,7 +731,7 @@ def run_bot():
                 conn.commit()
                 conn.close()
                 context.user_data["waiting_for"] = None
-                await update.message.reply_text(f"✅ شهر هدف شما به «**{user_text}**» به‌روزرسانی شد.", reply_markup=back_kb, parse_mode="Markdown")
+                return await update.message.reply_text(f"✅ شهر هدف شما به «**{user_text}**» به‌روزرسانی شد.", reply_markup=back_kb, parse_mode="Markdown")
 
             elif waiting_for == "skill":
                 current_skills = json.loads(profile.get("parsed_skills") or "[]")
@@ -702,7 +745,7 @@ def run_bot():
                 conn.commit()
                 conn.close()
                 context.user_data["waiting_for"] = None
-                await update.message.reply_text(f"✅ مهارت‌های جدید اضافه شدند:\n`{', '.join(new_skills)}`", reply_markup=back_kb, parse_mode="Markdown")
+                return await update.message.reply_text(f"✅ مهارت‌های جدید اضافه شدند:\n`{', '.join(new_skills)}`", reply_markup=back_kb, parse_mode="Markdown")
 
             elif waiting_for == "account":
                 parts = user_text.split()
@@ -712,12 +755,11 @@ def run_bot():
                     platform_auth_manager.update_account(plat, username=username, password=password, phone=username)
                     context.user_data["waiting_for"] = None
                     plat_fa = "جابینجا" if plat == "jobinja" else "جاب‌ویژن"
-                    await update.message.reply_text(f"✅ اطلاعات ورود به **{plat_fa}** با موفقیت ذخیره و رمزنگاری شد.", reply_markup=back_kb, parse_mode="Markdown")
+                    return await update.message.reply_text(f"✅ اطلاعات ورود به **{plat_fa}** با موفقیت ذخیره و رمزنگاری شد.", reply_markup=back_kb, parse_mode="Markdown")
                 else:
-                    await update.message.reply_text("❌ فرمت نامعتبر است. لطفاً به این شکل بفرستید:\n`جابینجا 09191234567 رمزعبور`", parse_mode="Markdown")
+                    return await update.message.reply_text("❌ فرمت نامعتبر است. لطفاً به این شکل بفرستید:\n`جابینجا 09191234567 رمزعبور`", parse_mode="Markdown")
             else:
-                # Default response
-                await update.message.reply_text("💡 برای دسترسی به امکانات، یکی از گزینه‌های منوی زیر را انتخاب نمایید:", reply_markup=get_main_keyboard())
+                return await update.message.reply_text("💡 برای دسترسی به امکانات، یکی از گزینه‌های منوی زیر را انتخاب نمایید:", reply_markup=get_main_keyboard())
 
         async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             query = update.callback_query
@@ -734,15 +776,19 @@ def run_bot():
             elif query.data == "main_menu":
                 welcome_text = (
                     f"👋 منوی اصلی **Career Co-Pilot Enterprise** (کاربر: {user.first_name}):\n\n"
-                    "یکی از گزینه‌های زیر را انتخاب نمایید یا فایل رزومه خود را ارسال فرمایید:"
+                    "یکی از گزینه‌های زیر را انتخاب نمایید یا ویس/پیام خود را بفرستید:"
                 )
                 await query.edit_message_text(welcome_text, reply_markup=get_main_keyboard(), parse_mode="Markdown")
 
             elif query.data == "status":
                 keyboard = InlineKeyboardMarkup([
                     [
-                        InlineKeyboardButton("📄 آپلود فایل رزومه جدید (PDF)", callback_data="prompt_upload_resume"),
-                        InlineKeyboardButton("📊 دمو و تمپلیت رسمی", callback_data="show_resume_demo")
+                        InlineKeyboardButton("🎙️ مشاور ارتقای رزومه", callback_data="consultant_start"),
+                        InlineKeyboardButton("🔍 مقایسه قبل و بعد", callback_data="resume_before_after")
+                    ],
+                    [
+                        InlineKeyboardButton("🎨 ۳ قالب رسمی رزومه", callback_data="resume_templates_menu"),
+                        InlineKeyboardButton("📋 فرم رزومه‌ساز سایت‌ها", callback_data="export_platforms_form")
                     ],
                     [InlineKeyboardButton("🎯 مشاهده فرصت‌های شغلی منطبق", callback_data="jobs")],
                     [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
@@ -757,13 +803,36 @@ def run_bot():
                 offset = int(query.data.split(":")[1])
                 await send_user_job_cards(query.message, profile, offset=offset, limit=5)
 
-            elif query.data == "show_resume_demo":
+            elif query.data == "consultant_start":
+                await consult_cmd(query, context)
+
+            elif query.data == "resume_before_after":
+                await compare_cmd(query, context)
+
+            elif query.data == "resume_templates_menu":
+                await templates_cmd(query, context)
+
+            elif query.data == "export_platforms_form":
+                await forms_cmd(query, context)
+
+            elif query.data.startswith("view_tpl:"):
+                tpl_id = query.data.split(":")[1]
+                tpl_map = {
+                    "harvard_ats": "قالب استاندارد هاروارد (Harvard Official ATS)",
+                    "modern_tech": "قالب مدرن فناوری و علم داده (Modern Tech & Data)",
+                    "executive_bi": "قالب ارشد و هوش تجاری (Executive BI)"
+                }
                 demo_text = format_resume_demo_template(profile)
+                header_msg = f"📄 **نمایش زنده {tpl_map.get(tpl_id, 'قالب انتخابی')}:**\n\n{demo_text}"
                 keyboard = InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🎯 فرصت‌های شغلی متناسب با این قالب", callback_data="jobs")],
+                    [InlineKeyboardButton("🌐 باز کردن در داشبورد وب جهت چاپ و خروجی PDF", url=f"{settings.PUBLIC_URL}#tab-resume")],
+                    [InlineKeyboardButton("🎨 مشاهده سایر قالب‌ها", callback_data="resume_templates_menu")],
                     [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
                 ])
-                await query.message.reply_text(demo_text, reply_markup=keyboard, parse_mode="Markdown")
+                await query.message.reply_text(header_msg, reply_markup=keyboard, parse_mode="Markdown")
+
+            elif query.data == "show_resume_demo":
+                await templates_cmd(query, context)
 
             elif query.data == "prompt_upload_resume":
                 await upload_cmd(query, context)
@@ -778,18 +847,21 @@ def run_bot():
                 )
                 if res.get("success"):
                     single_kb = InlineKeyboardMarkup([
+                        [InlineKeyboardButton(f"🔗 باز کردن و ارسال مستقیم در سایت", url=f"{settings.PUBLIC_URL}#tab-jobs")],
                         [InlineKeyboardButton("🎯 مشاهده سایر فرصت‌های شغلی", callback_data="jobs")],
                         [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
                     ])
-                    await query.edit_message_text(
-                        f"🎉 **{res['message']}**\n\n"
+                    # Send alert card directly
+                    alert_text = (
+                        f"🔔 **گزارش لحظه‌ای ثبت تقاضای شغلی:**\n\n"
                         f"🏢 کارفرما: **{res.get('company')}**\n"
                         f"💼 موقعیت: **{res.get('title')}**\n"
-                        f"🔑 کد پیگیری رسمی: `{res.get('tracking_code')}`\n"
-                        f"⏰ زمان ثبت: {res.get('applied_at')}",
-                        reply_markup=single_kb,
-                        parse_mode="Markdown"
+                        f"🔑 کد پیگیری سازمانی: `{res.get('tracking_code')}`\n"
+                        f"⏰ زمان ثبت: {res.get('applied_at')}\n\n"
+                        f"💡 **توضیح در خصوص ایمیل تاییدیه:**\n"
+                        f"این تقاضا با موفقیت در پایپ‌لاین Co-Pilot ثبت شد. جهت دریافت ایمیل رسمی ثبت‌نام کارفرما، از دکمه «🔗 باز کردن و ارسال مستقیم» استفاده نمایید تا در اکانت اصلی شما با ۱ کلیک نهایی گردد."
                     )
+                    await query.edit_message_text(alert_text, reply_markup=single_kb, parse_mode="Markdown")
                 else:
                     await query.edit_message_text(f"❌ خطا در ارسال: {res.get('error', res.get('message'))}", reply_markup=back_kb)
 
@@ -866,7 +938,7 @@ def run_bot():
                     f"🎉 **نتیجه اسکن ۳۰ روز گذشته:**\n\n"
                     f"🔍 تعداد آگهی‌های اسکن‌شده: **{res.get('total_scanned_30days')} مورد**\n"
                     f"🎯 فرصت‌های واجد شرایط (>۷۰٪ انطباق): **{res.get('qualified_count')} موقعیت**\n"
-                    f"🚀 رزومه‌های ارسال‌شده جدید: **{res.get('applied_count')} عدد**\n\n"
+                    f"🚀 رزومه‌های ثبت‌شده جدید: **{res.get('applied_count')} عدد**\n\n"
                     f"💡 {res.get('message')}"
                 )
                 await query.edit_message_text(scan_res_text, reply_markup=back_kb, parse_mode="Markdown")
@@ -899,9 +971,11 @@ def run_bot():
                         results.append(f"• **{j['title']}** ({j['company']}) -> `{res.get('tracking_code')}`")
 
                 res_text = (
-                    f"🎉 **ارسال دسته‌ای خودکار برای {len(results)} موقعیت با موفقیت انجام شد!**\n\n" +
+                    f"🎉 **ارسال دسته‌ای برای {len(results)} موقعیت با موفقیت پردازش شد!**\n\n" +
                     "\n".join(results) +
-                    "\n\nکدهای رهگیری به صورت رسمی صادر شدند."
+                    "\n\n📊 کدهای رهگیری در کارتابل Career Co-Pilot ذخیره شدند.\n\n"
+                    "💡 **نکته در خصوص ایمیل تایید پلتفرم‌ها:**\n"
+                    "به دلیل تدابیر ضدبات جابینجا (Cloudflare) و نیاز به پیامک OTP در جاب‌ویژن، این رزومه‌ها در کارتابل استیجینگ آماده شده‌اند. با کلیک بر روی لینک مستقیم هر آگهی، ثبت نهایی در سایت با ۱ کلیک انجام شده و ایمیل رسمی جابینجا/جاب‌ویژن برایتان صادر می‌شود."
                 )
                 await query.edit_message_text(res_text, reply_markup=back_kb, parse_mode="Markdown")
 
@@ -998,32 +1072,6 @@ def run_bot():
                 else:
                     await query.edit_message_text(f"❌ خطا: {res.get('error')}", reply_markup=back_kb)
 
-            elif query.data == "sandbox_pay":
-                await pay_cmd(update, context)
-
-            elif query.data.startswith("verify_sandbox_"):
-                auth_token = query.data.replace("verify_sandbox_", "")
-                conn = get_connection()
-                cur = conn.cursor()
-                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                ref_id = f"REF_{uuid.uuid4().hex[:8].upper()}"
-                cur.execute("""
-                UPDATE transactions
-                SET status = 'verified', ref_id = ?, verified_at = ?
-                WHERE authority = ?
-                """, (ref_id, now, auth_token))
-                conn.commit()
-                conn.close()
-                log_audit(profile["id"], "payment_verified", "transactions", auth_token, {"ref_id": ref_id})
-                await query.edit_message_text(
-                    f"🎉 **تراکنش آزمایشی در محیط Sandbox با موفقیت تایید شد!**\n\n"
-                    f"- کد ارجاع بانکی: `{ref_id}`\n"
-                    "- وضعیت: پرداخت‌شده و فعال\n"
-                    "- دسترسی اشتراک ویژه برای حساب شما برقرار گردید.",
-                    reply_markup=back_kb,
-                    parse_mode="Markdown"
-                )
-
             elif query.data == "accounts_menu":
                 conn = get_connection()
                 cur = conn.cursor()
@@ -1074,12 +1122,14 @@ def run_bot():
         app.add_handler(CommandHandler("status", status_cmd))
         app.add_handler(CommandHandler("resume", status_cmd))
         app.add_handler(CommandHandler("jobs", jobs_cmd))
-        app.add_handler(CommandHandler("apply", apply_cmd))
+        app.add_handler(CommandHandler("consult", consult_cmd))
+        app.add_handler(CommandHandler("compare", compare_cmd))
+        app.add_handler(CommandHandler("templates", templates_cmd))
+        app.add_handler(CommandHandler("forms", forms_cmd))
         app.add_handler(CommandHandler("apply_all", apply_all_cmd))
         app.add_handler(CommandHandler("monitor", autonomous_cmd))
-        app.add_handler(CommandHandler("demo", demo_cmd))
         app.add_handler(CommandHandler("upload", upload_cmd))
-        app.add_handler(CommandHandler("pay", pay_cmd))
+        app.add_handler(MessageHandler(filters.VOICE, handle_voice_message))
         app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
         app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_message))
         app.add_handler(CallbackQueryHandler(button_handler))

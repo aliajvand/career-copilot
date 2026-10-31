@@ -675,165 +675,516 @@
                     </div>
                 </div>
 
-                <!-- Live ATS Resume Demo Box (Collapsible / Dynamic) -->
-                <div id="resume-live-demo-box" class="hidden mb-6 p-6 rounded-2xl bg-[#0a0f1d] border-2 border-emerald-500/40 shadow-2xl space-y-4">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <h3 class="text-sm font-black text-white">پیش‌نمایش زنده و تایید فرمت رسمی رزومه (ATS Live Preview)</h3>
-                            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">فرمت تاییدشده جابینجا و جاب‌ویژن</span>
+                <!-- Resume Sub-Module Switcher Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800/80 mb-6 text-xs font-bold scrollbar-none">
+                    <button onclick="switchResumeSubView('editor')" id="sub-btn-editor" class="resume-sub-btn active px-3.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-2 transition shrink-0">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>ویرایشگر و بهینه‌ساز ATS</span>
+                    </button>
+                    <button onclick="switchResumeSubView('before-after')" id="sub-btn-before-after" class="resume-sub-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 flex items-center gap-2 transition shrink-0">
+                        <i class="fa-solid fa-code-compare text-teal-400"></i>
+                        <span>مقایسه دقیق قبل و بعد (Before vs. After)</span>
+                    </button>
+                    <button onclick="switchResumeSubView('templates')" id="sub-btn-templates" class="resume-sub-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 flex items-center gap-2 transition shrink-0">
+                        <i class="fa-solid fa-file-invoice text-cyan-400"></i>
+                        <span>۳ قالب گرافیکی و چاپی (Harvard / Modern / Executive)</span>
+                    </button>
+                    <button onclick="switchResumeSubView('consultant')" id="sub-btn-consultant" class="resume-sub-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 flex items-center gap-2 transition shrink-0">
+                        <i class="fa-solid fa-microphone-lines text-purple-400"></i>
+                        <span>مشاور هوشمند صوتی و متنی رزومه</span>
+                    </button>
+                    <button onclick="switchResumeSubView('platforms')" id="sub-btn-platforms" class="resume-sub-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 flex items-center gap-2 transition shrink-0">
+                        <i class="fa-solid fa-cloud-arrow-up text-amber-400"></i>
+                        <span>فرم‌ساز جابینجا و جاب‌ویژن + بوکمارکلت</span>
+                    </button>
+                </div>
+
+                <!-- SUBVIEW 1: AI Editor & Live Demo -->
+                <div id="resume-subview-editor" class="space-y-6">
+                    <!-- Live ATS Resume Demo Box (Collapsible / Dynamic) -->
+                    <div id="resume-live-demo-box" class="hidden mb-6 p-6 rounded-2xl bg-[#0a0f1d] border-2 border-emerald-500/40 shadow-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <h3 class="text-sm font-black text-white">پیش‌نمایش زنده و تایید فرمت رسمی رزومه (ATS Live Preview)</h3>
+                                <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">فرمت تاییدشده جابینجا و جاب‌ویژن</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="syncResumeWithPlatforms()" class="text-xs bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    <span>✅ تایید و اعمال در فرم‌های رزومه‌ساز جابینجا و جاب‌ویژن</span>
+                                </button>
+                                <button onclick="toggleResumeLiveDemo()" class="text-xs text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">بستن</button>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="syncResumeWithPlatforms()" class="text-xs bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/25 transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                <span>✅ تایید و اعمال در فرم‌های رزومه‌ساز جابینجا و جاب‌ویژن</span>
-                            </button>
-                            <button onclick="toggleResumeLiveDemo()" class="text-xs text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">بستن</button>
+                        <div id="resume-live-demo-content" class="text-xs text-slate-200 space-y-4 font-sans leading-relaxed">
+                            <!-- Loaded via renderResumeLiveDemo() -->
                         </div>
                     </div>
-                    <div id="resume-live-demo-content" class="text-xs text-slate-200 space-y-4 font-sans leading-relaxed">
-                        <!-- Loaded via renderResumeLiveDemo() -->
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left: Interactive Form Fields (2 Cols) -->
+                        <div class="lg:col-span-2 space-y-4">
+                            <!-- Personal Info Row -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">نام و نام خانوادگی:</label>
+                                    <input type="text" id="builder-fullname" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="علی رجوند (Ali Ajvand)">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">عنوان شغلی هدف:</label>
+                                    <input type="text" id="builder-target-title" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="Data Scientist & BI Professional">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">شهر هدف:</label>
+                                    <input type="text" id="builder-city" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="تهران">
+                                </div>
+                            </div>
+
+                            <!-- Contact Row -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">شماره تماس (جهت درج در جابینجا/جاب‌ویژن):</label>
+                                    <input type="text" id="builder-phone" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="09195253462">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">ایمیل رسمی:</label>
+                                    <input type="email" id="builder-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="aliajvand@gmail.com">
+                                </div>
+                            </div>
+
+                            <!-- Additional Custom Skills & Instructions for AI Enhancer -->
+                            <div class="p-3 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-1">
+                                <label class="block text-xs font-bold text-purple-300">
+                                    <i class="fa-solid fa-plus-circle ml-1"></i> مهارت‌ها یا دستاوردهای دلخواه تکمیلی (جهت تزریق به هوش مصنوعی بدون اضافه کردن سابقه نامعتبر):
+                                </label>
+                                <input type="text" id="builder-additional-notes" class="w-full bg-slate-950 border border-purple-500/40 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-purple-400" placeholder="مثال: تسلط کامل بر Docker Compose، خطوط لوله CI/CD و پایگاه‌داده ClickHouse">
+                            </div>
+
+                            <!-- Professional Summary Section -->
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-bold text-slate-300">خلاصه حرفه‌ای و بیوگرافی شغلی (Professional Summary):</label>
+                                    <span class="text-[11px] text-emerald-400 font-medium">پاراگراف معرفی در صدر رزومه</span>
+                                </div>
+                                <textarea id="builder-summary" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 leading-relaxed focus:outline-none focus:border-emerald-500" placeholder="خلاصه حرفه‌ای خود را بنویسید یا دکمه بهینه‌سازی خودکار را بزنید..."></textarea>
+                            </div>
+
+                            <!-- Experience Section -->
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-bold text-slate-300">سوابق شغلی و تجربیات (Work Experience & Achievements):</label>
+                                    <span class="text-[11px] text-teal-400 font-medium">به فرمت بالت‌پوینت عددی (Google X-Y-Z)</span>
+                                </div>
+                                <textarea id="builder-experience" rows="6" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 leading-relaxed font-mono focus:outline-none focus:border-emerald-500" placeholder="• عنوان شغلی در شرکت X - سال تا سال&#10;• دستاورد ۱ با ذکر درصد و شاخص عددی&#10;• دستاورد ۲"></textarea>
+                            </div>
+
+                            <!-- Skills Section -->
+                            <div class="space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs font-bold text-slate-300">مهارت‌های کلیدی و تخصصی (کلمات کلیدی ATS):</label>
+                                    <span class="text-[11px] text-slate-500">جدا شده با کاما</span>
+                                </div>
+                                <input type="text" id="builder-skills" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" placeholder="پایتون، SQL، Power BI، RAG، یادگیری ماشین، Docker">
+                            </div>
+
+                            <!-- Education & Projects Row -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="space-y-1">
+                                    <label class="text-xs font-bold text-slate-300">تحصیلات و مدارک (Education):</label>
+                                    <textarea id="builder-education" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-bold text-slate-300">پروژه‌های شاخص و افتخارات (Projects):</label>
+                                    <textarea id="builder-projects" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: ATS Score & AI Advice (1 Col) -->
+                        <div class="space-y-4">
+                            <!-- ATS Score Card -->
+                            <div class="bg-slate-950 p-5 rounded-2xl border border-emerald-500/30 text-center space-y-3">
+                                <span class="text-xs font-bold text-slate-400 block">نمره غربالگری سیستم ATS</span>
+                                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-emerald-500/10 border-2 border-emerald-500/40 relative">
+                                    <span class="text-3xl font-black text-emerald-400" id="builder-ats-badge">۸۵</span>
+                                    <span class="text-[10px] text-slate-400 absolute bottom-3">از ۱۰۰</span>
+                                </div>
+                                <div class="space-y-2 text-right pt-2 border-t border-slate-800/80 text-[11px]">
+                                    <div class="flex items-center justify-between text-slate-400">
+                                        <span>انطباق کلمات کلیدی فنی:</span>
+                                        <strong class="text-emerald-400" id="builder-kw-match">۹۲٪</strong>
+                                    </div>
+                                    <div class="flex items-center justify-between text-slate-400">
+                                        <span>کمیت‌پذیری دستاوردها:</span>
+                                        <strong class="text-teal-400" id="builder-quant-match">۸۸٪</strong>
+                                    </div>
+                                    <div class="flex items-center justify-between text-slate-400">
+                                        <span>فرمت استاندارد و خوانایی:</span>
+                                        <strong class="text-cyan-400">۱۰۰٪</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Suggestions Box -->
+                            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                                <span class="text-xs font-bold text-purple-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-sparkles"></i>
+                                    <span>بهبودهای هوشمند اعمال‌شده:</span>
+                                </span>
+                                <div class="space-y-2 text-[11px] text-slate-300" id="builder-enhancements-list">
+                                    <div class="p-2 rounded-lg bg-slate-900 border border-slate-800/80 flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-0.5 shrink-0"></i>
+                                        <span>استخراج کلمات کلیدی تخصصی پایتون، Power BI و یادگیری ماشین</span>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-slate-900 border border-slate-800/80 flex items-start gap-2">
+                                        <i class="fa-solid fa-check text-emerald-400 mt-0.5 shrink-0"></i>
+                                        <span>آماده‌سازی برای سیستم‌های ترکینگ استخدامی جابینجا و جاب‌ویژن</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tailor per Job Box -->
+                            <div class="bg-slate-950 p-5 rounded-2xl border border-cyan-500/30 space-y-3">
+                                <span class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-bullseye"></i>
+                                    <span>سفارشی‌سازی رزومه برای موقعیت خاص:</span>
+                                </span>
+                                <p class="text-[11px] text-slate-400">یک آگهی را انتخاب کنید تا کاور نوت و خلاصه سفارشی متناسب با شرکت ایجاد شود.</p>
+                                <select id="tailor-job-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-slate-200">
+                                    <!-- Populated dynamically from jobs -->
+                                </select>
+                                <button onclick="tailorResumeForSelectedJob()" class="w-full py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition">
+                                    تولید کاور نوت و تنظیم رزومه برای این شرکت
+                                </button>
+                                <div id="tailor-result-box" class="hidden p-3 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-slate-300 space-y-2">
+                                    <strong class="text-white block font-bold">کاور نوت پیشنهادی برای ارسال:</strong>
+                                    <p id="tailor-cover-note-text" class="leading-relaxed"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Left: Interactive Form Fields (2 Cols) -->
-                    <div class="lg:col-span-2 space-y-4">
-                        <!-- Personal Info Row -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">نام و نام خانوادگی:</label>
-                                <input type="text" id="builder-fullname" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="علی رجوند (Ali Ajvand)">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">عنوان شغلی هدف:</label>
-                                <input type="text" id="builder-target-title" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="Data Scientist & BI Professional">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">شهر هدف:</label>
-                                <input type="text" id="builder-city" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="تهران">
-                            </div>
+                <!-- SUBVIEW 2: Before vs After Comparison -->
+                <div id="resume-subview-before-after" class="hidden space-y-6">
+                    <div class="p-6 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-teal-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="space-y-1 text-center md:text-right">
+                            <span class="px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-400 border border-teal-500/40 text-xs font-bold">حسابرسی ارتقای کیفی رزومه (ATS Audit Diff)</span>
+                            <h3 class="text-lg font-black text-white mt-1">مقایسه عملکردی رزومه: نسخه اولیه خام در برابر نسخه بهینه‌سازی‌شده</h3>
+                            <p class="text-xs text-slate-400">محاسبه بر مبنای معیارهای غربالگری جابینجا، جاب‌ویژن، سیستم‌های ردیابی ATS شرکتی و متدولوژی STAR</p>
                         </div>
-
-                        <!-- Contact Row -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">شماره تماس (جهت درج در جابینجا/جاب‌ویژن):</label>
-                                <input type="text" id="builder-phone" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="09195253462">
+                        <div class="flex items-center gap-6 shrink-0 bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                            <div class="text-center">
+                                <span class="text-[11px] text-slate-400 block mb-1">نسخه اولیه (خام)</span>
+                                <span class="text-2xl font-black text-rose-400" id="diff-score-before">۶۲٪</span>
+                                <span class="text-[10px] text-slate-500 block">فاقد شاخص عددی</span>
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">ایمیل رسمی:</label>
-                                <input type="email" id="builder-email" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" value="aliajvand@gmail.com">
-                            </div>
-                        </div>
-
-                        <!-- Additional Custom Skills & Instructions for AI Enhancer -->
-                        <div class="p-3 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-1">
-                            <label class="block text-xs font-bold text-purple-300">
-                                <i class="fa-solid fa-plus-circle ml-1"></i> مهارت‌ها یا دستاوردهای دلخواه تکمیلی (جهت تزریق به هوش مصنوعی بدون اضافه کردن سابقه نامعتبر):
-                            </label>
-                            <input type="text" id="builder-additional-notes" class="w-full bg-slate-950 border border-purple-500/40 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-purple-400" placeholder="مثال: تسلط کامل بر Docker Compose، خطوط لوله CI/CD و پایگاه‌داده ClickHouse">
-                        </div>
-
-                        <!-- Professional Summary Section -->
-                        <div class="space-y-1.5">
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-slate-300">خلاصه حرفه‌ای و بیوگرافی شغلی (Professional Summary):</label>
-                                <span class="text-[11px] text-emerald-400 font-medium">پاراگراف معرفی در صدر رزومه</span>
-                            </div>
-                            <textarea id="builder-summary" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 leading-relaxed focus:outline-none focus:border-emerald-500" placeholder="خلاصه حرفه‌ای خود را بنویسید یا دکمه بهینه‌سازی خودکار را بزنید..."></textarea>
-                        </div>
-
-                        <!-- Experience Section -->
-                        <div class="space-y-1.5">
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-slate-300">سوابق شغلی و تجربیات (Work Experience & Achievements):</label>
-                                <span class="text-[11px] text-teal-400 font-medium">به فرمت بالت‌پوینت عددی (Google X-Y-Z)</span>
-                            </div>
-                            <textarea id="builder-experience" rows="6" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 leading-relaxed font-mono focus:outline-none focus:border-emerald-500" placeholder="• عنوان شغلی در شرکت X - سال تا سال&#10;• دستاورد ۱ با ذکر درصد و شاخص عددی&#10;• دستاورد ۲"></textarea>
-                        </div>
-
-                        <!-- Skills Section -->
-                        <div class="space-y-1.5">
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-slate-300">مهارت‌های کلیدی و تخصصی (کلمات کلیدی ATS):</label>
-                                <span class="text-[11px] text-slate-500">جدا شده با کاما</span>
-                            </div>
-                            <input type="text" id="builder-skills" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" placeholder="پایتون، SQL، Power BI، RAG، یادگیری ماشین، Docker">
-                        </div>
-
-                        <!-- Education & Projects Row -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-300">تحصیلات و مدارک (Education):</label>
-                                <textarea id="builder-education" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-slate-300">پروژه‌های شاخص و افتخارات (Projects):</label>
-                                <textarea id="builder-projects" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+                            <div class="text-2xl text-slate-600 font-light">➔</div>
+                            <div class="text-center">
+                                <span class="text-[11px] text-teal-400 font-bold block mb-1">نسخه بهینه‌شده</span>
+                                <span class="text-3xl font-black text-emerald-400" id="diff-score-after">۹۶٪</span>
+                                <span class="text-[10px] text-emerald-400 font-bold block" id="diff-score-improvement">+۳۴٪ ارتقا</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: ATS Score & AI Advice (1 Col) -->
-                    <div class="space-y-4">
-                        <!-- ATS Score Card -->
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-emerald-500/30 text-center space-y-3">
-                            <span class="text-xs font-bold text-slate-400 block">نمره غربالگری سیستم ATS</span>
-                            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-emerald-500/10 border-2 border-emerald-500/40 relative">
-                                <span class="text-3xl font-black text-emerald-400" id="builder-ats-badge">۸۵</span>
-                                <span class="text-[10px] text-slate-400 absolute bottom-3">از ۱۰۰</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Before Card -->
+                        <div class="p-5 rounded-2xl bg-slate-950 border border-rose-500/30 space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                    <h4 class="text-sm font-bold text-rose-300">رزومه اولیه خام (قبل از هوش مصنوعی)</h4>
+                                </div>
+                                <span class="px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-400 text-xs font-mono font-bold">ATS: 62%</span>
                             </div>
-                            <div class="space-y-2 text-right pt-2 border-t border-slate-800/80 text-[11px]">
-                                <div class="flex items-center justify-between text-slate-400">
-                                    <span>انطباق کلمات کلیدی فنی:</span>
-                                    <strong class="text-emerald-400" id="builder-kw-match">۹۲٪</strong>
+                            <div class="space-y-3 text-xs text-slate-300" id="diff-before-content">
+                                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 space-y-1">
+                                    <strong class="text-rose-400 block font-bold">❌ فرمت و سبک نگارش:</strong>
+                                    <p class="text-slate-400 text-[11px] leading-relaxed" id="diff-before-format">فاقد دسته‌بندی استاندارد ATS و بدون تفکیک ماتریس مهارتی</p>
                                 </div>
-                                <div class="flex items-center justify-between text-slate-400">
-                                    <span>کمیت‌پذیری دستاوردها:</span>
-                                    <strong class="text-teal-400" id="builder-quant-match">۸۸٪</strong>
+                                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 space-y-1">
+                                    <strong class="text-rose-400 block font-bold">❌ ساختار سوابق کاری:</strong>
+                                    <p class="text-slate-400 text-[11px] leading-relaxed" id="diff-before-bullets">شرح وظایف ساده و بدون ارقام کمی (مثلاً: «مسئول گزارش‌گیری و پایپ‌لاین»)</p>
                                 </div>
-                                <div class="flex items-center justify-between text-slate-400">
-                                    <span>فرمت استاندارد و خوانایی:</span>
-                                    <strong class="text-cyan-400">۱۰۰٪</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- AI Suggestions Box -->
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
-                            <span class="text-xs font-bold text-purple-400 flex items-center gap-1.5">
-                                <i class="fa-solid fa-sparkles"></i>
-                                <span>بهبودهای هوشمند اعمال‌شده:</span>
-                            </span>
-                            <div class="space-y-2 text-[11px] text-slate-300" id="builder-enhancements-list">
-                                <div class="p-2 rounded-lg bg-slate-900 border border-slate-800/80 flex items-start gap-2">
-                                    <i class="fa-solid fa-check text-emerald-400 mt-0.5 shrink-0"></i>
-                                    <span>استخراج کلمات کلیدی تخصصی پایتون، Power BI و یادگیری ماشین</span>
-                                </div>
-                                <div class="p-2 rounded-lg bg-slate-900 border border-slate-800/80 flex items-start gap-2">
-                                    <i class="fa-solid fa-check text-emerald-400 mt-0.5 shrink-0"></i>
-                                    <span>آماده‌سازی برای سیستم‌های ترکینگ استخدامی جابینجا و جاب‌ویژن</span>
+                                <div class="p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 space-y-1">
+                                    <strong class="text-rose-400 block font-bold">❌ مهارت‌های استخراج‌شده:</strong>
+                                    <div class="flex flex-wrap gap-1.5 pt-1" id="diff-before-skills">
+                                        <span class="px-2 py-0.5 rounded bg-rose-950/40 text-rose-300 border border-rose-800/50 text-[10px]">۴ مهارت محدود</span>
+                                        <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 text-[10px]">فاقد کلمات کلیدی داغ بازار</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Tailor per Job Box -->
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-cyan-500/30 space-y-3">
-                            <span class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
-                                <i class="fa-solid fa-bullseye"></i>
-                                <span>سفارشی‌سازی رزومه برای موقعیت خاص:</span>
-                            </span>
-                            <p class="text-[11px] text-slate-400">یک آگهی را انتخاب کنید تا کاور نوت و خلاصه سفارشی متناسب با شرکت ایجاد شود.</p>
-                            <select id="tailor-job-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-slate-200">
-                                <!-- Populated dynamically from jobs -->
-                            </select>
-                            <button onclick="tailorResumeForSelectedJob()" class="w-full py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 text-xs font-bold transition">
-                                تولید کاور نوت و تنظیم رزومه برای این شرکت
+                        <!-- After Card -->
+                        <div class="p-5 rounded-2xl bg-slate-950 border border-emerald-500/30 space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <h4 class="text-sm font-bold text-emerald-300">رزومه بازنویسی‌شده کریر کوپایلت (بعد از بهینه‌سازی)</h4>
+                                </div>
+                                <span class="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold">ATS: 96%</span>
+                            </div>
+                            <div class="space-y-3 text-xs text-slate-300" id="diff-after-content">
+                                <div class="p-3 rounded-xl bg-slate-900/60 border border-emerald-500/20 space-y-1">
+                                    <strong class="text-emerald-400 block font-bold">✅ فرمت و ساختار تاییدشده:</strong>
+                                    <p class="text-slate-300 text-[11px] leading-relaxed" id="diff-after-format">ساختار استاندارد هاروارد و کریر کوپایلت منطبق بر الگوریتم‌های ATS جابینجا و جاب‌ویژن</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/60 border border-emerald-500/20 space-y-1">
+                                    <strong class="text-emerald-400 block font-bold">✅ متدولوژی عددی Google X-Y-Z و STAR:</strong>
+                                    <p class="text-slate-300 text-[11px] leading-relaxed" id="diff-after-bullets">افعال اکشن و دستاوردهای کمی‌شده عددی (مانند: «کاهش ۳۸٪ معوقات با مدل اعتباری و خطای ۹.۳۶٪ WMAPE در برابر ۳۴٪ سیستم قبلی»)</p>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900/60 border border-emerald-500/20 space-y-1">
+                                    <strong class="text-emerald-400 block font-bold">✅ بردار مهارت‌های فنی کامل:</strong>
+                                    <div class="flex flex-wrap gap-1.5 pt-1" id="diff-after-skills">
+                                        <!-- Loaded dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                        <h4 class="text-xs font-bold text-cyan-400 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>لیست بهبودهای راهبردی اعمال‌شده بر اساس الگوریتم استخدامی:</span>
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="diff-highlights-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 3: Visual Resume Templates -->
+                <div id="resume-subview-templates" class="hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-950 border border-slate-800">
+                        <div class="flex items-center gap-2 overflow-x-auto scrollbar-none" id="templates-tab-bar">
+                            <button onclick="selectResumeTemplate('harvard_ats')" id="tpl-btn-harvard_ats" class="template-tab-btn active px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-xs font-bold flex items-center gap-2 transition shrink-0">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <span>قالب استاندارد هاروارد (Harvard ATS)</span>
                             </button>
-                            <div id="tailor-result-box" class="hidden p-3 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-slate-300 space-y-2">
-                                <strong class="text-white block font-bold">کاور نوت پیشنهادی برای ارسال:</strong>
-                                <p id="tailor-cover-note-text" class="leading-relaxed"></p>
+                            <button onclick="selectResumeTemplate('modern_tech')" id="tpl-btn-modern_tech" class="template-tab-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-bold flex items-center gap-2 transition shrink-0">
+                                <i class="fa-solid fa-laptop-code"></i>
+                                <span>قالب مدرن فناوری (Modern Tech & AI)</span>
+                            </button>
+                            <button onclick="selectResumeTemplate('executive_bi')" id="tpl-btn-executive_bi" class="template-tab-btn px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-bold flex items-center gap-2 transition shrink-0">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>قالب ارشد و هوش تجاری (Executive BI)</span>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button onclick="printResumeTemplate()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-print"></i>
+                                <span>🖨️ چاپ / ذخیره PDF تمیز</span>
+                            </button>
+                            <button onclick="openResumeTemplateFullscreen()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span>نمایش کامل</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="template-info-box" class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 flex items-center justify-between flex-wrap gap-2">
+                        <span id="template-desc-text">قالب تک‌ستونه کلاسیک مورد تایید سیستم‌های اسکنر ATS بین‌المللی با خوانایی ۱۰۰٪</span>
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold" id="template-badge-text">حداکثر قبولی ATS</span>
+                    </div>
+
+                    <div class="p-4 sm:p-6 rounded-2xl bg-slate-950 border border-slate-800/80 overflow-x-auto min-h-[500px]">
+                        <div id="template-rendered-container" class="transition-all duration-300">
+                            <!-- Populated with template HTML -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 4: AI Resume Voice & Text Consultant -->
+                <div id="resume-subview-consultant" class="hidden space-y-6">
+                    <div class="p-6 rounded-2xl bg-slate-950 border border-purple-500/30 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-microphone-lines"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-black text-white">مشاور هوشمند صوتی و متنی رزومه (AI Career Consultant)</h3>
+                                    <p class="text-xs text-slate-400">هوش مصنوعی رزومه شما را بررسی کرده و با پرسش‌های هدفمند، دستاوردهای شما را تبدیل به بالت‌های کمی می‌کند.</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold">
+                                پشتیبانی از ویس صوتی و متن
+                            </span>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/40 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5" id="consultant-topic-badge">
+                                    <i class="fa-solid fa-circle-question"></i>
+                                    <span>دستاوردهای کمی و درصدی سوابق کاری</span>
+                                </span>
+                                <button onclick="loadResumeConsultantQuestion()" class="text-[11px] text-slate-400 hover:text-white flex items-center gap-1">
+                                    <i class="fa-solid fa-rotate"></i>
+                                    <span>سوال بعدی</span>
+                                </button>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed font-sans" id="consultant-question-text">
+                                در سابقه شغلی اخیر شما، مدل‌ها یا پایپ‌لاین‌های داده‌ای که پیاده کردید چقدر در افزایش سرعت گزارش‌گیری، کاهش هزینه‌ها یا بهبود دقت تصمیم‌گیری تیم موثر بودند؟ لطفاً اگر اعداد یا درصدهای تقریبی دارید بیان کنید (تایپ کنید یا ویس بفرستید).
+                            </p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold text-slate-300">پاسخ شما (تایپ کنید یا دکمه ویس را بزنید):</label>
+                                <button onclick="toggleVoiceConsultant()" id="btn-voice-consultant" class="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 text-xs font-bold flex items-center gap-2 transition">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    <span id="voice-btn-label">🎙️ شروع ضبط ویس</span>
+                                </button>
+                            </div>
+                            <textarea id="consultant-answer-input" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-purple-400 leading-relaxed" placeholder="پاسخ خود را اینجا بنویسید یا دکمه «شروع ضبط ویس» را بزنید..."></textarea>
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400" id="consultant-input-status">آماده دریافت پاسخ کاندیدا</span>
+                                <button onclick="submitResumeConsultantAnswer()" id="btn-submit-consultant" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-black shadow-lg shadow-purple-600/25 transition flex items-center gap-2">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                    <span>ارسال پاسخ و ادغام خودکار در رزومه (افزایش ATS)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="consultant-result-box" class="hidden p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span id="consultant-feedback-title">پاسخ با موفقیت پردازش و به رزومه اضافه شد!</span>
+                                </strong>
+                                <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold" id="consultant-ats-impact">نمره جدید: ۹۸٪</span>
+                            </div>
+                            <p class="text-xs text-slate-300 font-mono" id="consultant-added-bullet"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 5: Platform Form Builder & Bookmarklet -->
+                <div id="resume-subview-platforms" class="hidden space-y-6">
+                    <div class="p-6 rounded-2xl bg-slate-950 border border-amber-500/30 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm font-black text-white">پکیج فیلدهای آماده جهت درج در رزومه‌ساز جابینجا و جاب‌ویژن</h3>
+                                    <p class="text-xs text-slate-400">تمام متن‌ها بر اساس سوابق و کلمات کلیدی استاندارد تفکیک شده‌اند تا به صورت آنی در پلتفرم‌ها کپی یا تزریق شوند.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="copyBookmarkletCode()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    <span>🚀 کپی بوکمارکلت پر کردن خودکار (Bookmarklet)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-xs text-amber-200/90 leading-relaxed flex items-start gap-3">
+                            <i class="fa-solid fa-circle-info text-amber-400 text-base mt-0.5 shrink-0"></i>
+                            <div>
+                                <strong class="text-amber-300 block font-bold mb-1">راهنمای بوکمارکلت (تزریق ۱ ثانیه‌ای بدون بن شدن یا مشکل Cloudflare):</strong>
+                                <span>دکمه «کپی بوکمارکلت» را بزنید. سپس در تب باز رزومه‌ساز جابینجا یا جاب‌ویژن در مرورگر خود، یک بوک‌مارک جدید بسازید و این کد را در قسمت URL پیست کنید یا آن را در کنسول مرورگر اجرا کنید. فیلدهای «عنوان»، «درباره من»، «سوابق» و «مهارت‌ها» به طور خودکار تکمیل خواهند شد!</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
+                            <button onclick="switchPlatformFormTab('jobinja')" id="pform-tab-jobinja" class="px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold flex items-center gap-2 transition">
+                                <span>رزومه‌ساز جابینجا (Jobinja)</span>
+                            </button>
+                            <button onclick="switchPlatformFormTab('jobvision')" id="pform-tab-jobvision" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-bold flex items-center gap-2 transition">
+                                <span>رزومه‌ساز جاب‌ویژن (Jobvision)</span>
+                            </button>
+                        </div>
+
+                        <!-- Jobinja Form Container -->
+                        <div id="pform-content-jobinja" class="space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">عنوان شغلی (Headline):</label>
+                                    <button onclick="copyElementText('pform-jobinja-headline', 'عنوان جابینجا')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <input type="text" id="pform-jobinja-headline" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">درباره من و خلاصه حرفه‌ای (About Me):</label>
+                                    <button onclick="copyElementText('pform-jobinja-about', 'درباره من جابینجا')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <textarea id="pform-jobinja-about" rows="4" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 leading-relaxed"></textarea>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">سوابق شغلی به متدولوژی STAR (Work Experience):</label>
+                                    <button onclick="copyElementText('pform-jobinja-exp', 'سوابق جابینجا')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <textarea id="pform-jobinja-exp" rows="6" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 font-mono leading-relaxed"></textarea>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">کلمات کلیدی مهارت‌ها (Skills):</label>
+                                    <button onclick="copyElementText('pform-jobinja-skills', 'مهارت‌های جابینجا')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <input type="text" id="pform-jobinja-skills" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                            </div>
+                        </div>
+
+                        <!-- Jobvision Form Container -->
+                        <div id="pform-content-jobvision" class="hidden space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">عنوان شغلی در جاب‌ویژن (Job Title):</label>
+                                    <button onclick="copyElementText('pform-jobvision-title', 'عنوان جاب‌ویژن')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <input type="text" id="pform-jobvision-title" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">متن معرفی و درباره من (About Me):</label>
+                                    <button onclick="copyElementText('pform-jobvision-about', 'درباره من جاب‌ویژن')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <textarea id="pform-jobvision-about" rows="4" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 leading-relaxed"></textarea>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">سوابق کاری استاندارد (Work History):</label>
+                                    <button onclick="copyElementText('pform-jobvision-exp', 'سوابق جاب‌ویژن')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <textarea id="pform-jobvision-exp" rows="6" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 font-mono leading-relaxed"></textarea>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="text-xs font-bold text-slate-300">لیست مهارت‌ها با سطح تسلط ۹۰٪:</label>
+                                    <button onclick="copyElementText('pform-jobvision-skills', 'مهارت‌های جاب‌ویژن')" class="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1">
+                                        <i class="fa-solid fa-copy"></i> کپی
+                                    </button>
+                                </div>
+                                <textarea id="pform-jobvision-skills" rows="3" readonly class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 font-mono"></textarea>
                             </div>
                         </div>
                     </div>
@@ -2372,6 +2723,396 @@
 
         function showPricingModal() { document.getElementById('pricing-modal').classList.remove('hidden'); }
         function closePricingModal() { document.getElementById('pricing-modal').classList.add('hidden'); }
+
+        // ==========================================
+        // SUBVIEW SWITCHER & ENHANCEMENT CONTROLLERS
+        // ==========================================
+        let currentResumeSubView = 'editor';
+        let currentSelectedTemplate = 'harvard_ats';
+        let isVoiceConsultantRecording = false;
+        let voiceSpeechRecognition = null;
+        let cachedPlatformFormData = null;
+
+        function switchResumeSubView(viewName) {
+            currentResumeSubView = viewName;
+            document.querySelectorAll('.resume-sub-btn').forEach(b => {
+                b.classList.remove('active', 'bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/40');
+                b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+            });
+
+            const activeBtn = document.getElementById(`sub-btn-${viewName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/40');
+                activeBtn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+            }
+
+            const views = ['editor', 'before-after', 'templates', 'consultant', 'platforms'];
+            views.forEach(v => {
+                const el = document.getElementById(`resume-subview-${v}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            const targetView = document.getElementById(`resume-subview-${viewName}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            if (viewName === 'before-after') {
+                loadResumeBeforeAfter();
+            } else if (viewName === 'templates') {
+                loadResumeTemplates();
+            } else if (viewName === 'consultant') {
+                loadResumeConsultantQuestion();
+            } else if (viewName === 'platforms') {
+                loadResumePlatformForms();
+            }
+        }
+
+        async function loadResumeBeforeAfter() {
+            try {
+                const res = await fetch('/api/templates/before-after?user_id=1');
+                const d = await res.json();
+                if (!d || !d.before_metrics) return;
+
+                document.getElementById('diff-score-before').innerText = `${d.score_before}٪`;
+                document.getElementById('diff-score-after').innerText = `${d.score_after}٪`;
+                document.getElementById('diff-score-improvement').innerText = `${d.improvement_pct} ارتقا`;
+
+                document.getElementById('diff-before-format').innerText = d.before_metrics.format;
+                document.getElementById('diff-before-bullets').innerText = d.before_metrics.bullet_style;
+
+                const bSkills = document.getElementById('diff-before-skills');
+                if (bSkills) {
+                    bSkills.innerHTML = (d.before_metrics.keywords_missing || []).map(k => `
+                        <span class="px-2 py-0.5 rounded bg-rose-950/40 text-rose-300 border border-rose-800/40 text-[10px]">غایب: ${k}</span>
+                    `).join('');
+                }
+
+                document.getElementById('diff-after-format').innerText = d.after_metrics.format;
+                document.getElementById('diff-after-bullets').innerText = d.after_metrics.bullet_style;
+
+                const aSkills = document.getElementById('diff-after-skills');
+                if (aSkills) {
+                    aSkills.innerHTML = (d.after_metrics.keywords_present || []).map(k => `
+                        <span class="px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-300 border border-emerald-500/40 text-[10px]">${k}</span>
+                    `).join('');
+                }
+
+                const hlList = document.getElementById('diff-highlights-list');
+                if (hlList) {
+                    hlList.innerHTML = (d.enhancement_highlights || []).map(h => `
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-start gap-2 text-xs text-slate-300">
+                            <i class="fa-solid fa-circle-check text-teal-400 mt-0.5 shrink-0"></i>
+                            <span>${h}</span>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("Error loading before/after comparison:", err);
+            }
+        }
+
+        async function loadResumeTemplates() {
+            selectResumeTemplate(currentSelectedTemplate || 'harvard_ats');
+        }
+
+        async function selectResumeTemplate(templateId) {
+            currentSelectedTemplate = templateId;
+            document.querySelectorAll('.template-tab-btn').forEach(b => {
+                b.classList.remove('active', 'bg-cyan-500/20', 'text-cyan-400', 'border-cyan-500/40');
+                b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+            });
+            const activeBtn = document.getElementById(`tpl-btn-${templateId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-cyan-500/20', 'text-cyan-400', 'border-cyan-500/40');
+                activeBtn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+            }
+
+            const descEl = document.getElementById('template-desc-text');
+            const badgeEl = document.getElementById('template-badge-text');
+            if (templateId === 'harvard_ats') {
+                if (descEl) descEl.innerText = "قالب تک‌ستونه کلاسیک مورد تایید سیستم‌های اسکنر ATS بین‌المللی با خوانایی ۱۰۰٪";
+                if (badgeEl) badgeEl.innerText = "حداکثر قبولی ATS";
+            } else if (templateId === 'modern_tech') {
+                if (descEl) descEl.innerText = "چیدمان دو ستونه مدرن با هدر تیره، بج‌های مهارتی تخصصی و ماتریس داده‌ای برای موقعیت‌های فنی و هوش مصنوعی";
+                if (badgeEl) badgeEl.innerText = "محبوب شرکت‌های فناوری";
+            } else {
+                if (descEl) descEl.innerText = "طراحی مدیریتی با تاکید بر شاخص‌های عملکردی کلان (KPI)، راهبری و پروژه‌های سازمانی هوش تجاری";
+                if (badgeEl) badgeEl.innerText = "سطح Senior و Lead";
+            }
+
+            const container = document.getElementById('template-rendered-container');
+            if (container) {
+                container.innerHTML = '<div class="text-center py-12 text-slate-400"><i class="fa-solid fa-spinner fa-spin text-xl text-cyan-400"></i><p class="mt-2 text-xs">در حال رندر گرافیکی قالب رسمی...</p></div>';
+            }
+
+            try {
+                const res = await fetch(`/api/templates/render?user_id=1&template_id=${templateId}`);
+                const data = await res.json();
+                if (data && data.html && container) {
+                    container.innerHTML = data.html;
+                }
+            } catch (err) {
+                if (container) container.innerHTML = '<div class="text-rose-400 text-xs py-8 text-center">خطا در رندر قالب رزومه</div>';
+            }
+        }
+
+        function printResumeTemplate() {
+            const container = document.getElementById('template-rendered-container');
+            if (!container) return;
+            const printWin = window.open('', '_blank', 'width=900,height=1100');
+            printWin.document.write(`
+                <!DOCTYPE html>
+                <html dir="rtl" lang="fa">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>رزومه رسمی علی رجوند</title>
+                    <script src="https://cdn.tailwindcss.com"><\/script>
+                    <style>
+                        @media print {
+                            body { background: white !important; margin: 0; padding: 0; }
+                            .resume-sheet { box-shadow: none !important; max-width: 100% !important; padding: 0 !important; }
+                        }
+                    </style>
+                </head>
+                <body class="bg-white p-6 font-sans">
+                    ${container.innerHTML}
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() { window.print(); }, 400);
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+        }
+
+        function openResumeTemplateFullscreen() {
+            window.open(`/api/templates/render?user_id=1&template_id=${currentSelectedTemplate}`, '_blank');
+        }
+
+        async function loadResumeConsultantQuestion() {
+            const topicBadge = document.getElementById('consultant-topic-badge');
+            const questionText = document.getElementById('consultant-question-text');
+            const resultBox = document.getElementById('consultant-result-box');
+            if (resultBox) resultBox.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/consultant/question?user_id=1');
+                const data = await res.json();
+                if (data.topic && topicBadge) {
+                    topicBadge.innerHTML = `<i class="fa-solid fa-circle-question"></i> <span>${data.topic}</span>`;
+                }
+                if (data.question && questionText) {
+                    questionText.innerText = data.question;
+                }
+            } catch (err) {
+                console.error("Error fetching consultant question:", err);
+            }
+        }
+
+        async function submitResumeConsultantAnswer() {
+            const input = document.getElementById('consultant-answer-input');
+            const text = input ? input.value.trim() : '';
+            if (!text) {
+                showToast('لطفاً ابتدا پاسخ خود را تایپ کرده یا ویس بفرستید.', 'warning');
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit-consultant');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> پردازش و ارتقای ATS...`;
+            }
+
+            try {
+                const res = await fetch('/api/consultant/answer', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_id: 1, answer_text: text})
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    const resBox = document.getElementById('consultant-result-box');
+                    const addedBullet = document.getElementById('consultant-added-bullet');
+                    const atsImpact = document.getElementById('consultant-ats-impact');
+
+                    if (resBox) resBox.classList.remove('hidden');
+                    if (addedBullet) addedBullet.innerText = data.added_bullet || text;
+                    if (atsImpact && data.new_ats) atsImpact.innerText = `نمره جدید ATS: ${data.new_ats}٪`;
+
+                    if (data.new_ats) {
+                        const statAts = document.getElementById('stat-ats-score');
+                        const builderAts = document.getElementById('builder-ats-badge');
+                        const headerAts = document.getElementById('header-user-ats');
+                        if (statAts) statAts.innerText = data.new_ats;
+                        if (builderAts) builderAts.innerText = data.new_ats;
+                        if (headerAts) headerAts.innerText = `${data.new_ats}٪`;
+                    }
+
+                    showToast(data.feedback_message || 'دستاورد با موفقیت به سوابق اضافه و رزومه ارتقا یافت!');
+                    if (input) input.value = '';
+
+                    // Load next question after short delay
+                    setTimeout(() => {
+                        loadResumeConsultantQuestion();
+                    }, 3000);
+                } else {
+                    showToast(data.error || 'خطا در ثبت پاسخ مشاور', 'error');
+                }
+            } catch (err) {
+                showToast('خطا در ارتباط با سرور', 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>ارسال پاسخ و ادغام خودکار در رزومه (افزایش ATS)</span>`;
+                }
+            }
+        }
+
+        function toggleVoiceConsultant() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const btn = document.getElementById('btn-voice-consultant');
+            const label = document.getElementById('voice-btn-label');
+            const status = document.getElementById('consultant-input-status');
+            const input = document.getElementById('consultant-answer-input');
+
+            if (!SpeechRecognition) {
+                showToast('مرورگر شما از تشخیص صدای بلادرنگ پشتیبانی نمی‌کند. لطفاً تایپ فرمایید یا در تلگرام ویس ارسال کنید.', 'warning');
+                return;
+            }
+
+            if (isVoiceConsultantRecording) {
+                if (voiceSpeechRecognition) voiceSpeechRecognition.stop();
+                isVoiceConsultantRecording = false;
+                if (btn) btn.classList.remove('bg-rose-600', 'text-white', 'animate-pulse');
+                if (label) label.innerText = '🎙️ شروع ضبط ویس';
+                if (status) status.innerText = 'ضبط متوقف شد. آماده ارسال.';
+                return;
+            }
+
+            voiceSpeechRecognition = new SpeechRecognition();
+            voiceSpeechRecognition.lang = 'fa-IR';
+            voiceSpeechRecognition.continuous = true;
+            voiceSpeechRecognition.interimResults = true;
+
+            voiceSpeechRecognition.onstart = () => {
+                isVoiceConsultantRecording = true;
+                if (btn) btn.classList.add('bg-rose-600', 'text-white', 'animate-pulse');
+                if (label) label.innerText = '⏹️ توقف ضبط ویس';
+                if (status) status.innerText = '🔴 در حال شنیدن صحبت‌های شما (فارسی)...';
+            };
+
+            voiceSpeechRecognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    transcript += event.results[i][0].transcript;
+                }
+                if (input && transcript) {
+                    input.value = (input.value ? input.value + ' ' : '') + transcript;
+                }
+            };
+
+            voiceSpeechRecognition.onerror = (e) => {
+                console.error("Speech recognition error:", e);
+                isVoiceConsultantRecording = false;
+                if (btn) btn.classList.remove('bg-rose-600', 'text-white', 'animate-pulse');
+                if (label) label.innerText = '🎙️ شروع ضبط ویس';
+                if (status) status.innerText = 'خطا در دریافت صدا';
+            };
+
+            voiceSpeechRecognition.onend = () => {
+                isVoiceConsultantRecording = false;
+                if (btn) btn.classList.remove('bg-rose-600', 'text-white', 'animate-pulse');
+                if (label) label.innerText = '🎙️ شروع ضبط ویس';
+            };
+
+            try {
+                voiceSpeechRecognition.start();
+            } catch (e) {
+                console.error("Error starting speech recognition:", e);
+            }
+        }
+
+        async function loadResumePlatformForms() {
+            try {
+                const res = await fetch('/api/templates/platforms-form?user_id=1');
+                const data = await res.json();
+                cachedPlatformFormData = data;
+                window.__bookmarkletCode = data.bookmarklet_code;
+
+                // Jobinja
+                if (data.jobinja) {
+                    const j = data.jobinja;
+                    document.getElementById('pform-jobinja-headline').value = j.headline || '';
+                    document.getElementById('pform-jobinja-about').value = j.about_me || '';
+                    document.getElementById('pform-jobinja-exp').value = j.work_experience_text || '';
+                    document.getElementById('pform-jobinja-skills').value = j.skills_list || '';
+                }
+
+                // Jobvision
+                if (data.jobvision) {
+                    const v = data.jobvision;
+                    document.getElementById('pform-jobvision-title').value = v.job_title || '';
+                    document.getElementById('pform-jobvision-about').value = v.about_me || '';
+                    document.getElementById('pform-jobvision-exp').value = v.work_history || '';
+                    document.getElementById('pform-jobvision-skills').value = (v.skills || []).map(s => `${s.title} (تسلط: ${s.proficiency}%)`).join('، ');
+                }
+            } catch (err) {
+                console.error("Error loading platforms form payload:", err);
+            }
+        }
+
+        function switchPlatformFormTab(platform) {
+            const jContent = document.getElementById('pform-content-jobinja');
+            const vContent = document.getElementById('pform-content-jobvision');
+            const jTab = document.getElementById('pform-tab-jobinja');
+            const vTab = document.getElementById('pform-tab-jobvision');
+
+            if (platform === 'jobinja') {
+                if (jContent) jContent.classList.remove('hidden');
+                if (vContent) vContent.classList.add('hidden');
+                if (jTab) {
+                    jTab.className = 'px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold flex items-center gap-2 transition';
+                }
+                if (vTab) {
+                    vTab.className = 'px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-bold flex items-center gap-2 transition';
+                }
+            } else {
+                if (jContent) jContent.classList.add('hidden');
+                if (vContent) vContent.classList.remove('hidden');
+                if (vTab) {
+                    vTab.className = 'px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-xs font-bold flex items-center gap-2 transition';
+                }
+                if (jTab) {
+                    jTab.className = 'px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-bold flex items-center gap-2 transition';
+                }
+            }
+        }
+
+        function copyElementText(elementId, label) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.value || el.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`متن «${label}» با موفقیت در کلیپ‌بورد کپی شد!`);
+            }).catch(() => {
+                showToast('خطا در کپی متن به کلیپ‌بورد', 'error');
+            });
+        }
+
+        function copyBookmarkletCode() {
+            const code = window.__bookmarkletCode;
+            if (!code) {
+                showToast('بوکمارکلت هنوز لود نشده است.', 'warning');
+                return;
+            }
+            navigator.clipboard.writeText(code).then(() => {
+                showToast('🚀 کد بوکمارکلت در کلیپ‌بورد کپی شد! می‌توانید آن را در مرورگر ذخیره و در جابینجا/جاب‌ویژن اجرا کنید.');
+            }).catch(() => {
+                showToast('خطا در کپی بوکمارکلت', 'error');
+            });
+        }
 
         // Initialize application on DOM load
         window.addEventListener('DOMContentLoaded', () => {

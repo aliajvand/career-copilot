@@ -18,6 +18,8 @@ from agents.interview_agent import interview_simulator_agent
 from agents.auto_applier import auto_applier_agent
 from agents.hierarchical_engine import hierarchical_engine, ENTERPRISE_DOMAINS
 from agents.autonomous_agent import autonomous_agent
+from agents.resume_consultant_agent import resume_consultant_agent
+from agents.resume_templates_agent import resume_templates_agent
 from automation.platform_auth import platform_auth_manager, add_log
 from automation.auto_applier import auto_applier_queue
 
@@ -584,6 +586,42 @@ def confirm_job_application(payload: dict = Body(...)):
 def get_b2b_report(interview_id: int):
     """Generates downloadable B2B candidate evaluation report for HR."""
     return interview_simulator_agent.generate_b2b_report(interview_id)
+
+# ========================================================
+# Interactive AI Resume Consultant & Template System APIs
+# ========================================================
+@app.get("/api/consultant/question")
+def get_consultant_question(user_id: int = 1):
+    """Fetches next targeted question from AI consultant to improve candidate resume."""
+    return resume_consultant_agent.get_next_question(user_id=user_id)
+
+@app.post("/api/consultant/answer")
+def process_consultant_answer(payload: dict = Body(...)):
+    """Processes candidate text or transcribed voice answer and upgrades resume metrics."""
+    user_id = payload.get("user_id", 1)
+    answer_text = payload.get("answer_text", "")
+    return resume_consultant_agent.process_candidate_answer(user_id=user_id, user_input_text=answer_text)
+
+@app.get("/api/templates/list")
+def list_resume_templates():
+    """Returns available corporate and ATS resume templates."""
+    return resume_templates_agent.get_templates_list()
+
+@app.get("/api/templates/render")
+def render_resume_template(user_id: int = 1, template_id: str = "harvard_ats"):
+    """Renders formatted HTML of candidate resume in the chosen template."""
+    html_content = resume_templates_agent.render_template_html(user_id=user_id, template_id=template_id)
+    return {"template_id": template_id, "html": html_content}
+
+@app.get("/api/templates/before-after")
+def get_resume_before_after(user_id: int = 1):
+    """Returns Before vs. After optimization breakdown with quantified metrics."""
+    return resume_templates_agent.get_before_after_comparison(user_id=user_id)
+
+@app.get("/api/templates/platforms-form")
+def get_platforms_form_payload(user_id: int = 1):
+    """Generates structured payload for Jobinja & Jobvision form builders and 1-click Bookmarklet script."""
+    return resume_templates_agent.get_job_platforms_form_payload(user_id=user_id)
 
 # Mount frontend
 if STATIC_DIR.exists():
