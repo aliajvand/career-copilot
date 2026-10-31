@@ -261,6 +261,15 @@ class PlatformAuthManager:
                     real_submission = True
             else:
                 add_log("AutoApplier", f"سشن ذخیره‌شده جاب‌ویژن یافت نشد. ارسال نیازمند نشست فعال یا کلیک روی لینک مستقیم است.", "warning")
+        elif platform == "jobinja":
+            from automation.jobinja_real_applier import jobinja_real_applier
+            if jobinja_real_applier.has_saved_session():
+                add_log("AutoApplier", f"در حال اجرای ارسال مرورگری واقعی برای '{job['title']}' در جابینجا...", "info")
+                live_result = jobinja_real_applier.submit_application_to_job(job.get("url", ""))
+                if live_result.get("success"):
+                    real_submission = True
+            else:
+                add_log("AutoApplier", f"سشن ذخیره‌شده جابینجا یافت نشد. ارسال نیازمند نشست فعال یا کلیک روی لینک مستقیم است.", "warning")
 
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         tracking_code = f"REAL-JV-{job_id.replace('jv-', '')}" if (platform == "jobvision" and real_submission) else f"PENDING-DIRECT-{job_id}"

@@ -1226,9 +1226,24 @@
                                 <label class="text-slate-400 block mb-1">رمز عبور حساب:</label>
                                 <input type="password" id="acc-jobinja-pass" value="0441067824" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
                             </div>
-                            <button onclick="saveAccount('jobinja')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 rounded-xl transition">
-                                ذخیره و تایید اتصال جابینجا
-                            </button>
+                            <div class="grid grid-cols-2 gap-2 pt-1">
+                                <button onclick="saveAccount('jobinja')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 rounded-xl transition text-[11px]">
+                                    ذخیره مشخصات
+                                </button>
+                                <button onclick="openInteractiveBrowserLogin('jobinja')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-2 rounded-xl transition text-[11px] flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-500/20">
+                                    <i class="fa-solid fa-window-maximize"></i>
+                                    <span>🌐 ورود زنده در مرورگر</span>
+                                </button>
+                            </div>
+                            <div class="pt-2 border-t border-slate-900">
+                                <details class="text-[11px]">
+                                    <summary class="cursor-pointer text-slate-400 hover:text-emerald-400 transition">📋 ورود سریع با الصاق کوکی (document.cookie)</summary>
+                                    <div class="mt-2 space-y-2">
+                                        <textarea id="cookie-jobinja-input" placeholder="کوکی‌های کپی‌شده از کنسول مرورگر را اینجا بگذارید..." rows="2" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-[10px] text-slate-300 font-mono"></textarea>
+                                        <button onclick="savePastedCookies('jobinja')" class="w-full bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/40 text-emerald-300 font-bold py-1.5 rounded-lg text-[10px] transition">تایید و فعال‌سازی کوکی</button>
+                                    </div>
+                                </details>
+                            </div>
                         </div>
                     </div>
 
@@ -1239,10 +1254,10 @@
                                 <span class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm">جاب‌ویژن</span>
                                 <div>
                                     <h4 class="text-xs font-bold text-white">سامانه جاب‌ویژن (Jobvision.ir)</h4>
-                                    <span class="text-[11px] text-indigo-400">وضعیت: متصل و معتبر</span>
+                                    <span id="jobvision-status-text" class="text-[11px] text-indigo-400">وضعیت: آماده ورود و فعال‌سازی</span>
                                 </div>
                             </div>
-                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                            <span id="jobvision-status-dot" class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></span>
                         </div>
 
                         <div class="space-y-3 text-xs">
@@ -1254,9 +1269,24 @@
                                 <label class="text-slate-400 block mb-1">رمز عبور حساب:</label>
                                 <input type="password" id="acc-jobvision-pass" value="0441067824" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
                             </div>
-                            <button onclick="saveAccount('jobvision')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-xl transition">
-                                ذخیره و تایید اتصال جاب‌ویژن
-                            </button>
+                            <div class="grid grid-cols-2 gap-2 pt-1">
+                                <button onclick="saveAccount('jobvision')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 rounded-xl transition text-[11px]">
+                                    ذخیره مشخصات
+                                </button>
+                                <button onclick="openInteractiveBrowserLogin('jobvision')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-black py-2 rounded-xl transition text-[11px] flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-500/20">
+                                    <i class="fa-solid fa-window-maximize"></i>
+                                    <span>🌐 ورود زنده در مرورگر</span>
+                                </button>
+                            </div>
+                            <div class="pt-2 border-t border-slate-900">
+                                <details class="text-[11px]">
+                                    <summary class="cursor-pointer text-slate-400 hover:text-indigo-400 transition">📋 ورود سریع با الصاق کوکی (document.cookie)</summary>
+                                    <div class="mt-2 space-y-2">
+                                        <textarea id="cookie-jobvision-input" placeholder="کوکی‌های کپی‌شده از کنسول مرورگر را اینجا بگذارید..." rows="2" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-[10px] text-slate-300 font-mono"></textarea>
+                                        <button onclick="savePastedCookies('jobvision')" class="w-full bg-indigo-950/60 hover:bg-indigo-900 border border-indigo-500/40 text-indigo-300 font-bold py-1.5 rounded-lg text-[10px] transition">تایید و فعال‌سازی کوکی</button>
+                                    </div>
+                                </details>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2232,6 +2262,62 @@
                 fetchLogs();
             } catch (e) {
                 showToast('خطا در به‌روزرسانی حساب', 'error');
+            }
+        }
+
+        async function openInteractiveBrowserLogin(platform) {
+            const user = document.getElementById(`acc-${platform}-user`) ? document.getElementById(`acc-${platform}-user`).value : '09195253462';
+            showToast(`مرورگر ورود زنده برای ${platform === 'jobvision' ? 'جاب‌ویژن' : 'جابینجا'} در حال باز شدن است...`);
+            try {
+                const res = await fetch('/api/auth/start-browser-login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({platform: platform, phone: user})
+                });
+                const data = await res.json();
+                showToast(data.message || 'مرورگر باز شد. لطفاً وارد حساب خود شوید.');
+                
+                let attempts = 0;
+                const interval = setInterval(async () => {
+                    attempts++;
+                    if (attempts > 60) clearInterval(interval);
+                    try {
+                        const stRes = await fetch('/api/auth/session-status');
+                        const stData = await stRes.json();
+                        if (stData[platform] && stData[platform].has_session) {
+                            clearInterval(interval);
+                            showToast(`🎉 نشست کاربری ${platform === 'jobvision' ? 'جاب‌ویژن' : 'جابینجا'} با موفقیت فعال و ذخیره شد!`);
+                            fetchLogs();
+                        }
+                    } catch(err) {}
+                }, 3000);
+            } catch (e) {
+                showToast('خطا در باز کردن مرورگر ورود', 'error');
+            }
+        }
+
+        async function savePastedCookies(platform) {
+            const textarea = document.getElementById(`cookie-${platform}-input`);
+            if (!textarea || !textarea.value.trim()) {
+                showToast('لطفاً رشته کوکی را وارد نمایید.', 'error');
+                return;
+            }
+            try {
+                const res = await fetch('/api/auth/import-cookies', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({platform: platform, cookie_string: textarea.value.trim()})
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message);
+                    textarea.value = '';
+                    fetchLogs();
+                } else {
+                    showToast(data.message || 'خطا در ثبت کوکی', 'error');
+                }
+            } catch (e) {
+                showToast('خطا در برقراری ارتباط با سرور', 'error');
             }
         }
 

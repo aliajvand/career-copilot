@@ -1080,21 +1080,46 @@ def run_bot():
                 conn.close()
                 jobinja_acc = accs.get("jobinja", {})
                 jobvision_acc = accs.get("jobvision", {})
+
+                from pathlib import Path
+                jv_session = Path("data/jobvision_session.json").exists()
+                jn_session = Path("data/jobinja_session.json").exists()
+
                 acc_text = (
                     "🔐 **وضعیت اتصال حساب‌های کاریابی شما:**\n\n"
                     f"🏢 **جابینجا (Jobinja):**\n"
                     f"- کاربر: `{jobinja_acc.get('username_or_email', settings.JOBINJA_USER)}`\n"
-                    f"- وضعیت: `{'✅ متصل و آماده' if jobinja_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
+                    f"- سشن مرورگر: `{'✅ فعال و ذخیره‌شده' if jn_session else '⏳ نیاز به ورود در مرورگر'}`\n\n"
                     f"💼 **جاب‌ویژن (Jobvision):**\n"
                     f"- کاربر: `{jobvision_acc.get('username_or_email', settings.JOBVISION_USER)}`\n"
-                    f"- وضعیت: `{'✅ متصل و آماده' if jobvision_acc.get('status') == 'connected' else '⏳ نیاز به تایید'}`\n\n"
-                    "💡 *برای تغییر یا ثبت حساب جدید، از دکمه زیر استفاده کنید.*"
+                    f"- سشن مرورگر: `{'✅ فعال و ذخیره‌شده' if jv_session else '⏳ نیاز به ورود در مرورگر'}`\n\n"
+                    "💡 *می‌توانید همین حالا مرورگر ورود زنده را در سیستم باز کنید، یا از طریق پنل وب لاگین کنید تا سشن خودکار ذخیره شود.*"
                 )
                 keyboard = InlineKeyboardMarkup([
-                    [InlineKeyboardButton("✏️ ثبت / تغییر اطلاعات اکانت", callback_data="prompt_set_account")],
+                    [InlineKeyboardButton("🌐 باز کردن مرورگر ورود زنده جاب‌ویژن", callback_data="launch_auth_jobvision")],
+                    [InlineKeyboardButton("🌐 باز کردن مرورگر ورود زنده جابینجا", callback_data="launch_auth_jobinja")],
+                    [InlineKeyboardButton("📱 باز کردن پنل وب در گوشی", url=f"{settings.PUBLIC_URL}#tab-accounts")],
+                    [InlineKeyboardButton("✏️ ثبت / تغییر شماره و رمز عبور", callback_data="prompt_set_account")],
                     [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
                 ])
                 await query.edit_message_text(acc_text, reply_markup=keyboard, parse_mode="Markdown")
+
+            elif query.data in ("launch_auth_jobvision", "launch_auth_jobinja"):
+                target_platform = "jobvision" if query.data == "launch_auth_jobvision" else "jobinja"
+                plat_fa = "جاب‌ویژن" if target_platform == "jobvision" else "جابینجا"
+                from automation.interactive_login_helper import interactive_login_manager
+                phone = profile.get("phone", "09195253462")
+                res = interactive_login_manager.launch_browser_login_async(target_platform, phone)
+                await query.edit_message_text(
+                    f"🌐 **مرورگر لاگین مستقیم {plat_fa} در حال باز شدن است...**\n\n"
+                    f"شماره تماس `{phone}` خودکار درج می‌شود. لطفاً رمز عبور یا کد تایید پیامکی/کپچا را در پنجره باز شده کامل کنید.\n\n"
+                    f"✅ به محض ورود، ربات سشن شما را به صورت خودکار شناسایی کرده و برای ارسال تمام رزومه‌ها ذخیره می‌نماید.",
+                    reply_markup=InlineKeyboardMarkup([
+                        [InlineKeyboardButton("🔄 بررسی مجدد وضعیت اتصال", callback_data="accounts_menu")],
+                        [InlineKeyboardButton("🔙 بازگشت به منوی اصلی", callback_data="main_menu")]
+                    ]),
+                    parse_mode="Markdown"
+                )
 
             elif query.data == "security_audit":
                 sec_text = (

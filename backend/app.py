@@ -81,6 +81,46 @@ def update_account(payload: dict = Body(...)):
     res = platform_auth_manager.update_account(platform, username, password, phone)
     return res
 
+@app.post("/api/auth/start-browser-login")
+def start_browser_login(payload: dict = Body(...)):
+    platform = payload.get("platform", "jobvision")
+    phone = payload.get("phone", "09195253462")
+    from automation.interactive_login_helper import interactive_login_manager
+    res = interactive_login_manager.launch_browser_login_async(platform, phone)
+    return res
+
+@app.get("/api/auth/session-status")
+def get_session_status():
+    from automation.jobvision_real_applier import jobvision_real_applier
+    from automation.jobinja_real_applier import jobinja_real_applier
+    from automation.interactive_login_helper import interactive_login_manager
+    return {
+        "jobvision": {
+            "has_session": jobvision_real_applier.has_saved_session(),
+            "in_progress": interactive_login_manager.is_logging_in("jobvision")
+        },
+        "jobinja": {
+            "has_session": jobinja_real_applier.has_saved_session(),
+            "in_progress": interactive_login_manager.is_logging_in("jobinja")
+        }
+    }
+
+@app.post("/api/auth/import-cookies")
+def import_cookies(payload: dict = Body(...)):
+    platform = payload.get("platform", "jobvision")
+    cookie_str = payload.get("cookie_string", "")
+    if not cookie_str:
+        raise HTTPException(status_code=400, detail="رشته کوکی نباید خالی باشد.")
+    if platform == "jobvision":
+        from automation.jobvision_real_applier import jobvision_real_applier
+        ok = jobvision_real_applier.import_raw_cookies(cookie_str)
+    elif platform == "jobinja":
+        from automation.jobinja_real_applier import jobinja_real_applier
+        ok = jobinja_real_applier.import_raw_cookies(cookie_str)
+    else:
+        raise HTTPException(status_code=400, detail="پلتفرم نامعتبر است.")
+    return {"success": ok, "message": "کوکی‌ها با موفقیت ذخیره و سشن فعال شد." if ok else "خطا در پردازش کوکی."}
+
 @app.get("/api/logs")
 def get_logs(limit: int = 30):
     return platform_auth_manager.get_recent_logs(limit)
